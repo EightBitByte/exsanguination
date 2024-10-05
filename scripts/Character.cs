@@ -13,15 +13,18 @@ public partial class Character : CharacterBody2D
 	private double viewOffset = Math.PI / 2;
 
 	Sprite2D characterSprite;
+	RichTextLabel pointLabel;
 
 	PackedScene BULLET_SCENE, ENEMY_SCENE;
 
 	double firingCooldown = 0;
+	int money = 0;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		characterSprite = GetChild<Sprite2D>(0);
+		pointLabel = GetNode<RichTextLabel>("/root/main_scene/CanvasLayer/RichTextLabel");
 		BULLET_SCENE = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 
@@ -62,5 +65,10 @@ public partial class Character : CharacterBody2D
 		
 		Velocity = moveDirection * Speed;
 		MoveAndSlide();
+	}
+
+	public void addPoints(int points) {
+		money += points;
+		pointLabel.Text = $"${money/100}.{money%100}";
 	}
 }

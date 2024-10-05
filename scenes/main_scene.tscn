@@ -73,7 +73,6 @@ navigation_polygon = SubResource("NavigationPolygon_7txu1")
 script = ExtResource("1_yk2pb")
 
 [node name="Character" type="CharacterBody2D" parent="."]
-position = Vector2(1, 0)
 script = ExtResource("1_ntr3v")
 
 [node name="Character Sprite" type="Sprite2D" parent="Character"]
@@ -82,3 +81,15 @@ texture = ExtResource("2_avy2n")
 
 [node name="Physics Collider" type="CollisionShape2D" parent="Character"]
 shape = SubResource("RectangleShape2D_lo37x")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+offset_left = 1075.0
+offset_top = 600.0
+offset_right = 1116.0
+offset_bottom = 640.0
+text = "$0.00"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0

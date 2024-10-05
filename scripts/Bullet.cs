@@ -6,6 +6,7 @@ public partial class Bullet : CharacterBody2D
 	[Export]
 	float BulletSpeed = 800;
 
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -18,9 +19,16 @@ public partial class Bullet : CharacterBody2D
 
 		Velocity = CalculatedVelocity.Rotated(Rotation);
 
-		var collision = MoveAndCollide(Velocity * (float)delta);
+		KinematicCollision2D collision = MoveAndCollide(Velocity * (float)delta);
 
 		if (collision != null) {
+			var collider = collision.GetCollider();
+			GD.Print(collider.GetClass());
+
+			if (collider.GetClass() == "CharacterBody2D") {
+				collider.Call("Hurt", 10);
+			}
+
 			QueueFree();
 		}
 	}
