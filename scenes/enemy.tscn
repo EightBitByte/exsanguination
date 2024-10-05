@@ -1,13 +1,16 @@
-[gd_scene load_steps=5 format=3 uid="uid://tcedrpts7qeu"]
+[gd_scene load_steps=6 format=3 uid="uid://tcedrpts7qeu"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_7rms5"]
 [ext_resource type="Texture2D" uid="uid://dnlf87f85bvdw" path="res://assets/EnemySprite.svg" id="1_i8acl"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a2vqs"]
-size = Vector2(432, 432)
+size = Vector2(432, 232)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mrfxo"]
 size = Vector2(432, 232)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w46w1"]
+size = Vector2(571, 261.5)
 
 [node name="Enemy" type="CharacterBody2D"]
 scale = Vector2(0.25, 0.25)
@@ -29,3 +32,13 @@ collision_mask = 2
 [node name="Hurtbox Shape" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("RectangleShape2D_mrfxo")
 debug_color = Color(1, 0.6, 0.701961, 0.419608)
+
+[node name="Attack Box" type="Area2D" parent="."]
+
+[node name="Attack shape" type="CollisionShape2D" parent="Attack Box"]
+position = Vector2(0, -284)
+shape = SubResource("RectangleShape2D_w46w1")
+debug_color = Color(1, 0.01149, 0.0214305, 0.42)
+
+[connection signal="body_entered" from="Attack Box" to="." method="OnAttackBoxEntered"]
+[connection signal="body_exited" from="Attack Box" to="." method="OnAttackBoxExited"]

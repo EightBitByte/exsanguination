@@ -23,7 +23,6 @@ public partial class Bullet : CharacterBody2D
 
 		if (collision != null) {
 			var collider = collision.GetCollider();
-			GD.Print(collider.GetClass());
 
 			if (collider.GetClass() == "CharacterBody2D") {
 				collider.Call("Hurt", 10);

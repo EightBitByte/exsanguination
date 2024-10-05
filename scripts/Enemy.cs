@@ -2,8 +2,12 @@ using Godot;
 using System;
 using System.Runtime.ExceptionServices;
 
+
 public partial class Enemy : CharacterBody2D
 {
+	// Milliseconds in a second.
+	const float MILLIS = 1000;
+
 	[Export]
 	float maxHP = 100;
 
@@ -17,12 +21,24 @@ public partial class Enemy : CharacterBody2D
 
 	[Export]
 	float MsToRecalculatePath = 100;
+	[Export]
+	float AttackCooldown = 1000;
+	[Export]
+	float TimeInProximityBeforeAttack = 100;
+	[Export]
+	float DetectAttackDistance = 150;
+	[Export]
+	float attackDmg = 34;
 
 	CharacterBody2D Player;
 	NavigationAgent2D Pathfinding;
 	Sprite2D Sprite;
+	Area2D AttackBox;
 	double timeSinceLastPath = 0;
+	double timeSinceLastAttack = 0;
+	double closeTime = 0;
 	private float health;
+	private bool playerInAttackBox = false;
 
 
 	// Called when the node enters the scene tree for the first time.
@@ -31,6 +47,8 @@ public partial class Enemy : CharacterBody2D
 		Player = GetNode<CharacterBody2D>("/root/main_scene/Character");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
+		AttackBox = GetChild<Area2D>(4);
+
 		health = maxHP;
 	}
 
@@ -38,17 +56,33 @@ public partial class Enemy : CharacterBody2D
 	public override void _PhysicsProcess(double delta)
 	{
 		timeSinceLastPath += delta;
+		timeSinceLastAttack += delta;
 		
 		// Recalculate pathfinding every so often
-		if (timeSinceLastPath > MsToRecalculatePath / 1000) {
+		if (timeSinceLastPath > MsToRecalculatePath / MILLIS) {
 			Pathfinding.TargetPosition = Player.Position;
 			timeSinceLastPath = 0;
+		}
+
+		// If we're close enough to the player for long enough, and it's been long enough since our last swing
+		if (Position.DistanceTo(Player.Position) < DetectAttackDistance) {
+			closeTime += delta;
+
+			if (closeTime > TimeInProximityBeforeAttack / MILLIS 
+			&& timeSinceLastAttack > AttackCooldown / MILLIS && playerInAttackBox) {
+
+				Player.Call("Hurt", attackDmg);
+				timeSinceLastAttack = 0;
+			}
+
+		} else {
+			closeTime = 0;
 		}
 
 
 		Vector2 NextPos = Pathfinding.GetNextPathPosition();
 		Vector2 Direction = GlobalPosition.DirectionTo(NextPos);
-		Sprite.Rotation = (float)(Math.Atan2(Direction.Y, Direction.X) + Math.PI/2);
+		Rotation = (float)(Math.Atan2(Direction.Y, Direction.X) + Math.PI/2);
 
 		Velocity = Direction * Speed;
 		MoveAndSlide();
@@ -66,8 +100,17 @@ public partial class Enemy : CharacterBody2D
 			Player.Call("addPoints", KillBounty);
 			QueueFree();
 		}
-
-		GD.Print("Enemy Hurt for ", damage, ", health at ", health);
 	}
 
+	private void OnAttackBoxEntered(Node2D body)
+	{
+		if (body.Name == "Character")
+			playerInAttackBox = true;
+	}
+
+	private void OnAttackBoxExited(Node2D body)
+	{
+		if (body.Name == "Character")
+			playerInAttackBox = false;
+	}
 }

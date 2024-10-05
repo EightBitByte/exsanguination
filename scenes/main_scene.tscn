@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=11 format=3 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/tileset.png" id="1_f7ih5"]
 [ext_resource type="Script" path="res://scripts/Character.cs" id="1_ntr3v"]
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://bmx45tnbv0mlo" path="res://assets/CharacterSprite.svg" id="2_avy2n"]
+[ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nb617"]
 texture = ExtResource("1_f7ih5")
@@ -58,6 +59,14 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lo37x"]
 size = Vector2(107, 107)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_d58rs"]
+shader = ExtResource("3_p5f76")
+shader_parameter/inner_radius = 0.1
+shader_parameter/outer_radius = 1.0
+shader_parameter/vignette_strength = 1.0
+shader_parameter/dither_strength = 0.05
+shader_parameter/vignette_color = Color(1, 0, 0, 1)
+
 [node name="main_scene" type="Node2D"]
 
 [node name="TileMap" type="TileMap" parent="."]
@@ -82,9 +91,14 @@ texture = ExtResource("2_avy2n")
 [node name="Physics Collider" type="CollisionShape2D" parent="Character"]
 shape = SubResource("RectangleShape2D_lo37x")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="GUI" type="CanvasLayer" parent="."]
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer"]
+[node name="Vignette" type="ColorRect" parent="GUI"]
+material = SubResource("ShaderMaterial_d58rs")
+offset_right = 1150.0
+offset_bottom = 650.0
+
+[node name="Point Label" type="RichTextLabel" parent="GUI"]
 offset_left = 1075.0
 offset_top = 600.0
 offset_right = 1116.0
