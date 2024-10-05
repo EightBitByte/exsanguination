@@ -34,6 +34,7 @@ public partial class Enemy : CharacterBody2D
 	NavigationAgent2D Pathfinding;
 	Sprite2D Sprite;
 	Area2D AttackBox;
+	Node2D EnemyManager;
 	double timeSinceLastPath = 0;
 	double timeSinceLastAttack = 0;
 	double closeTime = 0;
@@ -45,6 +46,7 @@ public partial class Enemy : CharacterBody2D
 	public override void _Ready()
 	{
 		Player = GetNode<CharacterBody2D>("/root/main_scene/Character");
+		EnemyManager = GetNode<Node2D>("/root/main_scene/Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
@@ -95,6 +97,7 @@ public partial class Enemy : CharacterBody2D
 	public void Hurt(float damage) {
 		health -= damage;
 		Player.Call("addPoints", HitBounty);
+		EnemyManager.Call("SpawnBloodPool", GlobalPosition);
 
 		if (health <= 0) {
 			Player.Call("addPoints", KillBounty);

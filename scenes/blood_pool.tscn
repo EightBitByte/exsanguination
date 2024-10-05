@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1jdnmpi2fjfi"]
+
+[ext_resource type="Texture2D" uid="uid://duqvcdoth561r" path="res://assets/BloodPool.svg" id="1_4a2t5"]
+
+[node name="Blood Pool" type="Sprite2D"]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_4a2t5")

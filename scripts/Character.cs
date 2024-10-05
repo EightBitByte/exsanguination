@@ -43,11 +43,6 @@ public partial class Character : CharacterBody2D
 		BULLET_SCENE = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 
-		// TODO: Remove test enemy
-		CharacterBody2D testEnemy = ENEMY_SCENE.Instantiate<CharacterBody2D>();
-		testEnemy.Position = new Vector2(200, -100);
-		GetTree().Root.CallDeferred("add_child", testEnemy);
-
 		hurtVignette.SetShaderParameter("inner_radius", 1.0);
 		vignetteBox.Visible = false;
 	}

@@ -1,6 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=12 format=3 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/tileset.png" id="1_f7ih5"]
+[ext_resource type="Script" path="res://scripts/Enemy_Manager.cs" id="1_kxrwd"]
 [ext_resource type="Script" path="res://scripts/Character.cs" id="1_ntr3v"]
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://bmx45tnbv0mlo" path="res://assets/CharacterSprite.svg" id="2_avy2n"]
@@ -69,6 +70,9 @@ shader_parameter/vignette_color = Color(1, 0, 0, 1)
 
 [node name="main_scene" type="Node2D"]
 
+[node name="Enemy Manager" type="Node2D" parent="."]
+script = ExtResource("1_kxrwd")
+
 [node name="TileMap" type="TileMap" parent="."]
 tile_set = SubResource("TileSet_1rf73")
 format = 2
@@ -82,9 +86,11 @@ navigation_polygon = SubResource("NavigationPolygon_7txu1")
 script = ExtResource("1_yk2pb")
 
 [node name="Character" type="CharacterBody2D" parent="."]
+z_index = 2
 script = ExtResource("1_ntr3v")
 
 [node name="Character Sprite" type="Sprite2D" parent="Character"]
+z_index = 2
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("2_avy2n")
 
