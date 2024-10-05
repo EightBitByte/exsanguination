@@ -1,0 +1,73 @@
+[gd_scene load_steps=8 format=3 uid="uid://c6jqq2covcflg"]
+
+[ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/tileset.png" id="1_f7ih5"]
+[ext_resource type="Script" path="res://scripts/Character.cs" id="1_ntr3v"]
+[ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
+[ext_resource type="Texture2D" uid="uid://bmx45tnbv0mlo" path="res://assets/CharacterSprite.svg" id="2_avy2n"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nb617"]
+texture = ExtResource("1_f7ih5")
+texture_region_size = Vector2i(100, 100)
+0:0/0 = 0
+0:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:0/0/physics_layer_0/angular_velocity = 0.0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, 50, 0, 0, 50, 0, 50, -50, -50, -50, -50, 50)
+1:0/0 = 0
+1:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:0/0/physics_layer_0/angular_velocity = 0.0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, 0, 50, 0, 50, -50, -50, -50)
+2:0/0 = 0
+2:0/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:0/0/physics_layer_0/angular_velocity = 0.0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, 0, 0, 0, 0, 50, 50, 50, 50, -50, -50, -50, -50, 0, 0, 0)
+2:1/0 = 0
+2:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:1/0/physics_layer_0/angular_velocity = 0.0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 50, 50, 50, 50, -50)
+1:1/0 = 0
+1:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0 = 0
+0:1/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:1/0/physics_layer_0/angular_velocity = 0.0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 50, -50, 50, -50, -50)
+0:2/0 = 0
+0:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+0:2/0/physics_layer_0/angular_velocity = 0.0
+0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 0, 50, 0, 50, 50, -50, 50, -50, -50)
+1:2/0 = 0
+1:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+1:2/0/physics_layer_0/angular_velocity = 0.0
+1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, 0, 50, 0, 50, 50, -50, 50)
+2:2/0 = 0
+2:2/0/physics_layer_0/linear_velocity = Vector2(0, 0)
+2:2/0/physics_layer_0/angular_velocity = 0.0
+2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 0, -50, 0, -50, 50, 50, 50, 50, -50, 0, -50)
+
+[sub_resource type="TileSet" id="TileSet_1rf73"]
+tile_size = Vector2i(100, 100)
+physics_layer_0/collision_layer = 1
+sources/2 = SubResource("TileSetAtlasSource_nb617")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lo37x"]
+size = Vector2(107, 59)
+
+[node name="main_scene" type="Node2D"]
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_1rf73")
+format = 2
+layer_0/tile_data = PackedInt32Array(-196614, 2, 0, -196613, 65538, 0, -196612, 65538, 0, -196611, 65538, 0, -196610, 65538, 0, -196609, 65538, 0, -262144, 65538, 0, -262143, 65538, 0, -262142, 65538, 0, -262141, 65538, 0, -262140, 65538, 0, -262139, 131074, 0, 131077, 131074, 2, 196602, 2, 2, 196603, 65538, 2, 196604, 65538, 2, 196605, 65538, 2, 196606, 65538, 2, 196607, 65538, 2, 131072, 65538, 2, 131073, 65538, 2, 131074, 65538, 2, 131075, 65538, 2, 131076, 65538, 2, 65541, 131074, 1, 5, 131074, 1, -65531, 131074, 1, -131067, 131074, 1, -196603, 131074, 1, -131078, 2, 1, -65542, 2, 1, -5, 65538, 1, 65531, 65538, 1, 131067, 65538, 1, 131066, 2, 1, 65530, 2, 1, -6, 2, 1, -131077, 65538, 1, -65541, 65538, 1, 131068, 65538, 1, 131069, 65538, 1, 131070, 65538, 1, 131071, 65538, 1, 65536, 65538, 1, 65537, 65538, 1, 65538, 65538, 1, 65539, 65538, 1, 65540, 65538, 1, 4, 65538, 1, -65532, 65538, 1, -131068, 65538, 1, -196604, 65538, 1, -196605, 65538, 1, -196606, 65538, 1, -196607, 65538, 1, -196608, 65538, 1, -131073, 65538, 1, -131074, 65538, 1, -131075, 65538, 1, -131076, 65538, 1, -65540, 65538, 1, -65539, 65538, 1, -65538, 65538, 1, -65537, 65538, 1, -131072, 65538, 1, -131071, 65538, 1, -131070, 65538, 1, -131069, 65538, 1, -65533, 65538, 1, -65534, 65538, 1, -65535, 65538, 1, -65536, 65538, 1, -1, 65538, 1, -2, 65538, 1, -3, 65538, 1, -4, 65538, 1, 65532, 65538, 1, 65533, 65538, 1, 65534, 65538, 1, 65535, 65538, 1, 0, 65538, 1, 1, 65538, 1, 2, 65538, 1, 3, 65538, 1)
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("1_yk2pb")
+
+[node name="Character" type="CharacterBody2D" parent="."]
+script = ExtResource("1_ntr3v")
+
+[node name="Character Sprite" type="Sprite2D" parent="Character"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("2_avy2n")
+
+[node name="Collision Box" type="CollisionShape2D" parent="Character"]
+shape = SubResource("RectangleShape2D_lo37x")
