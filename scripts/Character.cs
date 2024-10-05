@@ -14,7 +14,7 @@ public partial class Character : CharacterBody2D
 
 	Sprite2D characterSprite;
 
-	PackedScene BULLET_SCENE;
+	PackedScene BULLET_SCENE, ENEMY_SCENE;
 
 	double firingCooldown = 0;
 
@@ -23,6 +23,11 @@ public partial class Character : CharacterBody2D
 	{
 		characterSprite = GetChild<Sprite2D>(0);
 		BULLET_SCENE = GD.Load<PackedScene>("res://scenes/bullet.tscn");
+		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
+
+		CharacterBody2D testEnemy = ENEMY_SCENE.Instantiate<CharacterBody2D>();
+		testEnemy.Position = new Vector2(200, -100);
+		GetTree().Root.CallDeferred("add_child", testEnemy);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -34,8 +39,6 @@ public partial class Character : CharacterBody2D
 		Vector2 mousePos = GetViewport().GetMousePosition() - viewportCenter;
 		double viewAngle = Math.Atan2(mousePos.Y, mousePos.X);
 
-		GD.Print("mousePos: ", mousePos);
-		GD.Print("viewAngle: ", viewAngle);
 		characterSprite.Rotation = (float)viewAngle + (float)viewOffset;
 
 		if (Input.IsActionPressed("fire") && firingCooldown > TriggerSpeedMs / 1000) {
