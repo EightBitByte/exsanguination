@@ -4,8 +4,9 @@ using System;
 public partial class Bullet : CharacterBody2D
 {
 	[Export]
-	float BulletSpeed = 800;
+	private float BulletSpeed = 800;
 
+	public float BulletDamage = 10;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -25,7 +26,7 @@ public partial class Bullet : CharacterBody2D
 			var collider = collision.GetCollider();
 
 			if (collider.GetClass() == "CharacterBody2D") {
-				collider.Call("Hurt", 10);
+				collider.Call("Hurt", BulletDamage);
 			}
 
 			QueueFree();

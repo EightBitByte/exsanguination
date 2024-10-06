@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=14 format=3 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/tileset.png" id="1_f7ih5"]
 [ext_resource type="Script" path="res://scripts/Enemy_Manager.cs" id="1_kxrwd"]
@@ -6,6 +6,8 @@
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://bmx45tnbv0mlo" path="res://assets/CharacterSprite.svg" id="2_avy2n"]
 [ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
+[ext_resource type="Texture2D" uid="uid://bq7tmy6bc2q3l" path="res://assets/Bullet Bar (Under).svg" id="6_6rh7v"]
+[ext_resource type="Texture2D" uid="uid://b1i7msbcq3nwc" path="res://assets/Bullet Bar (Over).svg" id="7_2rldi"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nb617"]
 texture = ExtResource("1_f7ih5")
@@ -97,12 +99,22 @@ texture = ExtResource("2_avy2n")
 [node name="Physics Collider" type="CollisionShape2D" parent="Character"]
 shape = SubResource("RectangleShape2D_lo37x")
 
+[node name="Reload Bar" type="TextureProgressBar" parent="Character"]
+offset_left = -97.0
+offset_top = -104.0
+offset_right = 743.0
+offset_bottom = 70.0
+scale = Vector2(0.231032, 0.231032)
+texture_under = ExtResource("6_6rh7v")
+texture_progress = ExtResource("7_2rldi")
+
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="Vignette" type="ColorRect" parent="GUI"]
 material = SubResource("ShaderMaterial_d58rs")
 offset_right = 1150.0
 offset_bottom = 650.0
+scale = Vector2(1.00173, 0.99689)
 
 [node name="Point Label" type="RichTextLabel" parent="GUI"]
 offset_left = 1075.0
@@ -110,6 +122,16 @@ offset_top = 600.0
 offset_right = 1116.0
 offset_bottom = 640.0
 text = "$0.00"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Ammo Label" type="RichTextLabel" parent="GUI"]
+offset_left = 25.0
+offset_top = 600.0
+offset_right = 67.0
+offset_bottom = 640.0
+text = "8 / 80"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
