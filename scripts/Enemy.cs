@@ -34,7 +34,7 @@ public partial class Enemy : CharacterBody2D
 	NavigationAgent2D Pathfinding;
 	Sprite2D Sprite;
 	Area2D AttackBox;
-	Node2D EnemyManager;
+	Enemy_Manager EnemyManager;
 	double timeSinceLastPath = 0;
 	double timeSinceLastAttack = 0;
 	double closeTime = 0;
@@ -46,7 +46,7 @@ public partial class Enemy : CharacterBody2D
 	public override void _Ready()
 	{
 		Player = GetNode<CharacterBody2D>("/root/main_scene/Character");
-		EnemyManager = GetNode<Node2D>("/root/main_scene/Enemy Manager");
+		EnemyManager = GetNode<Enemy_Manager>("/root/main_scene/Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
@@ -101,6 +101,8 @@ public partial class Enemy : CharacterBody2D
 
 		if (health <= 0) {
 			Player.Call("AddPoints", KillBounty);
+			++EnemyManager.KilledInfected;
+			--EnemyManager.infectedActive;
 			QueueFree();
 		}
 	}

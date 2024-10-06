@@ -9,5 +9,16 @@
         "magSize": 8,
         "reserveSize": 80,
         "automatic": false
+    },
+    "1":
+    {
+        "name": "Debug Gun",
+        "desc": "Not for in-game use - to debug and kill fast.",
+        "dmg": 2000,
+        "rof": 10,
+        "reload": 0.5,
+        "magSize": 999,
+        "reserveSize": 999,
+        "automatic": true
     }
 }

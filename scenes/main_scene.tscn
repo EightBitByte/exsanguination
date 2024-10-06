@@ -198,11 +198,21 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
+[node name="Round Label" type="RichTextLabel" parent="GUI"]
+offset_left = 25.0
+offset_top = 25.0
+offset_right = 66.0
+offset_bottom = 65.0
+text = "Round 999"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
 [node name="Ammo Label" type="RichTextLabel" parent="GUI"]
 offset_left = 25.0
-offset_top = 570.0
+offset_top = 575.0
 offset_right = 67.0
-offset_bottom = 610.0
+offset_bottom = 615.0
 text = "8 / 80"
 fit_content = true
 scroll_active = false
@@ -210,19 +220,19 @@ autowrap_mode = 0
 
 [node name="Gun Label" type="RichTextLabel" parent="GUI"]
 offset_left = 25.0
-offset_top = 592.0
+offset_top = 600.0
 offset_right = 243.0
-offset_bottom = 632.0
+offset_bottom = 640.0
 text = "Thompson Submachine Gun"
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
 [node name="Purchase Label" type="RichTextLabel" parent="GUI"]
-offset_left = 507.0
-offset_top = 597.0
-offset_right = 668.0
-offset_bottom = 637.0
+offset_left = 500.0
+offset_top = 600.0
+offset_right = 661.0
+offset_bottom = 640.0
 text = "[F] Purchase for $??? "
 fit_content = true
 autowrap_mode = 0
@@ -255,6 +265,9 @@ script = ExtResource("1_kxrwd")
 wait_time = 5.0
 autostart = true
 
+[node name="Safe Timer" type="Timer" parent="Enemy Manager"]
+wait_time = 8.0
+
 [node name="Spawn Room" type="Node2D" parent="Enemy Manager"]
 position = Vector2(475, -275)
 
@@ -282,3 +295,4 @@ scale = Vector2(0.220325, 0.220325)
 BarrierName = "Spawn Room"
 
 [connection signal="timeout" from="Enemy Manager/Spawn Timer" to="Enemy Manager" method="OnSpawnTimerTick"]
+[connection signal="timeout" from="Enemy Manager/Safe Timer" to="Enemy Manager" method="OnSafeTimerTick"]

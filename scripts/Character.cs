@@ -54,10 +54,12 @@ public partial class Character : CharacterBody2D
 	public override void _Ready() {
 		// Load resources
 		characterSprite = GetChild<Sprite2D>(0);
+
 		pointLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Point Label");
 		gunLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Gun Label");
 		ammoLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Ammo Label");
 		purchaseLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Purchase Label");
+
 		reloadBar = GetNode<TextureProgressBar>("/root/main_scene/Character/Reload Bar");
 		vignetteBox = GetNode<ColorRect>("/root/main_scene/GUI/Vignette");
 		hurtVignette = (ShaderMaterial)vignetteBox.Material;
@@ -73,7 +75,8 @@ public partial class Character : CharacterBody2D
 
 		// Set up weapons
 		LoadWeaponsJson();
-		heldWeapons[0] = allWeapons[0];
+		// TODO: Revert back to m1911
+		heldWeapons[0] = allWeapons[1];
 		activeWeapon = 0;
 		RateOfFireMs = 1 / heldWeapons[0].RateOfFire;
 		ammoCounts[0, 0] = heldWeapons[0].MagSize;
@@ -143,7 +146,7 @@ public partial class Character : CharacterBody2D
 
 	}
 
-    public override void _PhysicsProcess (double delta) {
+	public override void _PhysicsProcess (double delta) {
 		Vector2 moveDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 
 		timeSinceLastDamage += delta;
@@ -220,6 +223,4 @@ public partial class Character : CharacterBody2D
 	public bool HasEnoughMoney(int cost) {
 		return money >= cost;
 	}
-
-
 }
