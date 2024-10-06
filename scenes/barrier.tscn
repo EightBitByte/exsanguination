@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://gedcfjwo3233"]
+
+[ext_resource type="Texture2D" uid="uid://dwrfdf7n8wgyc" path="res://assets/Barrier.svg" id="1_ck840"]
+[ext_resource type="Script" path="res://scripts/Barrier.cs" id="1_wi7nk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n21yv"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lpwn8"]
+
+[node name="Barrier" type="StaticBody2D"]
+scale = Vector2(0.270132, 0.270132)
+script = ExtResource("1_wi7nk")
+
+[node name="Buy Area" type="Area2D" parent="."]
+
+[node name="Buy Shape" type="CollisionShape2D" parent="Buy Area"]
+scale = Vector2(-50.7083, -27.5182)
+shape = SubResource("RectangleShape2D_n21yv")
+debug_color = Color(2.11775e-06, 0.646138, 0.244215, 0.42)
+
+[node name="Barrier Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("1_ck840")
+
+[node name="Barrier Collider" type="CollisionShape2D" parent="."]
+scale = Vector2(44.4716, 14.8922)
+shape = SubResource("RectangleShape2D_lpwn8")
+
+[connection signal="body_entered" from="Buy Area" to="." method="OnBuyAreaEntered"]
+[connection signal="body_exited" from="Buy Area" to="." method="OnBuyAreaExited"]

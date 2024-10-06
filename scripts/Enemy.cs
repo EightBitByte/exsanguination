@@ -96,11 +96,11 @@ public partial class Enemy : CharacterBody2D
 	/// <param name="damage">The amount of damage to subtract from the enemy HP.</param>
 	public void Hurt(float damage) {
 		health -= damage;
-		Player.Call("addPoints", HitBounty);
+		Player.Call("AddPoints", HitBounty);
 		EnemyManager.Call("SpawnBloodPool", GlobalPosition);
 
 		if (health <= 0) {
-			Player.Call("addPoints", KillBounty);
+			Player.Call("AddPoints", KillBounty);
 			QueueFree();
 		}
 	}

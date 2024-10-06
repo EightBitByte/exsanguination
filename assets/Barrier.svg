@@ -1,0 +1,11 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300">
+	<title>Barrier</title>
+	<style>
+		.s0 { fill: #9b6433;stroke: #7e512a;stroke-miterlimit:100;stroke-width: 14 } 
+	</style>
+	<path id="Background" class="s0" d="m239.7 18.6l36.2 217-217 36.2-36.2-217z"/>
+	<path id="Shape 1" class="s0" d="m873 37l-3.7 224-558.9-9 3.6-224z"/>
+	<path id="Shape 2" class="s0" d="m763.7 25l75.8 163.3-163.3 75.7-75.7-163.3z"/>
+	<path id="Shape 3" class="s0" d="m456.5 44.7l10.6 45.8-324.6 74.6-10.5-45.8z"/>
+	<path id="Shape 3 copy" class="s0" d="m479.6 165.5l-16.3 44.1-312.4-115.3 16.3-44.1z"/>
+</svg>

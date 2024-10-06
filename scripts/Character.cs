@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Principal;
 
 public partial class Character : CharacterBody2D
 {
@@ -28,7 +29,7 @@ public partial class Character : CharacterBody2D
 	private double viewOffset = Math.PI / 2;
 
 	Sprite2D characterSprite;
-	RichTextLabel pointLabel, ammoLabel;
+	RichTextLabel pointLabel, gunLabel, ammoLabel, purchaseLabel;
 	TextureProgressBar reloadBar;
 	ShaderMaterial hurtVignette;
 	ColorRect vignetteBox;
@@ -54,7 +55,9 @@ public partial class Character : CharacterBody2D
 		// Load resources
 		characterSprite = GetChild<Sprite2D>(0);
 		pointLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Point Label");
+		gunLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Gun Label");
 		ammoLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Ammo Label");
+		purchaseLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Purchase Label");
 		reloadBar = GetNode<TextureProgressBar>("/root/main_scene/Character/Reload Bar");
 		vignetteBox = GetNode<ColorRect>("/root/main_scene/GUI/Vignette");
 		hurtVignette = (ShaderMaterial)vignetteBox.Material;
@@ -62,10 +65,11 @@ public partial class Character : CharacterBody2D
 		BULLET_SCENE = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 
-		// Set up damage effects
+		// Set up GUI
 		hurtVignette.SetShaderParameter("inner_radius", 1.0);
 		vignetteBox.Visible = false;
 		reloadBar.Visible = false;
+		purchaseLabel.Visible = false;
 
 		// Set up weapons
 		LoadWeaponsJson();
@@ -74,6 +78,7 @@ public partial class Character : CharacterBody2D
 		RateOfFireMs = 1 / heldWeapons[0].RateOfFire;
 		ammoCounts[0, 0] = heldWeapons[0].MagSize;
 		ammoCounts[0, 1] = heldWeapons[0].ReserveSize;
+		gunLabel.Text = heldWeapons[0].Name;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -145,7 +150,7 @@ public partial class Character : CharacterBody2D
 
 		if (timeSinceLastDamage > healCooldown / MILLIS && health < 100) {
 			health = health + RegenAmt > MaxHP ? MaxHP : health + RegenAmt;
-			adjustVignette();
+			AdjustVignette();
 			timeSinceLastDamage = (healCooldown - RegenDelay) / MILLIS;
 		}
 		
@@ -153,20 +158,20 @@ public partial class Character : CharacterBody2D
 		MoveAndSlide();
 	}
 
-	public void addPoints (int points) {
+	public void AddPoints (int points) {
 		money += points;
 		pointLabel.Text = $"${money/100}.{money%100}";
 	}
 
 	public void Hurt (int attackDmg) {
 		health = health < attackDmg ? 0 : health - attackDmg;
-		adjustVignette();
+		AdjustVignette();
 		
 		timeSinceLastDamage = 0;
 	}
 
 	// 1 is not visible, 0 is full strength
-	public void adjustVignette () {
+	public void AdjustVignette () {
 		double percentHP = 1.0 * health / MaxHP;
 		double strength;
 
@@ -197,7 +202,23 @@ public partial class Character : CharacterBody2D
 	}
 
 	private void UpdateAmmo() {
-		ammoLabel.Text = $"{ammoCounts[activeWeapon, MAGAZINE]}/{ammoCounts[activeWeapon, RESERVE]}";
+		ammoLabel.Text = $"{ammoCounts[activeWeapon, MAGAZINE]} / {ammoCounts[activeWeapon, RESERVE]}";
 	}
+
+	public void ShowPurchaseLabel(int purchaseAmt) {
+		string cents = purchaseAmt % 100 == 0 ? "00" : (purchaseAmt % 100).ToString();
+
+		purchaseLabel.Text = $"[F] Clear for ${purchaseAmt/100}.{cents}";
+		purchaseLabel.Visible = true;
+	}
+	
+	public void HidePurchaseLabel() {
+		purchaseLabel.Visible = false;
+	}
+
+	public bool HasEnoughMoney(int cost) {
+		return money >= cost;
+	}
+
 
 }
