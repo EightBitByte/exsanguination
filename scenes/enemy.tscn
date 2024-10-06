@@ -24,7 +24,6 @@ texture = ExtResource("1_i8acl")
 shape = SubResource("RectangleShape2D_a2vqs")
 
 [node name="Pathfinding" type="NavigationAgent2D" parent="."]
-debug_enabled = true
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 2
