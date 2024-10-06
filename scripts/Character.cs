@@ -160,7 +160,8 @@ public partial class Character : CharacterBody2D
 
 	public void AddPoints (int points) {
 		money += points;
-		pointLabel.Text = $"${money/100}.{money%100}";
+		string cents = money % 100 == 0 ? "00" : (money % 100).ToString();
+		pointLabel.Text = $"${money/100}.{cents}";
 	}
 
 	public void Hurt (int attackDmg) {

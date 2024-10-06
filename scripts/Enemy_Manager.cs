@@ -1,5 +1,7 @@
 using Godot;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public partial class Enemy_Manager : Node2D
 {
@@ -8,28 +10,42 @@ public partial class Enemy_Manager : Node2D
 
 	PackedScene ENEMY_SCENE, BLOOD_POOL_SCENE;
 	RandomNumberGenerator rng;
+	Timer spawnTimer;
+
+	Godot.Collections.Array<Node2D> enabledSpawnPoints = new();
+
+	private int round;
+
+	private Dictionary<string, string[]> unlocks = new() {
+		{"Spawn Room", new string[] {"Outer Hallway I", "Outer Hallway II"}},
+	};
 
 	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
+	public override void _Ready(){
+		// Load resources
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 		BLOOD_POOL_SCENE = GD.Load<PackedScene>("res://scenes/blood_pool.tscn");
-		rng = new RandomNumberGenerator();
+		spawnTimer = GetNode<Timer>("./Spawn Timer");
+		rng = new();
+		rng.Randomize();
 
-		SpawnEnemy(new Vector2(200, 200));
+		// Load spawn point
+		enabledSpawnPoints.Add(GetNode<Node2D>("./Spawn Room"));
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
-
+	/// <summary>
+	/// Spawns an enemy at position <c>position</c>.
+	/// </summary>
 	public void SpawnEnemy(Vector2 position) {
+		GD.Print("Spawning enemy at ", position);
 		CharacterBody2D newEnemy = ENEMY_SCENE.Instantiate<CharacterBody2D>();
 		newEnemy.GlobalPosition = position;
 		GetTree().Root.CallDeferred("add_child", newEnemy);
 	}
 
+	/// <summary>
+	/// Called by enemies when they are hit to spawn a pool of blood.
+	/// </summary>
 	public void SpawnBloodPool(Vector2 position) {
 		Sprite2D bloodpool = BLOOD_POOL_SCENE.Instantiate<Sprite2D>();
 		bloodpool.Rotation = rng.RandfRange(0, (float)(2 * Math.PI));
@@ -43,4 +59,24 @@ public partial class Enemy_Manager : Node2D
 
 		GetTree().Root.AddChild(bloodpool);
 	}
+
+	/// <summary>
+	/// Called by the barrier upon purchase to open up new enemy spawns.
+	/// </summary>
+	public void OpenedArea(string barrierName) {
+		if (barrierName != "default")
+			foreach (string spawnpointName in unlocks[barrierName])
+				enabledSpawnPoints.Add(GetNode<Node2D>($"./{spawnpointName}"));
+	}
+
+	/// <summary>
+	/// When the timer times out, spawn a new enemy
+	/// </summary>
+	private void OnSpawnTimerTick() {
+		GD.Print("Spawn Timer Ticked");
+		int chosenSpawn = rng.RandiRange(0, enabledSpawnPoints.Count-1);
+		SpawnEnemy(enabledSpawnPoints[chosenSpawn].Position);
+	}
 }
+
+
