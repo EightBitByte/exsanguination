@@ -4,7 +4,7 @@
         "name": "Colt M1911",
         "desc": "Single-action, recoil-operated, semi-auto pistol. An American classic.",
         "dmg": 10,
-        "rof": 1.25,
+        "rof": 20,
         "reload": 2,
         "magSize": 8,
         "reserveSize": 80,

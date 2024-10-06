@@ -6,18 +6,25 @@ using System.Linq;
 public partial class Enemy_Manager : Node2D
 {
 	[Export]
-	private float bloodSpread = 50;
+	private float BloodSpread = 50;
 	[Export]
 	private int Round = 1;
 	[Export]
 	// Max infected on map at one time
-	private int spawnLimit = 5;
+	private int SpawnLimit = 5;
 	// Active infected on map right now
+	[Export]
+	private int StartingInfectedHP = 30;
 	public int infectedActive = 0;
 	// Total infected spawned this Round
 	private int infectedSpawned = 0;
 	// Infected killed this Round
 	public int KilledInfected = 0;
+	// Infected health
+	private int infectedHealth;
+	// Infected health multiplies by this every round
+	private double healthMultiplier;
+
 
 	PackedScene ENEMY_SCENE, BLOOD_POOL_SCENE;
 	RandomNumberGenerator rng;
@@ -45,6 +52,9 @@ public partial class Enemy_Manager : Node2D
 		enabledSpawnPoints.Add(GetNode<Node2D>("./Spawn Room"));
 		RoundLabel.Text = "Round 1";
 
+		// Set zombie parameters
+		// NOTE: Maybe add speed?
+		infectedHealth = StartingInfectedHP;
 	}
 
 	public override void _Process (double delta) {
@@ -64,8 +74,9 @@ public partial class Enemy_Manager : Node2D
 	/// Spawns an enemy at position <c>position</c>.
 	/// </summary>
 	public void SpawnEnemy (Vector2 position) {
-		CharacterBody2D newEnemy = ENEMY_SCENE.Instantiate<CharacterBody2D>();
+		Enemy newEnemy = ENEMY_SCENE.Instantiate<Enemy>();
 		newEnemy.GlobalPosition = position;
+		newEnemy.MaxHP = infectedHealth;
 		GetTree().Root.CallDeferred("add_child", newEnemy);
 	}
 
@@ -78,8 +89,8 @@ public partial class Enemy_Manager : Node2D
 		float scaleFactor = rng.RandfRange(0.05f, 0.15f);
 		bloodpool.Scale = new Vector2(scaleFactor, scaleFactor);
 
-		position.X += rng.RandfRange(-bloodSpread/2, bloodSpread/2);
-		position.Y += rng.RandfRange(-bloodSpread/2, bloodSpread/2);
+		position.X += rng.RandfRange(-BloodSpread/2, BloodSpread/2);
+		position.Y += rng.RandfRange(-BloodSpread/2, BloodSpread/2);
 
 		bloodpool.GlobalPosition = position;
 
@@ -100,7 +111,7 @@ public partial class Enemy_Manager : Node2D
 	/// </summary>
 	private void OnSpawnTimerTick () {
 		// If the amount spawned doesn't exceed the spawn limit, spawn
-		if (infectedActive < spawnLimit && infectedSpawned < Round * 1.5 + 5) {
+		if (infectedActive < SpawnLimit && infectedSpawned < Round * 1.5 + 5) {
 			++infectedActive;
 			++infectedSpawned;
 
@@ -117,6 +128,8 @@ public partial class Enemy_Manager : Node2D
 	private void OnSafeTimerTick()
 	{
 		RoundLabel.Text = $"Round {Round}";
+		infectedHealth = (int)(infectedHealth * healthMultiplier);
+
 		safeTimer.Stop();
 		spawnTimer.Start();
 	}

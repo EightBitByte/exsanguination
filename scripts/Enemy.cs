@@ -9,7 +9,7 @@ public partial class Enemy : CharacterBody2D
 	const float MILLIS = 1000;
 
 	[Export]
-	float maxHP = 100;
+	public float MaxHP = 100;
 
 	[Export]
 	float Speed = 200;
@@ -51,7 +51,7 @@ public partial class Enemy : CharacterBody2D
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
 
-		health = maxHP;
+		health = MaxHP;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

@@ -75,8 +75,7 @@ public partial class Character : CharacterBody2D
 
 		// Set up weapons
 		LoadWeaponsJson();
-		// TODO: Revert back to m1911
-		heldWeapons[0] = allWeapons[1];
+		heldWeapons[0] = allWeapons[0];
 		activeWeapon = 0;
 		RateOfFireMs = 1 / heldWeapons[0].RateOfFire;
 		ammoCounts[0, 0] = heldWeapons[0].MagSize;
@@ -94,52 +93,34 @@ public partial class Character : CharacterBody2D
 
 		characterSprite.Rotation = (float)viewAngle + (float)viewOffset;
 
-		// TODO: Implement semi-auto firing
-		if (Input.IsActionPressed("fire") && firingCooldown > RateOfFireMs 
-		&& ammoCounts[activeWeapon, MAGAZINE] > 0 && !isReloading) {
-			Bullet bullet = BULLET_SCENE.Instantiate<Bullet>();
-			bullet.BulletDamage = heldWeapons[activeWeapon].BulletDamage;
+		// Shooting
+		bool weaponCooldownDone = firingCooldown > RateOfFireMs;
+		bool weaponHasAmmoInMag = ammoCounts[activeWeapon, MAGAZINE] > 0;
+		bool semiAutoFire = !heldWeapons[activeWeapon].Automatic && Input.IsActionJustPressed("fire");
+		bool autoFire = heldWeapons[activeWeapon].Automatic && Input.IsActionPressed("fire");
+		bool magazineFull = ammoCounts[activeWeapon, MAGAZINE] == heldWeapons[activeWeapon].MagSize;
+		bool reserveEmpty = ammoCounts[activeWeapon, RESERVE] == 0;
 
-			// Position bullet to come out of front of player
-			float rotationOffset = characterSprite.Rotation - (float)viewOffset;
-			Vector2 bulletOffset = new Vector2(120, 0).Rotated(rotationOffset);
-			bullet.Position = Position + bulletOffset;
-			bullet.Rotation = rotationOffset;
 
-			ammoCounts[activeWeapon, MAGAZINE] -= 1;
-			UpdateAmmo();
-
-			GetTree().Root.AddChild(bullet);
-			firingCooldown = 0;
+		if ((semiAutoFire || autoFire) && weaponCooldownDone && weaponHasAmmoInMag && !isReloading) {
+			ShootBullet();
 		}
 
 		// Initiate reload
-		if (Input.IsActionJustPressed("reload") && ammoCounts[activeWeapon, MAGAZINE] != heldWeapons[activeWeapon].MagSize && !isReloading) {
-			GD.Print("Reloading...");
+		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty && !isReloading) {
 			reloadBar.Value = 0;
 			reloadBar.Visible = true;
 			isReloading = true;
 		}
 
+		// If we're reloading, count the time and update the reload bar until we reach the end
 		if (isReloading && timeSpentReloading < heldWeapons[activeWeapon].ReloadTime) {
 			timeSpentReloading += delta;
 			reloadBar.Value = timeSpentReloading / heldWeapons[activeWeapon].ReloadTime * 100;
 
 		// Finish reload
 		} else if (isReloading) {
-			// If reserve is less than mag size, reload up to reserve, otherwise fill mag
-			int amtToReload =  Math.Min(ammoCounts[activeWeapon, RESERVE], heldWeapons[activeWeapon].MagSize - ammoCounts[activeWeapon, MAGAZINE]);
-			ammoCounts[activeWeapon, MAGAZINE] += amtToReload;
-
-			// Subtract reloaded ammo from the reserve
-			ammoCounts[activeWeapon, RESERVE] -= amtToReload;
-
-			// Update HUD
-			UpdateAmmo();
-			reloadBar.Visible = false;
-
-			isReloading = false;
-			timeSpentReloading = 0;
+			ReloadWeapon();
 		}
 
 		//TODO: Keep in mind swapping weapons mid-reload, don't want to speed up reload, be sure to cancel it
@@ -222,5 +203,38 @@ public partial class Character : CharacterBody2D
 
 	public bool HasEnoughMoney(int cost) {
 		return money >= cost;
+	}
+
+	public void ShootBullet() {
+		Bullet bullet = BULLET_SCENE.Instantiate<Bullet>();
+		bullet.BulletDamage = heldWeapons[activeWeapon].BulletDamage;
+
+		// Position bullet to come out of front of player
+		float rotationOffset = characterSprite.Rotation - (float)viewOffset;
+		Vector2 bulletOffset = new Vector2(120, 0).Rotated(rotationOffset);
+		bullet.Position = Position + bulletOffset;
+		bullet.Rotation = rotationOffset;
+
+		ammoCounts[activeWeapon, MAGAZINE] -= 1;
+		UpdateAmmo();
+
+		GetTree().Root.AddChild(bullet);
+		firingCooldown = 0;
+	}
+
+	public void ReloadWeapon() {
+		// If reserve is less than mag size, reload up to reserve, otherwise fill mag
+		int amtToReload =  Math.Min(ammoCounts[activeWeapon, RESERVE], heldWeapons[activeWeapon].MagSize - ammoCounts[activeWeapon, MAGAZINE]);
+		ammoCounts[activeWeapon, MAGAZINE] += amtToReload;
+
+		// Subtract reloaded ammo from the reserve
+		ammoCounts[activeWeapon, RESERVE] -= amtToReload;
+
+		// Update HUD
+		UpdateAmmo();
+		reloadBar.Visible = false;
+
+		isReloading = false;
+		timeSpentReloading = 0;
 	}
 }
