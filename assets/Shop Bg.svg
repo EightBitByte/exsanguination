@@ -1,0 +1,14 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+	<title>Shop Bg</title>
+	<style>
+		.s0 { fill: #323232 } 
+		.s1 { fill: #444444;stroke: #323232;stroke-linejoin: round;stroke-width: 30 } 
+		.s2 { fill: #4f4f4f } 
+	</style>
+	<path id="Shape 1 copy 4" class="s0" d="m845 315.7v103.6h-791v-103.6z"/>
+	<path id="Layer 1" class="s1" d="m900 0v600h-900v-600z"/>
+	<path id="Shape 1" class="s2" d="m842 54.7v103.6h-791v-103.6z"/>
+	<path id="Shape 1 copy" class="s2" d="m845 185.7v103.6h-791v-103.6z"/>
+	<path id="Shape 1 copy 2" class="s2" d="m845 315.7v103.6h-791v-103.6z"/>
+	<path id="Shape 1 copy 3" class="s2" d="m845 443.7v103.6h-791v-103.6z"/>
+</svg>

@@ -1,0 +1,11 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" width="1000" height="100">
+	<title>Infection Bar</title>
+	<defs>
+		<image  width="1000" height="100" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA+gAAABkAQMAAAAv94iZAAAAAXNSR0IB2cksfwAAAANQTFRFDi4SVVpotAAAAEVJREFUeJztzUERAAAMAqDZv/RSeH6gALml2O12u91ut9vtdrvdbrfb7Xa73W632+12u91ut9vtdrvdbrfb7Xa73W631zznSwBlT/GRiwAAAABJRU5ErkJggg=="/>
+	</defs>
+	<style>
+		.s0 { fill: none;stroke: #139022;stroke-miterlimit:100;stroke-width: 3.2 } 
+	</style>
+	<use id="Layer 1" href="#img1" x="0" y="0"/>
+	<path id="Layer 4" class="s0" d="m11 65.4l11-0.2 4-4.3 4.6 4 8.9-0.1 2.7 4.6 10.8-48.4 12.2 58.4 6.6-13.6 11.7-0.9 10.7-7.2 10.9 7.7h14m-1.1-0.4h873"/>
+</svg>

@@ -1,0 +1,8 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" width="1000" height="100">
+	<title>Infection Bar</title>
+	<style>
+		.s0 { fill: none;stroke: #373737;stroke-miterlimit:100;stroke-width: 10 } 
+	</style>
+	<path id="Shape 2" class="s0" d="m119 66"/>
+	<path id="Shape 2" class="s0" d="m1000 0v100h-1000v-100z"/>
+</svg>

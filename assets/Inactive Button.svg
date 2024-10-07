@@ -1,0 +1,11 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200" width="300" height="200">
+	<title>Inactive Button</title>
+	<defs>
+		<image  width="300" height="200" id="img1" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASwAAADIAQMAAABoEU4WAAAAAXNSR0IB2cksfwAAAANQTFRF////p8QbyAAAADFJREFUeJztyjEBAAAMAqDZv/QKeBgAbnKTaJqmaZqmaZqmaZqmaZqmaZqmaZqmaVrzFUgAyWPrh2AAAAAASUVORK5CYII="/>
+	</defs>
+	<style>
+		.s0 { fill: #444444;stroke: #323232;stroke-linejoin: round;stroke-width: 10 } 
+	</style>
+	<use id="Background" href="#img1" x="0" y="0"/>
+	<path id="Shape 1" class="s0" d="m300 0v200h-300v-200z"/>
+</svg>

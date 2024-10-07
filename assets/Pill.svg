@@ -1,0 +1,9 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 313 313" width="313" height="313">
+	<title>Pill</title>
+	<style>
+		.s0 { fill: #eaeaea;stroke: #8c8c8c;stroke-miterlimit:100;stroke-width: 10 } 
+		.s1 { fill: #38b44f;stroke: #329544;stroke-miterlimit:100;stroke-width: 10 } 
+	</style>
+	<path id="Shape 1 copy" class="s0" d="m47.2 289.3c0 0 37.3 34.9 79.6 6.4l82.3-106.4-99.7-78.2-81 106.3c-17.2 45.8 18.8 71.9 18.8 71.9z"/>
+	<path id="Shape 1" class="s1" d="m257.8 17.4c0 0 43.8 27.8 26.5 76.9l-84.1 108.7-102.6-78.3 84.3-107.3c40.9-28.8 75.9 0 75.9 0z"/>
+</svg>

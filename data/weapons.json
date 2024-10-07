@@ -34,5 +34,17 @@
         "reserveSize": 999,
         "automatic": true,
         "stance": "pistol"
+    },
+    "3":
+    {
+        "name": "None",
+        "desc": "",
+        "dmg": 0,
+        "rof": 0,
+        "reload": 0,
+        "magSize": 0,
+        "reserveSize": 0,
+        "automatic": false,
+        "stance": "none"
     }
 }

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://w35065sxijv1"]
+
+[ext_resource type="Script" path="res://Cure.cs" id="1_7aff0"]
+[ext_resource type="Texture2D" uid="uid://2rcj7oay3h8j" path="res://assets/Pill.svg" id="1_77wyk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d6e67"]
+size = Vector2(100, 100)
+
+[node name="Cure" type="Area2D"]
+script = ExtResource("1_7aff0")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_d6e67")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("1_77wyk")
+
+[connection signal="body_entered" from="." to="." method="OnPlayerEnteredCureArea"]
+[connection signal="body_exited" from="." to="." method="OnPlayerExitedCureArea"]

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dnlf87f85bvdw"
-path="res://.godot/imported/EnemySprite.svg-a9ded6351f1918512112f70ea9582841.ctex"
+uid="uid://pqqij2kaldfr"
+path="res://.godot/imported/Infection Bar (Under).svg-4dc79b45c86dd1c50f8a0d1d3c5e6d80.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/EnemySprite.svg"
-dest_files=["res://.godot/imported/EnemySprite.svg-a9ded6351f1918512112f70ea9582841.ctex"]
+source_file="res://assets/Infection Bar (Under).svg"
+dest_files=["res://.godot/imported/Infection Bar (Under).svg-4dc79b45c86dd1c50f8a0d1d3c5e6d80.ctex"]
 
 [params]
 
@@ -31,7 +31,7 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false
