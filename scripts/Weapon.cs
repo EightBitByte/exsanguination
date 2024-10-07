@@ -13,6 +13,8 @@ class Weapon {
     public int ReserveSize {get;}
     /// <summary>Is the weapon automatic?</summary>
     public bool Automatic {get;}
+    /// <summary>Is the weapon held like a rifle, or a pistol?</summary>
+    public string Stance {get;}
      
     public Weapon (Godot.Collections.Dictionary<string, string> jsonObj)  {
         Name = jsonObj["name"];
@@ -23,6 +25,7 @@ class Weapon {
         MagSize = int.Parse(jsonObj["magSize"]);
         ReserveSize = int.Parse(jsonObj["reserveSize"]);
         Automatic = bool.Parse(jsonObj["automatic"]);
+        Stance = jsonObj["stance"];
     }
 
     public override string ToString() {

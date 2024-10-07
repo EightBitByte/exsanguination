@@ -8,9 +8,22 @@
         "reload": 2,
         "magSize": 8,
         "reserveSize": 80,
-        "automatic": false
+        "automatic": false,
+        "stance": "pistol"
     },
     "1":
+    {
+        "name": "M4 Carbine",
+        "desc": "Developed in the 1980s by the United States. Accurate, and killer.",
+        "dmg": 5,
+        "rof": 8,
+        "reload": 1.5,
+        "magSize": 30,
+        "reserveSize": 200,
+        "automatic": true,
+        "stance": "rifle"
+    },
+    "2":
     {
         "name": "Debug Gun",
         "desc": "Not for in-game use - to debug and kill fast.",
@@ -19,6 +32,7 @@
         "reload": 0.5,
         "magSize": 999,
         "reserveSize": 999,
-        "automatic": true
+        "automatic": true,
+        "stance": "pistol"
     }
 }

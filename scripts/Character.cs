@@ -28,7 +28,7 @@ public partial class Character : CharacterBody2D
 	private float rotation;
 	private double viewOffset = Math.PI / 2;
 
-	Sprite2D characterSprite;
+	Sprite2D characterSprite, weaponSprite;
 	RichTextLabel pointLabel, gunLabel, ammoLabel, purchaseLabel;
 	TextureProgressBar reloadBar;
 	ShaderMaterial hurtVignette;
@@ -54,6 +54,7 @@ public partial class Character : CharacterBody2D
 	public override void _Ready() {
 		// Load resources
 		characterSprite = GetChild<Sprite2D>(0);
+		weaponSprite = GetNode<Sprite2D>("/root/main_scene/Character/Character Sprite/Weapon Sprite");
 
 		pointLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Point Label");
 		gunLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Gun Label");
@@ -76,11 +77,8 @@ public partial class Character : CharacterBody2D
 		// Set up weapons
 		LoadWeaponsJson();
 		heldWeapons[0] = allWeapons[0];
-		activeWeapon = 0;
-		RateOfFireMs = 1 / heldWeapons[0].RateOfFire;
-		ammoCounts[0, 0] = heldWeapons[0].MagSize;
-		ammoCounts[0, 1] = heldWeapons[0].ReserveSize;
-		gunLabel.Text = heldWeapons[0].Name;
+		ammoCounts[0, MAGAZINE] = heldWeapons[activeWeapon].MagSize;
+		ammoCounts[0, RESERVE] = heldWeapons[activeWeapon].ReserveSize;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -93,7 +91,7 @@ public partial class Character : CharacterBody2D
 
 		characterSprite.Rotation = (float)viewAngle + (float)viewOffset;
 
-		// Shooting
+		// Shooting	=======================
 		bool weaponCooldownDone = firingCooldown > RateOfFireMs;
 		bool weaponHasAmmoInMag = ammoCounts[activeWeapon, MAGAZINE] > 0;
 		bool semiAutoFire = !heldWeapons[activeWeapon].Automatic && Input.IsActionJustPressed("fire");
@@ -123,7 +121,18 @@ public partial class Character : CharacterBody2D
 			ReloadWeapon();
 		}
 
-		//TODO: Keep in mind swapping weapons mid-reload, don't want to speed up reload, be sure to cancel it
+		// Swapping Guns ==========================
+		if (Input.IsActionJustPressed("swap")) {
+			// Cancel reload
+			if (isReloading) {
+				isReloading = false;
+				timeSpentReloading = 0;
+				reloadBar.Visible = false;
+			}
+
+			SetWeapon(activeWeapon == 0 ? 1 : 0);
+		}
+
 
 	}
 
@@ -176,7 +185,7 @@ public partial class Character : CharacterBody2D
 	}
 
 	private void LoadWeaponsJson() {
-		Godot.Collections.Dictionary<String, Godot.Collections.Dictionary<String, String>> jsonDict = (Godot.Collections.Dictionary<String, Godot.Collections.Dictionary<string, string>>)Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
+		Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>> jsonDict = (Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>>)Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
 
 		foreach (System.Collections.Generic.KeyValuePair<String, Godot.Collections.Dictionary<String, String>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
@@ -236,5 +245,13 @@ public partial class Character : CharacterBody2D
 
 		isReloading = false;
 		timeSpentReloading = 0;
+	}
+
+	private void SetWeapon(int weaponIdx) {
+		activeWeapon = weaponIdx;
+		RateOfFireMs = 1 / heldWeapons[activeWeapon].RateOfFire;
+		gunLabel.Text = heldWeapons[activeWeapon].Name;
+		weaponSprite.Texture = new();
+		UpdateAmmo();
 	}
 }

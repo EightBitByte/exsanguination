@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bmx45tnbv0mlo"
-path="res://.godot/imported/CharacterSprite.svg-5e26a2c9cbd17190979ef5d41a28e519.ctex"
+uid="uid://b5kkh6w0olsdu"
+path="res://.godot/imported/playerPistol.svg-1a9eb4b67fafd410850c7473b50509cd.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/CharacterSprite.svg"
-dest_files=["res://.godot/imported/CharacterSprite.svg-5e26a2c9cbd17190979ef5d41a28e519.ctex"]
+source_file="res://assets/playerPistol.svg"
+dest_files=["res://.godot/imported/playerPistol.svg-1a9eb4b67fafd410850c7473b50509cd.ctex"]
 
 [params]
 
@@ -31,7 +31,7 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=0
+detect_3d/compress_to=1
 svg/scale=1.0
 editor/scale_with_editor_scale=false
 editor/convert_colors_with_editor_theme=false

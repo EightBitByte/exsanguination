@@ -10,6 +10,7 @@ size = Vector2(688, 144)
 scale = Vector2(0.075, 0.075)
 collision_layer = 2
 script = ExtResource("1_2mjbf")
+BulletSpeed = 1500.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("1_7ibxb")
