@@ -28,12 +28,12 @@ public partial class Character : CharacterBody2D
 	private float rotation;
 	private double viewOffset = Math.PI / 2;
 
-	Sprite2D characterSprite, weaponSprite;
+	Sprite2D characterSprite, weaponSprite, underarmSprite;
 	RichTextLabel pointLabel, gunLabel, ammoLabel, purchaseLabel;
 	TextureProgressBar reloadBar;
 	ShaderMaterial hurtVignette;
 	ColorRect vignetteBox;
-
+	Texture2D pistolStance, rifleStance;
 	PackedScene BULLET_SCENE, ENEMY_SCENE;
 
 	private double firingCooldown = 0;
@@ -50,11 +50,17 @@ public partial class Character : CharacterBody2D
 
 	private double timeSpentReloading = 0;
 
+	private static Vector2 pistolPos = new(92, -276), riflePos = new(108, -48);
+	private static Vector2 pistolScale = new(0.4f, -0.4f), rifleScale = new(0.75f, -0.75f);
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 		// Load resources
 		characterSprite = GetChild<Sprite2D>(0);
 		weaponSprite = GetNode<Sprite2D>("/root/main_scene/Character/Character Sprite/Weapon Sprite");
+		underarmSprite = GetNode<Sprite2D>("/root/main_scene/Character/Character Sprite/Underarm");
+		pistolStance = GD.Load<Texture2D>("res://assets/Character (Pistol).svg");
+		rifleStance = GD.Load<Texture2D>("res://assets/Character (Rifle).svg");
 
 		pointLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Point Label");
 		gunLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Gun Label");
@@ -76,9 +82,9 @@ public partial class Character : CharacterBody2D
 
 		// Set up weapons
 		LoadWeaponsJson();
-		heldWeapons[0] = allWeapons[0];
-		ammoCounts[0, MAGAZINE] = heldWeapons[activeWeapon].MagSize;
-		ammoCounts[0, RESERVE] = heldWeapons[activeWeapon].ReserveSize;
+		GiveWeapon(0, 0);
+		GiveWeapon(1, 1);
+		SetWeapon(0);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -247,11 +253,30 @@ public partial class Character : CharacterBody2D
 		timeSpentReloading = 0;
 	}
 
-	private void SetWeapon(int weaponIdx) {
+	private void GiveWeapon (int weaponID, int slot) {
+		heldWeapons[slot] = allWeapons[weaponID];
+		ammoCounts[slot, MAGAZINE] = heldWeapons[slot].MagSize;
+		ammoCounts[slot, RESERVE] = heldWeapons[slot].ReserveSize;
+	}
+
+	private void SetWeapon (int weaponIdx) {
 		activeWeapon = weaponIdx;
 		RateOfFireMs = 1 / heldWeapons[activeWeapon].RateOfFire;
 		gunLabel.Text = heldWeapons[activeWeapon].Name;
-		weaponSprite.Texture = new();
+
+		if (heldWeapons[activeWeapon].Stance == "pistol") {
+			characterSprite.Texture = pistolStance;
+			weaponSprite.Scale = pistolScale;
+			weaponSprite.Position = pistolPos;
+			underarmSprite.Visible = false;
+		} else {
+			characterSprite.Texture = rifleStance;
+			weaponSprite.Scale = rifleScale;
+			weaponSprite.Position = riflePos;
+			underarmSprite.Visible = true;
+		}
+
+		weaponSprite.Texture = GD.Load<Texture2D>($"res://assets/{heldWeapons[activeWeapon].Name}.svg");
 		UpdateAmmo();
 	}
 }

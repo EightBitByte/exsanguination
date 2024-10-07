@@ -1,13 +1,14 @@
-[gd_scene load_steps=28 format=3 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=29 format=3 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
 [ext_resource type="Script" path="res://scripts/Enemy_Manager.cs" id="1_kxrwd"]
 [ext_resource type="Script" path="res://scripts/Character.cs" id="1_ntr3v"]
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://bi5ssmtx142j2" path="res://assets/labtiles.svg" id="2_tqpo8"]
-[ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/playerPistol.svg" id="3_4so4v"]
+[ext_resource type="Texture2D" uid="uid://u3u5lof0e4k2" path="res://assets/Character (Rifle).svg" id="3_kew62"]
 [ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
-[ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/Colt M1911.svg" id="4_rev8s"]
+[ext_resource type="Texture2D" uid="uid://botbk8ae3f676" path="res://assets/M4 Carbine.svg" id="4_lflck"]
+[ext_resource type="Texture2D" uid="uid://bjdqov06nbxwe" path="res://assets/Underarm.svg" id="5_lhbfy"]
 [ext_resource type="Texture2D" uid="uid://bq7tmy6bc2q3l" path="res://assets/Bullet Bar (Under).svg" id="6_6rh7v"]
 [ext_resource type="Texture2D" uid="uid://b1i7msbcq3nwc" path="res://assets/Bullet Bar (Over).svg" id="7_2rldi"]
 [ext_resource type="PackedScene" uid="uid://gedcfjwo3233" path="res://scenes/barrier.tscn" id="9_bxsr3"]
@@ -190,6 +191,7 @@ size = Vector2(9.16441, 10.6356)
 [node name="main_scene" type="Node2D"]
 
 [node name="GUI" type="CanvasLayer" parent="."]
+visible = false
 
 [node name="Vignette" type="ColorRect" parent="GUI"]
 material = SubResource("ShaderMaterial_d58rs")
@@ -253,16 +255,21 @@ script = ExtResource("1_ntr3v")
 [node name="Character Sprite" type="Sprite2D" parent="Character"]
 z_index = 2
 scale = Vector2(0.25, 0.25)
-texture = ExtResource("3_4so4v")
+texture = ExtResource("3_kew62")
 
 [node name="Weapon Sprite" type="Sprite2D" parent="Character/Character Sprite"]
 z_index = -1
-position = Vector2(92, -276)
-rotation = 1.57541
-scale = Vector2(0.4, -0.4)
-texture = ExtResource("4_rev8s")
+position = Vector2(108, -48)
+rotation = 1.5708
+scale = Vector2(0.75, -0.75)
+texture = ExtResource("4_lflck")
+
+[node name="Underarm" type="Sprite2D" parent="Character/Character Sprite"]
+z_index = -2
+texture = ExtResource("5_lhbfy")
 
 [node name="Physics Collider" type="CollisionShape2D" parent="Character"]
+z_index = -1
 shape = SubResource("RectangleShape2D_lo37x")
 
 [node name="Reload Bar" type="TextureProgressBar" parent="Character"]
