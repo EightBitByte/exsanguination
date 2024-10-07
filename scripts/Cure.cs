@@ -18,6 +18,7 @@ public partial class Cure : Area2D
 		if (Input.IsActionJustPressed("buy") && playerInCureArea) {
 			player.ResetInfection();
 			player.HideLabel();
+			player.PlaySound("pill");
 			QueueFree();
 		}
 	}
@@ -33,7 +34,10 @@ public partial class Cure : Area2D
 
 	private void OnPlayerExitedCureArea(Node2D body)
 	{
-		playerInCureArea = false;
+		if (body.Name == "Character") {
+			playerInCureArea = false;
+			player.HideLabel();
+		}
 	}
 }
 

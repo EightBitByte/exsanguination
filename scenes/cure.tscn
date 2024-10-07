@@ -1,13 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://w35065sxijv1"]
 
-[ext_resource type="Script" path="res://Cure.cs" id="1_7aff0"]
+[ext_resource type="Script" path="res://scripts/Cure.cs" id="1_2tspg"]
 [ext_resource type="Texture2D" uid="uid://2rcj7oay3h8j" path="res://assets/Pill.svg" id="1_77wyk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d6e67"]
 size = Vector2(100, 100)
 
 [node name="Cure" type="Area2D"]
-script = ExtResource("1_7aff0")
+script = ExtResource("1_2tspg")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_d6e67")

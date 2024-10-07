@@ -32,12 +32,13 @@ public partial class Character : CharacterBody2D
 	RichTextLabel pointLabel, gunLabel, ammoLabel, purchaseLabel;
 	TextureProgressBar reloadBar, infectionBar;
 	ShaderMaterial hurtVignette;
-	ColorRect vignetteBox;
-	Texture2D pistolStance, rifleStance, unarmedStance;
+	ColorRect vignetteBox, gameOverScreen;
+	Texture2D pistolStance, rifleStance, unarmedStance, enemyTexture;
 	AudioStreamPlayer2D[] audioManagers = new AudioStreamPlayer2D[10];
-	AudioStreamWav pistolShot, rifleShot, dryFire;
-	AudioStreamMP3 pistolReload, rifleReload;
+	AudioStreamWav pistolShot, rifleShot, dryFire, pillSound;
+	AudioStreamMP3 pistolReload, rifleReload, buySound;
 	PackedScene BULLET_SCENE, ENEMY_SCENE;
+	TextureButton gameOverButton;
 
 	private double firingCooldown = 0;
 	private double healCooldown = 3000;
@@ -50,7 +51,7 @@ public partial class Character : CharacterBody2D
 	private int[,] ammoCounts = new int[2, 2];
 	private List<Weapon> allWeapons = new List<Weapon>(); 
 	private int activeWeapon = 0;
-	private bool isReloading;
+	public bool isReloading = false, movementEnabled = true, shootingEnabled = true;
 	private double timeSpentReloading = 0;
 
 	private int currentAudioPlayer = 0;
@@ -67,6 +68,7 @@ public partial class Character : CharacterBody2D
 		pistolStance = GD.Load<Texture2D>("res://assets/Character (Pistol).svg");
 		rifleStance = GD.Load<Texture2D>("res://assets/Character (Rifle).svg");
 		unarmedStance = GD.Load<Texture2D>("res://assets/Character (Unarmed).svg");
+		enemyTexture = GD.Load<Texture2D>("res://assets/Enemy Sprite.svg");
 
 		pointLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Point Label");
 		gunLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Gun Label");
@@ -77,12 +79,16 @@ public partial class Character : CharacterBody2D
 		infectionBar = GetNode<TextureProgressBar>("/root/main_scene/GUI/Infection Bar");
 		vignetteBox = GetNode<ColorRect>("/root/main_scene/GUI/Vignette");
 		hurtVignette = (ShaderMaterial)vignetteBox.Material;
+		gameOverScreen = GetNode<ColorRect>("/root/main_scene/GUI/Game Over");
+		gameOverButton = GetNode<TextureButton>("/root/main_scene/GUI/Game Over/TextureButton");
 
 		pistolShot = GD.Load<AudioStreamWav>("res://assets/pistolshot.wav");
 		rifleShot = GD.Load<AudioStreamWav>("res://assets/rifleshot.wav");
 		pistolReload = GD.Load<AudioStreamMP3>("res://assets/pistolreload.mp3");
 		rifleReload = GD.Load<AudioStreamMP3>("res://assets/riflereload.mp3");
 		dryFire = GD.Load<AudioStreamWav>("res://assets/dryfire.wav");
+		buySound = GD.Load<AudioStreamMP3>("res://assets/buy.mp3");
+		pillSound = GD.Load<AudioStreamWav>("res://assets/pill.wav");
 
 		BULLET_SCENE = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
@@ -96,7 +102,7 @@ public partial class Character : CharacterBody2D
 		// Set up weapons
 		LoadWeaponsJson();
 		GiveWeapon(0, 0);
-		GiveWeapon(1, 1);
+		GiveWeapon(3, 1);
 		SetWeapon(0);
 
 		// Set up audio
@@ -125,14 +131,14 @@ public partial class Character : CharacterBody2D
 		bool reserveEmpty = ammoCounts[activeWeapon, RESERVE] == 0;
 
 
-		if ((semiAutoFire || autoFire) && weaponCooldownDone && weaponHasAmmoInMag && !isReloading) {
+		if ((semiAutoFire || autoFire) && weaponCooldownDone && weaponHasAmmoInMag && !isReloading && shootingEnabled) {
 			ShootBullet();
-		} else if ((semiAutoFire && !weaponHasAmmoInMag) || (heldWeapons[activeWeapon].Automatic && Input.IsActionJustPressed("fire"))) {
+		} else if ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || (heldWeapons[activeWeapon].Automatic && Input.IsActionJustPressed("fire") && shootingEnabled)) {
 			PlaySound("dry_fire");
 		}
 
 		// Initiate reload
-		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty && !isReloading) {
+		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty && !isReloading && shootingEnabled) {
 			reloadBar.Value = 0;
 			reloadBar.Visible = true;
 			isReloading = true;
@@ -176,7 +182,9 @@ public partial class Character : CharacterBody2D
 		}
 		
 		Velocity = moveDirection * Speed;
-		MoveAndSlide();
+
+		if (movementEnabled)
+			MoveAndSlide();
 	}
 
 	public void AddPoints (int points) {
@@ -186,8 +194,14 @@ public partial class Character : CharacterBody2D
 	}
 
 	public void Hurt (int attackDmg) {
+		if (attackDmg > 0)
+			infectionPercent += 0.01f;
+
 		health = health < attackDmg ? 0 : health - attackDmg;
 		AdjustVignette();
+
+		if (health <= 0)
+			GameOver();
 		
 		timeSinceLastDamage = 0;
 	}
@@ -289,8 +303,8 @@ public partial class Character : CharacterBody2D
 		ammoCounts[slot, MAGAZINE] = heldWeapons[slot].MagSize;
 		ammoCounts[slot, RESERVE] = heldWeapons[slot].ReserveSize;
 
-		if (slot == activeWeapon)
-			SetWeapon(activeWeapon);
+		SetWeapon(slot);
+
 	}
 
 	private void SetWeapon (int weaponIdx) {
@@ -338,7 +352,12 @@ public partial class Character : CharacterBody2D
 	}
 
 	private void GameOver() {
-		;
+		gameOverScreen.Visible = true;
+		shootingEnabled = false;
+		movementEnabled = false;
+		
+		characterSprite.Texture = enemyTexture;
+		weaponSprite.Visible = false;
 	}
 
 	public void ShowLabel(string text) {
@@ -350,7 +369,7 @@ public partial class Character : CharacterBody2D
 		purchaseLabel.Visible = false;
 	}
 
-	private void PlaySound(string type) {
+	public void PlaySound(string type) {
 		currentAudioPlayer = (currentAudioPlayer + 1) % 10;
 		AudioStreamPlayer2D currentManager = audioManagers[currentAudioPlayer];
 
@@ -364,6 +383,10 @@ public partial class Character : CharacterBody2D
 			currentManager.Stream = rifleReload;
 		else if (type == "dry_fire")
 			currentManager.Stream = dryFire;
+		else if (type == "buy")
+			currentManager.Stream = buySound;
+		else if (type == "pill")
+			currentManager.Stream = pillSound;
 
 		currentManager.Play();
 	}

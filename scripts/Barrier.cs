@@ -24,10 +24,11 @@ public partial class Barrier : StaticBody2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("buy") && player.HasEnoughMoney(Cost)) {
+		if (Input.IsActionJustPressed("buy") && player.HasEnoughMoney(Cost) && playerInBuyArea) {
 			player.AddPoints(-Cost);
 			player.HidePurchaseLabel();
 			manager.Call("OpenedArea", BarrierName);
+			player.PlaySound("buy");
 
 			QueueFree();
 		}

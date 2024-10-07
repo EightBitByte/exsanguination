@@ -41,6 +41,7 @@ public partial class Shop : Area2D
 			if (Input.IsActionJustPressed("exit")) {
 				ShopGUI.Visible = false;
 				player.ShowLabel("[F] Open Shop");
+				player.shootingEnabled = true;
 			}
 		}
 	}
@@ -55,6 +56,7 @@ public partial class Shop : Area2D
 	private void OnShopEnter(Node2D body) {
 		if (body.Name == "Character") {
 			player.ShowLabel("[F] Open Shop");
+			player.shootingEnabled = false;
 			playerInShopArea = true;
 		}
 	}
@@ -63,6 +65,7 @@ public partial class Shop : Area2D
 		if (body.Name == "Character") {
 			playerInShopArea = false;
 			player.HideLabel();
+			player.shootingEnabled = true;
 			ShopGUI.Visible = false;
 		}
 	}
@@ -81,8 +84,9 @@ public partial class Shop : Area2D
 				player.ResetInfection();
 				player.AddPoints(-2000);
 				break;
-
 		}
+
+		player.PlaySound("buy");
 	}
 }
 
