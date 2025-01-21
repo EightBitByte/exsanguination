@@ -1,6 +1,10 @@
+// Camera.cs
+//
+// Defines a camera node that follows the player and moves with the mouse, 
+// allowing the player to "peek" further.
+
 using Godot;
 using System;
-using System.Reflection.Metadata.Ecma335;
 
 public partial class Camera : Camera2D
 {
@@ -9,14 +13,12 @@ public partial class Camera : Camera2D
 
 	Node2D followTarget;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		MakeCurrent();
 		followTarget = GetNode<Node2D>("/root/main_scene/Character");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		// If viewport was resized since last frame, update center

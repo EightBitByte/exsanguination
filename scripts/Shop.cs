@@ -1,16 +1,20 @@
+// Shop.cs
+//
+// Implements the shop area, where the player can buy guns, ammo, and cures.
+
 using Godot;
 using System;
 using System.Collections.Generic;
 
 public partial class Shop : Area2D
 {
+	// TODO: Make the shop dynamically update (add JSON?)
 	TextureButton[] Buys = new TextureButton[3];
 	TextureRect ShopGUI;
 	Character player;
 
 	private bool playerInShopArea = false;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		player = GetNode<Character>("/root/main_scene/Character");
@@ -25,7 +29,6 @@ public partial class Shop : Area2D
 		Buys[2].Pressed += () => {PlayerBuys(2);};
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("buy") && playerInShopArea) {
@@ -34,9 +37,9 @@ public partial class Shop : Area2D
 		}
 
 		if (ShopGUI.Visible) {
-			SetButtonMeetsThreshold(500, Buys[0]);
-			SetButtonMeetsThreshold(1000, Buys[1]);
-			SetButtonMeetsThreshold(2000, Buys[2]);
+			SetActiveStatusOfButton(500, Buys[0]);
+			SetActiveStatusOfButton(1000, Buys[1]);
+			SetActiveStatusOfButton(2000, Buys[2]);
 
 			if (Input.IsActionJustPressed("exit")) {
 				ShopGUI.Visible = false;
@@ -46,8 +49,14 @@ public partial class Shop : Area2D
 		}
 	}
 
-	private void SetButtonMeetsThreshold(int threshold, TextureButton button) {
-		if (player.HasEnoughMoney(threshold))
+	/// <summary>
+	/// Enables/disables buttons if the player has enough money to purchase the 
+	/// item.
+	/// </summary>
+	/// <param name="threshold"></param>
+	/// <param name="button"></param>
+	private void SetActiveStatusOfButton(int cost, TextureButton button) {
+		if (player.HasEnoughMoney(cost))
 			button.Disabled = false;
 		else
 			button.Disabled = true;

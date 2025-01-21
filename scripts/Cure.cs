@@ -1,3 +1,7 @@
+// Cure.cs
+//
+// Implements the cure object, which delays the infection, for now.
+
 using Godot;
 using System;
 
@@ -6,17 +10,17 @@ public partial class Cure : Area2D
 	Character player;
 	private bool playerInCureArea = false;
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		// TODO: Should be call to manager.
 		player = GetNode<Character>("/root/main_scene/Character");
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("buy") && playerInCureArea) {
 			player.ResetInfection();
+			// TODO: These two should be GUI and Audio manager calls.
 			player.HideLabel();
 			player.PlaySound("pill");
 			QueueFree();

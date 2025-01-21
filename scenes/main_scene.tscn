@@ -1,7 +1,6 @@
 [gd_scene load_steps=40 format=3 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
-[ext_resource type="Script" path="res://scripts/Enemy_Manager.cs" id="1_kxrwd"]
 [ext_resource type="Script" path="res://scripts/Character.cs" id="1_ntr3v"]
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://dyh62qlpgtmbo" path="res://assets/Shop Bg.svg" id="2_fwgpn"]
@@ -22,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://d33f8bth4acey" path="res://assets/Infection Bar (Progress).svg" id="10_e26s3"]
 [ext_resource type="Texture2D" uid="uid://dhwl66hpr0kxe" path="res://assets/Janitor.svg" id="11_1h6ax"]
 [ext_resource type="AudioStream" uid="uid://dmbu8see81nuj" path="res://assets/pistolshot.wav" id="16_axq22"]
+[ext_resource type="Script" path="res://scripts/EnemyManager.cs" id="17_auaga"]
 [ext_resource type="Script" path="res://scripts/Shop.cs" id="18_3g30q"]
 [ext_resource type="PackedScene" uid="uid://w35065sxijv1" path="res://scenes/cure.tscn" id="23_j04j5"]
 
@@ -565,7 +565,7 @@ autostart = true
 stream = ExtResource("16_axq22")
 
 [node name="Enemy Manager" type="Node2D" parent="."]
-script = ExtResource("1_kxrwd")
+script = ExtResource("17_auaga")
 
 [node name="Spawn Timer" type="Timer" parent="Enemy Manager"]
 wait_time = 5.0

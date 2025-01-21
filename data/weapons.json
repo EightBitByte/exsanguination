@@ -2,11 +2,11 @@
     "0": 
     {
         "name": "Colt M1911",
-        "desc": "Single-action, recoil-operated, semi-auto pistol. An American classic.",
-        "dmg": 10,
-        "rof": 20,
-        "reload": 2,
-        "magSize": 8,
+        "description": "Single-action, recoil-operated, semi-auto pistol. An American classic.",
+        "bulletDamage": 10,
+        "rateOfFire": 20,
+        "reloadTime": 2,
+        "magazineSize": 8,
         "reserveSize": 80,
         "automatic": false,
         "stance": "pistol"
@@ -14,11 +14,11 @@
     "1":
     {
         "name": "M4 Carbine",
-        "desc": "Developed in the 1980s by the United States. Accurate, and killer.",
-        "dmg": 5,
-        "rof": 8,
-        "reload": 1.5,
-        "magSize": 30,
+        "description": "Developed in the 1980s by the United States. Accurate, and killer.",
+        "bulletDamage": 5,
+        "rateOfFire": 8,
+        "reloadTime": 1.5,
+        "magazineSize": 30,
         "reserveSize": 200,
         "automatic": true,
         "stance": "rifle"
@@ -26,11 +26,11 @@
     "2":
     {
         "name": "Debug Gun",
-        "desc": "Not for in-game use - to debug and kill fast.",
-        "dmg": 2000,
-        "rof": 10,
-        "reload": 0.5,
-        "magSize": 999,
+        "description": "Not for in-game use - to debug and kill fast.",
+        "bulletDamage": 2000,
+        "rateOfFire": 10,
+        "reloadTime": 0.5,
+        "magazineSize": 999,
         "reserveSize": 999,
         "automatic": true,
         "stance": "pistol"
@@ -38,11 +38,11 @@
     "3":
     {
         "name": "None",
-        "desc": "",
-        "dmg": 0,
-        "rof": 0,
-        "reload": 0,
-        "magSize": 0,
+        "description": "",
+        "bulletDamage": 0,
+        "rateOfFire": 0,
+        "reloadTime": 0,
+        "magazineSize": 0,
         "reserveSize": 0,
         "automatic": false,
         "stance": "none"

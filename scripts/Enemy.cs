@@ -1,6 +1,9 @@
+// Enemy.cs
+//
+// Implements the enemy character node. Enemies follow and attack the player.
+
 using Godot;
 using System;
-using System.Runtime.ExceptionServices;
 
 
 public partial class Enemy : CharacterBody2D
@@ -28,25 +31,25 @@ public partial class Enemy : CharacterBody2D
 	[Export]
 	float DetectAttackDistance = 150;
 	[Export]
-	float attackDmg = 34;
+	float AttackDamage = 34;
 
-	CharacterBody2D Player;
-	NavigationAgent2D Pathfinding;
-	Sprite2D Sprite;
-	Area2D AttackBox;
-	Enemy_Manager EnemyManager;
-	double timeSinceLastPath = 0;
-	double timeSinceLastAttack = 0;
-	double closeTime = 0;
+	// TODO: These four should be manager calls (except for pathfinding)
+	private CharacterBody2D Player;
+	private NavigationAgent2D Pathfinding;
+	private Sprite2D Sprite;
+	private Area2D AttackBox;
+	private EnemyManager EManager;
+	private double timeSinceLastPath = 0;
+	private double timeSinceLastAttack = 0;
+	private double closeTime = 0;
 	private float health;
 	private bool playerInAttackBox = false;
 
 
-	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		Player = GetNode<CharacterBody2D>("/root/main_scene/Character");
-		EnemyManager = GetNode<Enemy_Manager>("/root/main_scene/Enemy Manager");
+		EManager = GetNode<EnemyManager>("/root/main_scene/Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
@@ -54,7 +57,7 @@ public partial class Enemy : CharacterBody2D
 		health = MaxHP;
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
+
 	public override void _PhysicsProcess(double delta)
 	{
 		timeSinceLastPath += delta;
@@ -73,7 +76,7 @@ public partial class Enemy : CharacterBody2D
 			if (closeTime > TimeInProximityBeforeAttack / MILLIS 
 			&& timeSinceLastAttack > AttackCooldown / MILLIS && playerInAttackBox) {
 
-				Player.Call("Hurt", attackDmg);
+				Player.Call("Hurt", AttackDamage);
 				timeSinceLastAttack = 0;
 			}
 
@@ -91,28 +94,40 @@ public partial class Enemy : CharacterBody2D
 	}
 
 	/// <summary>
-	/// Reduces the enemy's health by <c>damage</c>
+	/// Reduces the enemy's health by <c>damage</c>.
 	/// </summary>
 	/// <param name="damage">The amount of damage to subtract from the enemy HP.</param>
 	public void Hurt(float damage) {
 		health -= damage;
+		// TODO: Refactor into a signal upon hurt to award player points instead of 
+		// holding reference (reducing coupling).
 		Player.Call("AddPoints", HitBounty);
-		EnemyManager.Call("SpawnBloodPool", GlobalPosition);
+		// TODO: Refactor into own method.. enemy should spawn its own blood
+		EManager.Call("SpawnBloodPool", GlobalPosition);
 
 		if (health <= 0) {
 			Player.Call("AddPoints", KillBounty);
-			++EnemyManager.KilledInfected;
-			--EnemyManager.infectedActive;
+			++EManager.KilledInfected;
+			--EManager.infectedAlive;
 			QueueFree();
 		}
 	}
 
+	/// <summary>
+	/// Called upon a <c>Node2D</c> entering its attack range.
+	/// </summary>
+	/// <param name="body">The Node2D entering the attack range.</param>
 	private void OnAttackBoxEntered(Node2D body)
 	{
+		// TODO: Needs a more robust way of checking. Perhaps comparing the reference to the Character itself?
 		if (body.Name == "Character")
 			playerInAttackBox = true;
 	}
 
+	/// <summary>
+	/// Called upon a <c>Node2D</c> exiting its attack range.
+	/// </summary>
+	/// <param name="body">The Node2D exiting the attack range.</param>
 	private void OnAttackBoxExited(Node2D body)
 	{
 		if (body.Name == "Character")

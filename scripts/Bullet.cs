@@ -1,3 +1,8 @@
+// Bullet.cs
+//
+// Defines a bullet projectile object that, upon collision with an enemy, 
+// deals damage.
+
 using Godot;
 using System;
 
@@ -6,12 +11,8 @@ public partial class Bullet : CharacterBody2D
 	[Export]
 	private float BulletSpeed = 800;
 
+	[Export]
 	public float BulletDamage = 10;
-
-	// Called when the node enters the scene tree for the first time.
-	public override void _Ready()
-	{
-	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -25,6 +26,7 @@ public partial class Bullet : CharacterBody2D
 		if (collision != null) {
 			var collider = collision.GetCollider();
 
+			// TODO: Again, not very resilient to change. Look into a better way to ID an enemy.
 			if (collider.GetClass() == "CharacterBody2D") {
 				collider.Call("Hurt", BulletDamage);
 			}
