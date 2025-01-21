@@ -49,11 +49,11 @@ class Weapon {
     /// <param name="JSONObj">The JSON object to translate.</param>
     public Weapon (Godot.Collections.Dictionary<string, string> JSONObj)  {
         Name = JSONObj["name"];
-        Description = JSONObj["desc"];
-        BulletDamage = float.Parse(JSONObj["dmg"]);
-        RateOfFire = float.Parse(JSONObj["rof"]);
-        ReloadTime = float.Parse(JSONObj["reload"]);
-        MagazineSize = int.Parse(JSONObj["magSize"]);
+        Description = JSONObj["description"];
+        BulletDamage = float.Parse(JSONObj["bulletDamage"]);
+        RateOfFire = float.Parse(JSONObj["rateOfFire"]);
+        ReloadTime = float.Parse(JSONObj["reloadTime"]);
+        MagazineSize = int.Parse(JSONObj["magazineSize"]);
         ReserveSize = int.Parse(JSONObj["reserveSize"]);
         Automatic = bool.Parse(JSONObj["automatic"]);
         Stance = Enum.TryParse(JSONObj["stance"], true, out WeaponStance stance) 
