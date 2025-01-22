@@ -26,7 +26,7 @@ public partial class Barrier : StaticBody2D
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("buy") && player.HasEnoughMoney(Cost) && playerInBuyArea) {
+		if (Input.IsActionJustPressed("buy") && player.HasEnoughPoints(Cost) && playerInBuyArea) {
 			player.AddPoints(-Cost);
 			player.HidePurchaseLabel();
 			manager.Call("OpenedArea", BarrierName);

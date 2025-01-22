@@ -33,7 +33,7 @@ class Weapon {
     /// <summary>The size of the magazine (the number of rounds it can hold).</summary>
     public int MagazineSize {get;}
 
-    /// <summary>The number of rounds available in reserve.</summary>
+    /// <summary>The number of rounds available in reserve at purchase.</summary>
     public int ReserveSize {get;}
 
     /// <summary>Indicates whether the weapon is automatic.</summary>
