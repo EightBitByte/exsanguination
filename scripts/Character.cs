@@ -72,6 +72,7 @@ public partial class Character : CharacterBody2D
 
 	// TODO: Move this to resource manager.
 	private List<Weapon> allWeapons = new List<Weapon>(); 
+	private List<Texture2D> weaponTextures = new List<Texture2D>();
 
 	private int activeWeaponSlot = 0;
 	public bool isReloading = false, 
@@ -120,22 +121,10 @@ public partial class Character : CharacterBody2D
 
 		characterSpriteNode.Rotation = (float)viewAngle + (float)viewOffset;
 
-		// Shooting	=======================
-		// TODO: Refactor into separate method
-		bool weaponCooldownDone = firingCooldown > RateOfFireMs;
-		bool weaponHasAmmoInMag = ammunition[activeWeaponSlot].AmmoInMagazine > 0;
-		bool semiAutoFire = !heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire");
-		bool autoFire = heldWeapons[activeWeaponSlot].Automatic && Input.IsActionPressed("fire");
+		CheckShootingInput();
+
 		bool magazineFull = ammunition[activeWeaponSlot].AmmoInMagazine == heldWeapons[activeWeaponSlot].MagazineSize;
 		bool reserveEmpty = ammunition[activeWeaponSlot].AmmoInReserve == 0;
-
-
-		if ((semiAutoFire || autoFire) && weaponCooldownDone && weaponHasAmmoInMag && !isReloading && shootingEnabled) {
-			ShootBullet();
-		} else if ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || (heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire") && shootingEnabled)) {
-			AManager.PlaySound(Sound.DryFire);
-		}
-
 		// Initiate reload
 		// TODO: Refactor into separate method
 		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty && !isReloading && shootingEnabled) {
@@ -191,7 +180,20 @@ public partial class Character : CharacterBody2D
 	}
 
 	/// <summary>Attempt to fire a bullet, only do so if conditions are met.</summary>
-	public void AttemptToShoot() {
+	public void CheckShootingInput() {
+		bool semiAutoFire = !heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire");
+		bool autoFire = heldWeapons[activeWeaponSlot].Automatic && Input.IsActionPressed("fire");
+		bool weaponCooldownDone = firingCooldown > RateOfFireMs;
+		bool weaponHasAmmoInMag = ammunition[activeWeaponSlot].AmmoInMagazine > 0;
+
+		if ((semiAutoFire || autoFire) && weaponCooldownDone && weaponHasAmmoInMag 
+				&& !isReloading && shootingEnabled) {
+			ShootBullet();
+		} else if ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || 
+				(heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire") 
+				&& shootingEnabled)) {
+			AManager.PlaySound(Sound.DryFire);
+		}
 
 	}
 
@@ -231,8 +233,10 @@ public partial class Character : CharacterBody2D
 		foreach (System.Collections.Generic.KeyValuePair<String, Godot.Collections.Dictionary<String, String>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
 
-			allWeapons.Add(new Weapon(weaponDict));
-			GD.Print(new Weapon(weaponDict));
+			// TODO: Finish preloading texture code
+			Weapon addedWeapon = new Weapon(weaponDict);
+			allWeapons.Add(addedWeapon);
+			weaponTextures.Add(GD.Load<Texture2D>($"res://assets/{addedWeapon.Name}.svg"));
 		}
 	}
 
@@ -291,6 +295,7 @@ public partial class Character : CharacterBody2D
 		isReloading = false;
 		reloadTimeElapsed = 0;
 	}
+
 
 	/// <summary>
 	/// Gives the player weapon with ID <c>weaponID</c> in slot <c>slot</c>.
@@ -367,7 +372,7 @@ public partial class Character : CharacterBody2D
 	}
 
 
-	// TODO: Move to GUI Manager and create custom signal for this.
+	// TODO: Create custom signal for this.
 	/// <summary>
 	/// Triggers the game over for the player.
 	/// </summary>

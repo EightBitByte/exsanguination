@@ -77,7 +77,7 @@ public partial class GUIManager : Node
 
 
 	/// <summary>
-	/// Show the purchase label for the given item at <c>cost</c> cost.
+	/// Show the purchase label for the given barrier at <c>cost</c> cost.
 	/// </summary>
 	/// <param name="cost">The amount to display on the label.</param>
 	public void ShowPurchaseLabel (int cost) {

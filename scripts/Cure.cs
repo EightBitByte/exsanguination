@@ -20,9 +20,8 @@ public partial class Cure : Area2D
 		if (Input.IsActionJustPressed("buy") && playerInCureArea) {
 			// TODO: Make this a signal.
 			player.ResetInfection();
-			// TODO: These two should be GUI and Audio manager calls.
 			GManager.HideLabel();
-			AManager.PlaySound("pill");
+			AManager.PlaySound(Sound.Pill);
 			QueueFree();
 		}
 	}

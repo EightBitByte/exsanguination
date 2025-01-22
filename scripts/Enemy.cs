@@ -33,7 +33,6 @@ public partial class Enemy : CharacterBody2D
 	[Export]
 	float AttackDamage = 34;
 
-	// TODO: These four should be manager calls (except for pathfinding)
 	private CharacterBody2D Player;
 	private NavigationAgent2D Pathfinding;
 	private Sprite2D Sprite;
@@ -76,6 +75,7 @@ public partial class Enemy : CharacterBody2D
 			if (closeTime > TimeInProximityBeforeAttack / MILLIS 
 			&& timeSinceLastAttack > AttackCooldown / MILLIS && playerInAttackBox) {
 
+				// TODO: Make it a signal.
 				Player.Call("Hurt", AttackDamage);
 				timeSinceLastAttack = 0;
 			}
@@ -106,6 +106,7 @@ public partial class Enemy : CharacterBody2D
 		EManager.Call("SpawnBloodPool", GlobalPosition);
 
 		if (health <= 0) {
+			// TODO: Make it a signal.
 			Player.Call("AddPoints", KillBounty);
 			++EManager.KilledInfected;
 			--EManager.infectedAlive;

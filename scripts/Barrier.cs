@@ -13,14 +13,19 @@ public partial class Barrier : StaticBody2D
 	[Export]
 	public string BarrierName = "default";
 
+	//TODO: Rename character to player to keep consistency
 	private Character player;
-	private EnemyManager manager;
+	private EnemyManager EManager;
+	private GUIManager GManager;
+	private AudioManager AManager;
 
 	bool playerInBuyArea = false;
 
 	public override void _Ready()
 	{
-		manager = GetNode<EnemyManager>("/root/main_scene/Enemy Manager");
+		EManager = GetNode<EnemyManager>("/root/main_scene/Enemy Manager");
+		GManager = GetNode<GUIManager>("/root/main_scene/GUI Manager");
+		AManager = GetNode<AudioManager>("/root/main_scene/Audio Manager");
 		player = GetNode<Character>("/root/main_scene/Character");
 	}
 
@@ -28,9 +33,10 @@ public partial class Barrier : StaticBody2D
 	{
 		if (Input.IsActionJustPressed("buy") && player.HasEnoughPoints(Cost) && playerInBuyArea) {
 			player.AddPoints(-Cost);
-			player.HidePurchaseLabel();
-			manager.Call("OpenedArea", BarrierName);
-			player.PlaySound("buy");
+			GManager.HidePurchaseLabel();
+			//TODO: Make this a signal
+			EManager.Call("OpenedArea", BarrierName);
+			AManager.PlaySound(Sound.Buy);
 
 			QueueFree();
 		}
@@ -46,7 +52,7 @@ public partial class Barrier : StaticBody2D
 		// TODO: This seems a little odd, is there anyway we can not have to check 
 		// this in this manner? It seems not very flexible to change.
 		if (body.Name == "Character") {
-			player.ShowPurchaseLabel(Cost);
+			GManager.ShowPurchaseLabel(Cost);
 			playerInBuyArea = true;
 		}
 	}
@@ -59,7 +65,7 @@ public partial class Barrier : StaticBody2D
 	private void OnBuyAreaExited(Node2D body)
 	{
 		if (body.Name == "Character") {
-			player.HidePurchaseLabel();
+			GManager.HidePurchaseLabel();
 			playerInBuyArea = false;
 		}
 	}

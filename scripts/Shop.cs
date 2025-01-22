@@ -9,9 +9,12 @@ using System.Collections.Generic;
 public partial class Shop : Area2D
 {
 	// TODO: Make the shop dynamically update (add JSON?)
-	TextureButton[] Buys = new TextureButton[3];
-	TextureRect ShopGUI;
-	Character player;
+	private TextureButton[] Buys = new TextureButton[3];
+	private TextureRect ShopGUI;
+	private Character player;
+
+	private GUIManager GManager;
+	private AudioManager AManager;
 
 	private bool playerInShopArea = false;
 
@@ -33,7 +36,7 @@ public partial class Shop : Area2D
 	{
 		if (Input.IsActionJustPressed("buy") && playerInShopArea) {
 			ShopGUI.Visible = true;
-			player.HideLabel();
+			GManager.HideLabel();
 		}
 
 		if (ShopGUI.Visible) {
@@ -43,7 +46,7 @@ public partial class Shop : Area2D
 
 			if (Input.IsActionJustPressed("exit")) {
 				ShopGUI.Visible = false;
-				player.ShowLabel("[F] Open Shop");
+				GManager.ShowLabel("[F] Open Shop");
 				player.shootingEnabled = true;
 			}
 		}
@@ -53,18 +56,15 @@ public partial class Shop : Area2D
 	/// Enables/disables buttons if the player has enough money to purchase the 
 	/// item.
 	/// </summary>
-	/// <param name="threshold"></param>
-	/// <param name="button"></param>
+	/// <param name="cost">The number of points the player must have to purchase this item.</param>
+	/// <param name="button">A reference to the button to disable/enable.</param>
 	private void SetActiveStatusOfButton(int cost, TextureButton button) {
-		if (player.HasEnoughMoney(cost))
-			button.Disabled = false;
-		else
-			button.Disabled = true;
+		button.Disabled = !player.HasEnoughPoints(cost);
 	}
 
 	private void OnShopEnter(Node2D body) {
 		if (body.Name == "Character") {
-			player.ShowLabel("[F] Open Shop");
+			GManager.ShowLabel("[F] Open Shop");
 			player.shootingEnabled = false;
 			playerInShopArea = true;
 		}
@@ -73,7 +73,7 @@ public partial class Shop : Area2D
 	private void OnShopExit(Node2D body) {
 		if (body.Name == "Character") {
 			playerInShopArea = false;
-			player.HideLabel();
+			GManager.HideLabel();
 			player.shootingEnabled = true;
 			ShopGUI.Visible = false;
 		}
@@ -95,7 +95,7 @@ public partial class Shop : Area2D
 				break;
 		}
 
-		player.PlaySound("buy");
+		AManager.PlaySound(Sound.Buy);
 	}
 }
 
