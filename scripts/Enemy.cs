@@ -66,7 +66,7 @@ public partial class Enemy : CharacterBody2D
 
 	public override void _Ready()
 	{
-		Player = GetNode<CharacterBody2D>(rootPath + "Character");
+		Player = GetNode<CharacterBody2D>(rootPath + "Player");
 		EManager = GetNode<EnemyManager>(rootPath + "Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
@@ -148,13 +148,13 @@ public partial class Enemy : CharacterBody2D
 	private void OnAttackBoxEntered(Node2D body)
 	{
 		// TODO: Needs a more robust way of checking. Perhaps comparing the reference to the Character itself?
-		if (body.Name == "Character")
+		if (body.Name == "Player")
 			playerInAttackBox = true;
 	}
 
 	private void OnAttackBoxExited(Node2D body)
 	{
-		if (body.Name == "Character")
+		if (body.Name == "Player")
 			playerInAttackBox = false;
 	}
 }

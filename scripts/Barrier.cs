@@ -13,8 +13,7 @@ public partial class Barrier : StaticBody2D
 	[Export]
 	public string BarrierName = "default";
 
-	//TODO: Rename character to player to keep consistency
-	private Character player;
+	private Player player;
 	private EnemyManager EManager;
 	private GUIManager GManager;
 	private AudioManager AManager;
@@ -26,7 +25,7 @@ public partial class Barrier : StaticBody2D
 		EManager = GetNode<EnemyManager>("/root/main_scene/Enemy Manager");
 		GManager = GetNode<GUIManager>("/root/main_scene/GUI Manager");
 		AManager = GetNode<AudioManager>("/root/main_scene/Audio Manager");
-		player = GetNode<Character>("/root/main_scene/Character");
+		player = GetNode<Player>("/root/main_scene/Player");
 	}
 
 	public override void _Process(double delta)
@@ -51,7 +50,7 @@ public partial class Barrier : StaticBody2D
 	{
 		// TODO: This seems a little odd, is there anyway we can not have to check 
 		// this in this manner? It seems not very flexible to change.
-		if (body.Name == "Character") {
+		if (body.Name == "Player") {
 			GManager.ShowPurchaseLabel(Cost);
 			playerInBuyArea = true;
 		}
@@ -64,7 +63,7 @@ public partial class Barrier : StaticBody2D
 	/// <param name="body"></param>
 	private void OnBuyAreaExited(Node2D body)
 	{
-		if (body.Name == "Character") {
+		if (body.Name == "Player") {
 			GManager.HidePurchaseLabel();
 			playerInBuyArea = false;
 		}

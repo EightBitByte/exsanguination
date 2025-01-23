@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://btt5xo7ti40n4"
-path="res://.godot/imported/Character (Unarmed).svg-ddaaead4c06051783743d976f12813eb.ctex"
+uid="uid://u3u5lof0e4k2"
+path="res://.godot/imported/Stance-Rifle.svg-64798e2a77cce316411da3b9d1ae3ed3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/Character (Unarmed).svg"
-dest_files=["res://.godot/imported/Character (Unarmed).svg-ddaaead4c06051783743d976f12813eb.ctex"]
+source_file="res://assets/Stance-Rifle.svg"
+dest_files=["res://.godot/imported/Stance-Rifle.svg-64798e2a77cce316411da3b9d1ae3ed3.ctex"]
 
 [params]
 

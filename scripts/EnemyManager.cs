@@ -33,7 +33,7 @@ public partial class EnemyManager : Node2D
 	Timer spawnTimer, safeTimer;
 	NodeArray enabledSpawnPoints = new();
 
-	Character player;
+	Player player;
 
 	// Upon clearing the barricade at `key`, unlocks the enemy spawn points at 
 	// `value`.
@@ -49,7 +49,7 @@ public partial class EnemyManager : Node2D
 		spawnTimer = GetNode<Timer>("./Spawn Timer");
 		safeTimer = GetNode<Timer>("./Safe Timer");
 		RoundLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Round Label");
-		player = GetNode<Character>("/root/main_scene/Character");
+		player = GetNode<Player>("/root/main_scene/Player");
 
 		rng = new();
 		rng.Randomize();

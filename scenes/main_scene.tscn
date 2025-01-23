@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" path="res://scripts/GUIManager.cs" id="1_5sne8"]
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
-[ext_resource type="Script" path="res://scripts/Character.cs" id="1_ntr3v"]
+[ext_resource type="Script" path="res://scripts/Player.cs" id="1_ntr3v"]
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://dyh62qlpgtmbo" path="res://assets/Shop Bg.svg" id="2_fwgpn"]
 [ext_resource type="Texture2D" uid="uid://bi5ssmtx142j2" path="res://assets/labtiles.svg" id="2_tqpo8"]
 [ext_resource type="Script" path="res://scripts/AudioManager.cs" id="2_yod21"]
-[ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/Character (Pistol).svg" id="3_mfhfp"]
+[ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/Stance-Pistol.svg" id="3_mfhfp"]
 [ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
 [ext_resource type="Texture2D" uid="uid://781jsmi2sck2" path="res://assets/Buy Button.svg" id="4_ld4gv"]
 [ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/Colt M1911.svg" id="4_shskx"]
@@ -528,34 +528,34 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Character" type="CharacterBody2D" parent="."]
+[node name="Player" type="CharacterBody2D" parent="."]
 z_index = 2
 position = Vector2(9, 0)
 script = ExtResource("1_ntr3v")
 
-[node name="Character Sprite" type="Sprite2D" parent="Character"]
+[node name="Player Sprite" type="Sprite2D" parent="Player"]
 z_index = 2
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_mfhfp")
 
-[node name="Weapon Sprite" type="Sprite2D" parent="Character/Character Sprite"]
+[node name="Weapon Sprite" type="Sprite2D" parent="Player/Player Sprite"]
 z_index = -1
 position = Vector2(100, -372)
 rotation = 1.5708
 scale = Vector2(0.25, -0.25)
 texture = ExtResource("4_shskx")
 
-[node name="Underarm" type="Sprite2D" parent="Character/Character Sprite"]
+[node name="Underarm" type="Sprite2D" parent="Player/Player Sprite"]
 visible = false
 z_index = -2
 position = Vector2(0, -208)
 texture = ExtResource("5_lhbfy")
 
-[node name="Physics Collider" type="CollisionShape2D" parent="Character"]
+[node name="Physics Collider" type="CollisionShape2D" parent="Player"]
 z_index = -1
 shape = SubResource("CircleShape2D_owf11")
 
-[node name="Reload Bar" type="TextureProgressBar" parent="Character"]
+[node name="Reload Bar" type="TextureProgressBar" parent="Player"]
 z_index = 1
 offset_left = -95.0
 offset_top = -120.0
@@ -565,7 +565,7 @@ scale = Vector2(0.231032, 0.231032)
 texture_under = ExtResource("6_6rh7v")
 texture_progress = ExtResource("7_2rldi")
 
-[node name="Infection Tick" type="Timer" parent="Character"]
+[node name="Infection Tick" type="Timer" parent="Player"]
 autostart = true
 
 [node name="Enemy Manager" type="Node2D" parent="."]
@@ -659,9 +659,9 @@ texture = ExtResource("11_1h6ax")
 [node name="Cure" parent="." instance=ExtResource("23_j04j5")]
 position = Vector2(-75, 625)
 
-[connection signal="timeout" from="Character/Infection Tick" to="Character" method="OnInfectionTick"]
+[connection signal="timeout" from="Player/Infection Tick" to="Player" method="OnInfectionTick"]
 [connection signal="timeout" from="Enemy Manager/Spawn Timer" to="Enemy Manager" method="OnSpawnTimerTick"]
 [connection signal="timeout" from="Enemy Manager/Safe Timer" to="Enemy Manager" method="OnSafeTimerTick"]
 [connection signal="body_entered" from="Shop Area" to="Shop Area" method="OnShopEnter"]
 [connection signal="body_exited" from="Shop Area" to="Shop Area" method="OnShopExit"]
-[connection signal="CureConsume" from="Cure" to="Character" method="OnCureConsume"]
+[connection signal="CureConsume" from="Cure" to="Player" method="OnCureConsume"]

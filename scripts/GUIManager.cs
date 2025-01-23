@@ -23,7 +23,7 @@ public partial class GUIManager : Node
 		ammoLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Ammo Label");
 		purchaseLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Purchase Label");
 
-		reloadBar = GetNode<TextureProgressBar>("/root/main_scene/Character/Reload Bar");
+		reloadBar = GetNode<TextureProgressBar>("/root/main_scene/Player/Reload Bar");
 		infectionBar = GetNode<TextureProgressBar>("/root/main_scene/GUI/Infection Bar");
 		vignetteBox = GetNode<ColorRect>("/root/main_scene/GUI/Vignette");
 		hurtVignette = (ShaderMaterial)vignetteBox.Material;

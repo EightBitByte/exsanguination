@@ -32,7 +32,7 @@ public partial class Cure : Area2D
 
 	private void OnPlayerEnteredCureArea(Node2D body)
 	{
-		if (body.Name == "Character") {
+		if (body.Name == "Player") {
 			GManager.ShowLabel("[F] Stabilize Infection");
 			playerInCureArea = true;
 		}
@@ -41,7 +41,7 @@ public partial class Cure : Area2D
 
 	private void OnPlayerExitedCureArea(Node2D body)
 	{
-		if (body.Name == "Character") {
+		if (body.Name == "Player") {
 			playerInCureArea = false;
 			GManager.HideLabel();
 		}

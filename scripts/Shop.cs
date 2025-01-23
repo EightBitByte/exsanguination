@@ -11,7 +11,7 @@ public partial class Shop : Area2D
 	// TODO: Make the shop dynamically update (add JSON?)
 	private TextureButton[] Buys = new TextureButton[3];
 	private TextureRect ShopGUI;
-	private Character player;
+	private Player player;
 
 	private GUIManager GManager;
 	private AudioManager AManager;
@@ -22,7 +22,7 @@ public partial class Shop : Area2D
 
 	public override void _Ready()
 	{
-		player = GetNode<Character>(rootPath + "Character");
+		player = GetNode<Player>(rootPath + "Player");
 		ShopGUI = GetNode<TextureRect>(rootPath + "GUI/Shop");
 
 		GManager = GetNode<GUIManager>(rootPath + "GUI Manager");
@@ -68,7 +68,7 @@ public partial class Shop : Area2D
 	}
 
 	private void OnShopEnter(Node2D body) {
-		if (body.Name == "Character") {
+		if (body.Name == "Player") {
 			GManager.ShowLabel("[F] Open Shop");
 			player.shootingEnabled = false;
 			playerInShopArea = true;
@@ -76,7 +76,7 @@ public partial class Shop : Area2D
 	}
 
 	private void OnShopExit(Node2D body) {
-		if (body.Name == "Character") {
+		if (body.Name == "Player") {
 			playerInShopArea = false;
 			GManager.HideLabel();
 			player.shootingEnabled = true;

@@ -27,7 +27,7 @@ public partial class AudioManager : Node
 	private AudioStreamWav pistolShot, rifleShot, dryFire, pillSound;
 	private AudioStreamMP3 pistolReload, rifleReload, buySound;
 
-	private Character player;
+	private Player player;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -40,7 +40,7 @@ public partial class AudioManager : Node
 		buySound = GD.Load<AudioStreamMP3>("res://assets/buy.mp3");
 		pillSound = GD.Load<AudioStreamWav>("res://assets/pill.wav");
 
-		player = GetNode<Character>("/root/main_scene/Character");
+		player = GetNode<Player>("/root/main_scene/Player");
 
 		for (int i = 0; i < AudioPlayerLimit; ++i) {
 			audioStreamPlayerArray[i] = new AudioStreamPlayer2D();

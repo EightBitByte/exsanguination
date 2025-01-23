@@ -21,7 +21,7 @@ public enum WeaponId {
 	M4Carbine
 }
 
-public partial class Character : CharacterBody2D
+public partial class Player : CharacterBody2D
 {
 	/// <summary>The number of milliseconds in a second.</summary>
 	const int MILLIS = 1000;
@@ -103,13 +103,13 @@ public partial class Character : CharacterBody2D
 		GManager = GetNode<GUIManager>(MainScenePath + "GUI Manager");
 		AManager = GetNode<AudioManager>(MainScenePath + "Audio Manager");
 
-		characterSpriteNode = GetNode<Sprite2D>(MainScenePath + "Character/Character Sprite");
-		weaponSpriteNode = GetNode<Sprite2D>(MainScenePath + "Character/Character Sprite/Weapon Sprite");
-		underarmSpriteNode = GetNode<Sprite2D>(MainScenePath + "Character/Character Sprite/Underarm");
+		characterSpriteNode = GetNode<Sprite2D>(MainScenePath + "Player/Player Sprite");
+		weaponSpriteNode = GetNode<Sprite2D>(MainScenePath + "Player/Player Sprite/Weapon Sprite");
+		underarmSpriteNode = GetNode<Sprite2D>(MainScenePath + "Player/Player Sprite/Underarm");
 
-		pistolStance = GD.Load<Texture2D>("res://assets/Character (Pistol).svg");
-		rifleStance = GD.Load<Texture2D>("res://assets/Character (Rifle).svg");
-		unarmedStance = GD.Load<Texture2D>("res://assets/Character (Unarmed).svg");
+		pistolStance = GD.Load<Texture2D>("res://assets/Stance-Pistol.svg");
+		rifleStance = GD.Load<Texture2D>("res://assets/Stance-Rifle.svg");
+		unarmedStance = GD.Load<Texture2D>("res://assets/Stance-Unarmed.svg");
 		enemyTexture = GD.Load<Texture2D>("res://assets/Enemy Sprite.svg");
 
 		bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
@@ -170,8 +170,6 @@ public partial class Character : CharacterBody2D
 
 			SetWeapon(activeWeaponSlot == 0 ? 1 : 0);
 		}
-
-
 	}
 
 
