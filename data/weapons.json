@@ -1,5 +1,17 @@
 {
-    "0": 
+    "0":
+    {
+        "name": "None",
+        "description": "",
+        "bulletDamage": 0,
+        "rateOfFire": 0,
+        "reloadTime": 0,
+        "magazineSize": 0,
+        "reserveSize": 0,
+        "automatic": false,
+        "stance": "none"
+    },
+    "1": 
     {
         "name": "Colt M1911",
         "description": "Single-action, recoil-operated, semi-auto pistol. An American classic.",
@@ -11,7 +23,7 @@
         "automatic": false,
         "stance": "pistol"
     },
-    "1":
+    "2":
     {
         "name": "M4 Carbine",
         "description": "Developed in the 1980s by the United States. Accurate, and killer.",
@@ -22,29 +34,5 @@
         "reserveSize": 200,
         "automatic": true,
         "stance": "rifle"
-    },
-    "2":
-    {
-        "name": "Debug Gun",
-        "description": "Not for in-game use - to debug and kill fast.",
-        "bulletDamage": 2000,
-        "rateOfFire": 10,
-        "reloadTime": 0.5,
-        "magazineSize": 999,
-        "reserveSize": 999,
-        "automatic": true,
-        "stance": "pistol"
-    },
-    "3":
-    {
-        "name": "None",
-        "description": "",
-        "bulletDamage": 0,
-        "rateOfFire": 0,
-        "reloadTime": 0,
-        "magazineSize": 0,
-        "reserveSize": 0,
-        "automatic": false,
-        "stance": "none"
     }
 }

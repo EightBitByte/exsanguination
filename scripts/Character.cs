@@ -9,8 +9,16 @@ using System.Runtime.ConstrainedExecution;
 
 public class Ammo
 {
+	public Ammo() { AmmoInMagazine = 0; AmmoInReserve = 0; }
+
 	public int AmmoInMagazine {get; set;}
 	public int AmmoInReserve {get; set;}
+}
+
+public enum WeaponId {
+	None,
+	ColtM1911,
+	M4Carbine
 }
 
 public partial class Character : CharacterBody2D
@@ -62,7 +70,7 @@ public partial class Character : CharacterBody2D
 	/// <summary>The number of milliseconds since damage was last received.</summary>
 	private double timeSinceDamageMs = 0;
 
-	public int points = 0;
+	public int Points = 0;
 	private int HP = 100;
 	private float infectionProgress = 0f;
 	private Weapon[] heldWeapons = new Weapon[2];
@@ -70,7 +78,6 @@ public partial class Character : CharacterBody2D
 	/// <summary>The ammunition counts of the two respective weapons.</summary>
 	private Ammo[] ammunition = new Ammo[2];
 
-	// TODO: Move this to resource manager.
 	private List<Weapon> allWeapons = new List<Weapon>(); 
 	private List<Texture2D> weaponTextures = new List<Texture2D>();
 
@@ -93,6 +100,9 @@ public partial class Character : CharacterBody2D
 
 	public override void _Ready() {
 		// Load resources
+		GManager = GetNode<GUIManager>(MainScenePath + "GUI Manager");
+		AManager = GetNode<AudioManager>(MainScenePath + "Audio Manager");
+
 		characterSpriteNode = GetNode<Sprite2D>(MainScenePath + "Character/Character Sprite");
 		weaponSpriteNode = GetNode<Sprite2D>(MainScenePath + "Character/Character Sprite/Weapon Sprite");
 		underarmSpriteNode = GetNode<Sprite2D>(MainScenePath + "Character/Character Sprite/Underarm");
@@ -105,9 +115,12 @@ public partial class Character : CharacterBody2D
 		bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
 
 		// Set up weapons
+		ammunition[0] = new();
+		ammunition[1] = new();
+
 		LoadWeaponsJson();
-		GiveWeapon(0, 0);
-		GiveWeapon(3, 1);
+		GiveWeapon(WeaponId.ColtM1911, 0);
+		GiveWeapon(WeaponId.None, 1);
 		SetWeapon(0);
 	}
 
@@ -203,8 +216,8 @@ public partial class Character : CharacterBody2D
 	/// </summary>
 	/// <param name="points">The number of points to add or subtract.</param>
 	public void AddPoints (int points) {
-		points += points;
-		GManager.UpdatePoints(points);
+		Points += points;
+		GManager.UpdatePoints(Points);
 	}
 
 
@@ -233,10 +246,10 @@ public partial class Character : CharacterBody2D
 		foreach (System.Collections.Generic.KeyValuePair<String, Godot.Collections.Dictionary<String, String>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
 
-			// TODO: Finish preloading texture code
 			Weapon addedWeapon = new Weapon(weaponDict);
 			allWeapons.Add(addedWeapon);
-			weaponTextures.Add(GD.Load<Texture2D>($"res://assets/{addedWeapon.Name}.svg"));
+			if (addedWeapon.Name != "None")
+				weaponTextures.Add(GD.Load<Texture2D>($"res://assets/{addedWeapon.Name}.svg"));
 		}
 	}
 
@@ -246,7 +259,7 @@ public partial class Character : CharacterBody2D
 	/// </summary>
 	/// <param name="cost">The number of points the item costs.</param>
 	public bool HasEnoughPoints(int cost) {
-		return points >= cost;
+		return Points >= cost;
 	}
 
 
@@ -302,15 +315,14 @@ public partial class Character : CharacterBody2D
 	/// </summary>
 	/// <param name="weaponID">The ID of the weapon to give the player.</param>
 	/// <param name="slot">The slot in which to place the weapon.</param>
-	public void GiveWeapon (int weaponID, int slot = -1) {
+	public void GiveWeapon (WeaponId weaponID, int slot = -1) {
 		if (slot == -1) {
 			slot = heldWeapons[1].Name == "None" ? 1 : activeWeaponSlot;
 		}
 
-		heldWeapons[slot] = allWeapons[weaponID];
+		heldWeapons[slot] = allWeapons[(int)weaponID];
 		ammunition[slot].AmmoInMagazine = heldWeapons[slot].MagazineSize;
 		ammunition[slot].AmmoInReserve = heldWeapons[slot].ReserveSize;
-
 		SetWeapon(slot);
 	}
 
@@ -351,15 +363,6 @@ public partial class Character : CharacterBody2D
 
 
 	/// <summary>
-	/// Resets the infection's progress to zero.
-	/// </summary>
-	public void ResetInfection() {
-		infectionProgress = 0f;
-		GManager.UpdateInfectionBar(infectionProgress * 100);
-	}
-
-	
-	/// <summary>
 	/// Increases the infection percentage, bringing the player closer to game over.
 	/// </summary>
 	private void OnInfectionTick() {
@@ -383,6 +386,14 @@ public partial class Character : CharacterBody2D
 		
 		characterSpriteNode.Texture = enemyTexture;
 		weaponSpriteNode.Visible = false;
+	}
+
+	/// <summary>
+	/// On consumption of a cure, resets the infection progression.
+	/// </summary>
+	private void OnCureConsume() {
+		infectionProgress = 0f;
+		GManager.UpdateInfectionBar(infectionProgress * 100);
 	}
 
 }

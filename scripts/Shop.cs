@@ -18,14 +18,19 @@ public partial class Shop : Area2D
 
 	private bool playerInShopArea = false;
 
+	private static readonly string rootPath = "/root/main_scene/";
+
 	public override void _Ready()
 	{
-		player = GetNode<Character>("/root/main_scene/Character");
-		ShopGUI = GetNode<TextureRect>("/root/main_scene/GUI/Shop");
+		player = GetNode<Character>(rootPath + "Character");
+		ShopGUI = GetNode<TextureRect>(rootPath + "GUI/Shop");
 
-		Buys[0] = GetNode<TextureButton>("/root/main_scene/GUI/Shop/Weapon I/Button");
-		Buys[1] = GetNode<TextureButton>("/root/main_scene/GUI/Shop/Weapon II/Button");
-		Buys[2] = GetNode<TextureButton>("/root/main_scene/GUI/Shop/Weapon III/Button");
+		GManager = GetNode<GUIManager>(rootPath + "GUI Manager");
+		AManager = GetNode<AudioManager>(rootPath + "Audio Manager");
+
+		Buys[0] = GetNode<TextureButton>(rootPath + "GUI/Shop/Weapon I/Button");
+		Buys[1] = GetNode<TextureButton>(rootPath + "GUI/Shop/Weapon II/Button");
+		Buys[2] = GetNode<TextureButton>(rootPath + "GUI/Shop/Weapon III/Button");
 
 		Buys[0].Pressed += () => {PlayerBuys(0);};
 		Buys[1].Pressed += () => {PlayerBuys(1);};
@@ -82,15 +87,15 @@ public partial class Shop : Area2D
 	private void PlayerBuys(int buttonIdx) {
 		switch (buttonIdx) {
 			case 0:
-				player.GiveWeapon(buttonIdx);
+				player.GiveWeapon(WeaponId.ColtM1911);
 				player.AddPoints(-500);
 				break;
 			case 1:
-				player.GiveWeapon(buttonIdx);
+				player.GiveWeapon(WeaponId.M4Carbine);
 				player.AddPoints(-1000);
 				break;
 			case 2:
-				player.ResetInfection();
+				// TODO: Give the player a cure. Preferably, through a signal.
 				player.AddPoints(-2000);
 				break;
 		}

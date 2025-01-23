@@ -11,6 +11,12 @@ public partial class Enemy : CharacterBody2D
 	// Milliseconds in a second.
 	const float MILLIS = 1000;
 
+	[Signal]
+	public delegate void EnemyInjuredEventHandler(int hitBounty);
+
+	[Signal]
+	public delegate void AttackedPlayerEventHandler(int damage);
+
 	[Export]
 	public float MaxHP = 100;
 
@@ -44,11 +50,12 @@ public partial class Enemy : CharacterBody2D
 	private float health;
 	private bool playerInAttackBox = false;
 
+	private static string rootPath = "/root/main_scene/";
 
 	public override void _Ready()
 	{
-		Player = GetNode<CharacterBody2D>("/root/main_scene/Character");
-		EManager = GetNode<EnemyManager>("/root/main_scene/Enemy Manager");
+		Player = GetNode<CharacterBody2D>(rootPath + "Character");
+		EManager = GetNode<EnemyManager>(rootPath + "Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
@@ -68,15 +75,15 @@ public partial class Enemy : CharacterBody2D
 			timeSinceLastPath = 0;
 		}
 
-		// If we're close enough to the player for long enough, and it's been long enough since our last swing
+		// If we're close enough to the player for long enough, and it's been long 
+		// enough since our last attack
 		if (Position.DistanceTo(Player.Position) < DetectAttackDistance) {
 			closeTime += delta;
 
 			if (closeTime > TimeInProximityBeforeAttack / MILLIS 
 			&& timeSinceLastAttack > AttackCooldown / MILLIS && playerInAttackBox) {
 
-				// TODO: Make it a signal.
-				Player.Call("Hurt", AttackDamage);
+				EmitSignal(SignalName.AttackedPlayer, AttackDamage);
 				timeSinceLastAttack = 0;
 			}
 
@@ -99,15 +106,12 @@ public partial class Enemy : CharacterBody2D
 	/// <param name="damage">The amount of damage to subtract from the enemy HP.</param>
 	public void Hurt(float damage) {
 		health -= damage;
-		// TODO: Refactor into a signal upon hurt to award player points instead of 
-		// holding reference (reducing coupling).
-		Player.Call("AddPoints", HitBounty);
+		EmitSignal(SignalName.EnemyInjured, HitBounty);
 		// TODO: Refactor into own method.. enemy should spawn its own blood
 		EManager.Call("SpawnBloodPool", GlobalPosition);
 
 		if (health <= 0) {
-			// TODO: Make it a signal.
-			Player.Call("AddPoints", KillBounty);
+			EmitSignal(SignalName.EnemyInjured, KillBounty);
 			++EManager.KilledInfected;
 			--EManager.infectedAlive;
 			QueueFree();

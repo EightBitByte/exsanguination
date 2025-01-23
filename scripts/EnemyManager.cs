@@ -37,6 +37,8 @@ public partial class EnemyManager : Node2D
 	Timer spawnTimer, safeTimer;
 	NodeArray enabledSpawnPoints = new();
 
+	Character player;
+
 	// Upon clearing the barricade at `key`, unlocks the enemy spawn points at 
 	// `value`.
 	// NOTE: Maybe defer to JSON data?
@@ -52,6 +54,8 @@ public partial class EnemyManager : Node2D
 		spawnTimer = GetNode<Timer>("./Spawn Timer");
 		safeTimer = GetNode<Timer>("./Safe Timer");
 		RoundLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Round Label");
+		player = GetNode<Character>("/root/main_scene/Character");
+
 		rng = new();
 		rng.Randomize();
 
@@ -88,6 +92,9 @@ public partial class EnemyManager : Node2D
 		Enemy newEnemy = ENEMY_SCENE.Instantiate<Enemy>();
 		newEnemy.GlobalPosition = position;
 		newEnemy.MaxHP = infectedHealth;
+
+		newEnemy.EnemyInjured += player.AddPoints;
+		newEnemy.AttackedPlayer += player.Hurt;
 		GetTree().Root.CallDeferred("add_child", newEnemy);
 	}
 

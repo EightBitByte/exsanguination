@@ -14,10 +14,6 @@ config/name="exsanguination"
 run/main_scene="res://scenes/main_scene.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 
-[autoload]
-
-ResourceManager="*res://scripts/ResourceManager.cs"
-
 [dotnet]
 
 project/assembly_name="exanguination"
