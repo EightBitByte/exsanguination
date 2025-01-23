@@ -1,3 +1,3 @@
-![image](https://github.com/user-attachments/assets/35d4ffb0-e0ac-4af2-8cee-0c9aa5715b3a)  
+![ezgif-2-196a581dc9](https://github.com/user-attachments/assets/6354f40a-2619-4eaf-a6d8-ed76221530c9)
 
 Fight back the infected horde in this new, top-down shoot-em-up.
