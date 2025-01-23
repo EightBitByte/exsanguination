@@ -51,7 +51,6 @@ public partial class AudioManager : Node
 
 	public void PlaySound(Sound sound) {
 		currentAudioPlayerIdx = (currentAudioPlayerIdx + 1) % AudioPlayerLimit;
-		GD.Print($"CurrentAudioPlayer: {currentAudioPlayerIdx}");
 		AudioStreamPlayer2D currentAudioPlayer2D = audioStreamPlayerArray[currentAudioPlayerIdx];
 
 		switch (sound) {

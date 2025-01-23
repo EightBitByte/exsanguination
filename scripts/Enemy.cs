@@ -25,30 +25,42 @@ public partial class Enemy : CharacterBody2D
 
 	[Export]
 	int HitBounty = 10;
+
 	[Export]
 	int KillBounty = 60;
 
 	[Export]
 	float MsToRecalculatePath = 100;
+
 	[Export]
 	float AttackCooldown = 1000;
+
 	[Export]
 	float TimeInProximityBeforeAttack = 100;
+
 	[Export]
-	float DetectAttackDistance = 150;
+	float AttackRange = 150;
+
 	[Export]
 	float AttackDamage = 34;
+
+	[Export]
+	private float BloodSpread = 50;
 
 	private CharacterBody2D Player;
 	private NavigationAgent2D Pathfinding;
 	private Sprite2D Sprite;
 	private Area2D AttackBox;
 	private EnemyManager EManager;
-	private double timeSinceLastPath = 0;
-	private double timeSinceLastAttack = 0;
-	private double closeTime = 0;
+	private double pathRecalculationTimeElapsedMs = 0;
+	private double attackCooldownTimeElapsedMs = 0;
+	private double timeElapsedWhilePlayerInProximityMs = 0;
 	private float health;
 	private bool playerInAttackBox = false;
+	private PackedScene bloodPoolScene;
+	private RandomNumberGenerator rng;
+	private float minBloodPoolScale = 0.10f;
+	private float maxBloodPoolScale = 0.15f;
 
 	private static string rootPath = "/root/main_scene/";
 
@@ -60,35 +72,39 @@ public partial class Enemy : CharacterBody2D
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
 
+		bloodPoolScene = GD.Load<PackedScene>("res://scenes/blood_pool.tscn");
+		rng = new();
+		rng.Randomize();
+
 		health = MaxHP;
 	}
 
 
 	public override void _PhysicsProcess(double delta)
 	{
-		timeSinceLastPath += delta;
-		timeSinceLastAttack += delta;
+		pathRecalculationTimeElapsedMs += delta;
+		attackCooldownTimeElapsedMs += delta;
 		
 		// Recalculate pathfinding every so often
-		if (timeSinceLastPath > MsToRecalculatePath / MILLIS) {
+		if (pathRecalculationTimeElapsedMs > MsToRecalculatePath / MILLIS) {
 			Pathfinding.TargetPosition = Player.Position;
-			timeSinceLastPath = 0;
+			pathRecalculationTimeElapsedMs = 0;
 		}
 
 		// If we're close enough to the player for long enough, and it's been long 
 		// enough since our last attack
-		if (Position.DistanceTo(Player.Position) < DetectAttackDistance) {
-			closeTime += delta;
+		if (Position.DistanceTo(Player.Position) < AttackRange) {
+			timeElapsedWhilePlayerInProximityMs += delta;
 
-			if (closeTime > TimeInProximityBeforeAttack / MILLIS 
-			&& timeSinceLastAttack > AttackCooldown / MILLIS && playerInAttackBox) {
+			if (timeElapsedWhilePlayerInProximityMs > TimeInProximityBeforeAttack / MILLIS 
+			&& attackCooldownTimeElapsedMs > AttackCooldown / MILLIS && playerInAttackBox) {
 
 				EmitSignal(SignalName.AttackedPlayer, AttackDamage);
-				timeSinceLastAttack = 0;
+				attackCooldownTimeElapsedMs = 0;
 			}
 
 		} else {
-			closeTime = 0;
+			timeElapsedWhilePlayerInProximityMs = 0;
 		}
 
 
@@ -100,15 +116,10 @@ public partial class Enemy : CharacterBody2D
 		MoveAndSlide();
 	}
 
-	/// <summary>
-	/// Reduces the enemy's health by <c>damage</c>.
-	/// </summary>
-	/// <param name="damage">The amount of damage to subtract from the enemy HP.</param>
 	public void Hurt(float damage) {
 		health -= damage;
 		EmitSignal(SignalName.EnemyInjured, HitBounty);
-		// TODO: Refactor into own method.. enemy should spawn its own blood
-		EManager.Call("SpawnBloodPool", GlobalPosition);
+		SpawnBloodPool();
 
 		if (health <= 0) {
 			EmitSignal(SignalName.EnemyInjured, KillBounty);
@@ -118,10 +129,22 @@ public partial class Enemy : CharacterBody2D
 		}
 	}
 
-	/// <summary>
-	/// Called upon a <c>Node2D</c> entering its attack range.
-	/// </summary>
-	/// <param name="body">The Node2D entering the attack range.</param>
+	public void SpawnBloodPool () {
+		Sprite2D bloodpool = bloodPoolScene.Instantiate<Sprite2D>();
+		bloodpool.Rotation = rng.RandfRange(0, (float)(2 * Math.PI));
+		float scaleFactor = rng.RandfRange(0.10f, 0.15f);
+		bloodpool.Scale = new Vector2(scaleFactor, scaleFactor);
+
+		Vector2 poolPosition = GlobalPosition;
+
+		poolPosition.X += rng.RandfRange(-BloodSpread/2, BloodSpread/2);
+		poolPosition.Y += rng.RandfRange(-BloodSpread/2, BloodSpread/2);
+
+		bloodpool.GlobalPosition = poolPosition;
+
+		GetTree().Root.AddChild(bloodpool);
+	}
+
 	private void OnAttackBoxEntered(Node2D body)
 	{
 		// TODO: Needs a more robust way of checking. Perhaps comparing the reference to the Character itself?
@@ -129,10 +152,6 @@ public partial class Enemy : CharacterBody2D
 			playerInAttackBox = true;
 	}
 
-	/// <summary>
-	/// Called upon a <c>Node2D</c> exiting its attack range.
-	/// </summary>
-	/// <param name="body">The Node2D exiting the attack range.</param>
 	private void OnAttackBoxExited(Node2D body)
 	{
 		if (body.Name == "Character")

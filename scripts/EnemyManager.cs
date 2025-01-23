@@ -12,10 +12,6 @@ using NodeArray = Godot.Collections.Array<Godot.Node2D>;
 
 public partial class EnemyManager : Node2D
 {
-	// TODO: Shouldn't enemies be in charge of spawning their own blood? Just a thought.
-	[Export]
-	private float BloodSpread = 50;
-
 	[Export]
 	private int Round = 1;
 
@@ -31,7 +27,7 @@ public partial class EnemyManager : Node2D
 	private int infectedHealth;
 	private double infectedHealthMultiplier = 1.1;
 
-	PackedScene ENEMY_SCENE, BLOOD_POOL_SCENE;
+	PackedScene ENEMY_SCENE;
 	RandomNumberGenerator rng;
 	RichTextLabel RoundLabel;
 	Timer spawnTimer, safeTimer;
@@ -50,7 +46,6 @@ public partial class EnemyManager : Node2D
 	public override void _Ready () {
 		// Load resources
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
-		BLOOD_POOL_SCENE = GD.Load<PackedScene>("res://scenes/blood_pool.tscn");
 		spawnTimer = GetNode<Timer>("./Spawn Timer");
 		safeTimer = GetNode<Timer>("./Safe Timer");
 		RoundLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Round Label");
@@ -96,26 +91,6 @@ public partial class EnemyManager : Node2D
 		newEnemy.EnemyInjured += player.AddPoints;
 		newEnemy.AttackedPlayer += player.Hurt;
 		GetTree().Root.CallDeferred("add_child", newEnemy);
-	}
-
-
-	// TODO: Refactor so that enemies are in charge of this.
-	/// <summary>
-	/// Called by enemies when they are hit to spawn a pool of blood.
-	/// </summary>
-	/// <param name="position">The global position at which to spawn the blood pool.</param>
-	public void SpawnBloodPool (Vector2 position) {
-		Sprite2D bloodpool = BLOOD_POOL_SCENE.Instantiate<Sprite2D>();
-		bloodpool.Rotation = rng.RandfRange(0, (float)(2 * Math.PI));
-		float scaleFactor = rng.RandfRange(0.05f, 0.15f);
-		bloodpool.Scale = new Vector2(scaleFactor, scaleFactor);
-
-		position.X += rng.RandfRange(-BloodSpread/2, BloodSpread/2);
-		position.Y += rng.RandfRange(-BloodSpread/2, BloodSpread/2);
-
-		bloodpool.GlobalPosition = position;
-
-		GetTree().Root.AddChild(bloodpool);
 	}
 
 
