@@ -15,6 +15,8 @@ public enum WeaponStance {
 }
 
 class Weapon {
+    public int ID {get;}
+
     /// <summary>The name of the weapon.</summary>
     public string Name {get;}
 
@@ -46,8 +48,10 @@ class Weapon {
     /// <summary>
     /// Translates a JSON object into a weapon object.
     /// </summary>
+    /// <param name="weaponID">The integer ID of the weapon.</param>
     /// <param name="JSONObj">The JSON object to translate.</param>
-    public Weapon (Godot.Collections.Dictionary<string, string> JSONObj)  {
+    public Weapon (int weaponID, Godot.Collections.Dictionary<string, string> JSONObj)  {
+        ID = weaponID;
         Name = JSONObj["name"];
         Description = JSONObj["description"];
         BulletDamage = float.Parse(JSONObj["bulletDamage"]);

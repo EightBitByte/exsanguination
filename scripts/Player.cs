@@ -192,6 +192,7 @@ public partial class Player : CharacterBody2D
 
 	/// <summary>Attempt to fire a bullet, only do so if conditions are met.</summary>
 	public void CheckShootingInput() {
+		bool holdingAWeapon = heldWeapons[activeWeaponSlot].ID != 0;
 		bool semiAutoFire = !heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire");
 		bool autoFire = heldWeapons[activeWeaponSlot].Automatic && Input.IsActionPressed("fire");
 		bool weaponCooldownDone = firingCooldown > RateOfFireMs;
@@ -200,9 +201,9 @@ public partial class Player : CharacterBody2D
 		if ((semiAutoFire || autoFire) && weaponCooldownDone && weaponHasAmmoInMag 
 				&& !isReloading && shootingEnabled) {
 			ShootBullet();
-		} else if ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || 
+		} else if (holdingAWeapon && ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || 
 				(heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire") 
-				&& shootingEnabled)) {
+				&& shootingEnabled))) {
 			AManager.PlaySound(Sound.DryFire);
 		}
 
@@ -244,7 +245,7 @@ public partial class Player : CharacterBody2D
 		foreach (System.Collections.Generic.KeyValuePair<String, Godot.Collections.Dictionary<String, String>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
 
-			Weapon addedWeapon = new Weapon(weaponDict);
+			Weapon addedWeapon = new Weapon(int.Parse(pair.Key), weaponDict);
 			allWeapons.Add(addedWeapon);
 			if (addedWeapon.Name != "None")
 				weaponTextures.Add(GD.Load<Texture2D>($"res://assets/{addedWeapon.Name}.svg"));
@@ -352,9 +353,8 @@ public partial class Player : CharacterBody2D
 			underarmSpriteNode.Visible = false;
 		}
 
-		// TODO: Don't load weapon sprites upon change! These should be loaded upon entering game!
 		if (heldWeapons[activeWeaponSlot].Name != "None")
-			weaponSpriteNode.Texture = GD.Load<Texture2D>($"res://assets/{heldWeapons[activeWeaponSlot].Name}.svg");
+			weaponSpriteNode.Texture = weaponTextures[heldWeapons[activeWeaponSlot].ID - 1];
 
 		GManager.UpdateAmmo(ammunition[activeWeaponSlot]);
 	}
