@@ -52,7 +52,7 @@ public partial class GUIManager : Node
 		if (percentHP < 0.34) {
 			strength = 0.1;
 		} else {
-			// NOTE: What the actual heck does this do? Can we get this more clear?
+			// NOTE: What the actual heck does this do? Can we make this more clear?
 			strength = 0.01 * (100 * percentHP) - 0.274;
 		}
 

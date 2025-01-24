@@ -82,11 +82,11 @@ public partial class Player : CharacterBody2D
 	private List<Texture2D> weaponTextures = new List<Texture2D>();
 
 	private int activeWeaponSlot = 0;
+    private int maxNumWeapons = 2;
 	public bool isReloading = false, 
 				movementEnabled = true, 
 				shootingEnabled = true;
 	private double reloadTimeElapsed = 0;
-	private int currentAudioPlayer = 0;
 
 	private Vector2 pistolPos = new(100, -372), riflePos = new(108, -260);
 	private Vector2 pistolScale = new(0.25f, -0.25f), rifleScale = new(0.75f, -0.75f);
@@ -135,47 +135,15 @@ public partial class Player : CharacterBody2D
 		characterSpriteNode.Rotation = (float)viewAngle + (float)viewOffset;
 
 		CheckShootingInput();
+        CheckReloadInput();
+        CheckSwapInput();
 
-		bool magazineFull = ammunition[activeWeaponSlot].AmmoInMagazine == heldWeapons[activeWeaponSlot].MagazineSize;
-		bool reserveEmpty = ammunition[activeWeaponSlot].AmmoInReserve == 0;
-		// Initiate reload
-		// TODO: Refactor into separate method
-		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty && !isReloading && shootingEnabled) {
-			GManager.UpdateReloadBar(0);
-			GManager.ShowReloadBar();
-			isReloading = true;
-			AManager.PlaySound(heldWeapons[activeWeaponSlot].Stance == WeaponStance.Pistol ? 
-								Sound.PistolReload : Sound.RifleReload);
-		}
 
-		// If we're reloading, count the time and update the reload bar until we reach the end
-		if (isReloading && reloadTimeElapsed < heldWeapons[activeWeaponSlot].ReloadTime) {
-			reloadTimeElapsed += delta;
-			GManager.UpdateReloadBar(reloadTimeElapsed / heldWeapons[activeWeaponSlot].ReloadTime * 100);
-
-		// Finish reload
-		} else if (isReloading) {
-			ReloadWeapon();
-		}
-
-		// Swapping Guns ==========================
-		// TODO: Refactor into separate method
-		if (Input.IsActionJustPressed("swap")) {
-			// Cancel reload
-			if (isReloading) {
-				isReloading = false;
-				reloadTimeElapsed = 0;
-				GManager.HideReloadBar();
-			}
-
-			SetWeapon(activeWeaponSlot == 0 ? 1 : 0);
-		}
 	}
 
 
 	public override void _PhysicsProcess (double delta) {
 		Vector2 moveDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-
 		timeSinceDamageMs += delta;
 
 		if (timeSinceDamageMs > damageHealCooldownMs / MILLIS && HP < 100) {
@@ -190,7 +158,7 @@ public partial class Player : CharacterBody2D
 			MoveAndSlide();
 	}
 
-	/// <summary>Attempt to fire a bullet, only do so if conditions are met.</summary>
+	/// <summary>Checks for shooting input and does so if conditions are met.</summary>
 	public void CheckShootingInput() {
 		bool holdingAWeapon = heldWeapons[activeWeaponSlot].ID != 0;
 		bool semiAutoFire = !heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire");
@@ -208,6 +176,51 @@ public partial class Player : CharacterBody2D
 		}
 
 	}
+
+
+    /// <summary>Checks for reload input and does so if conditions are met.</summary>
+    public void CheckReloadInput() {
+		bool magazineFull = ammunition[activeWeaponSlot].AmmoInMagazine 
+                            == heldWeapons[activeWeaponSlot].MagazineSize;
+		bool reserveEmpty = ammunition[activeWeaponSlot].AmmoInReserve == 0;
+
+		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty 
+                && !isReloading && shootingEnabled) {
+			GManager.UpdateReloadBar(0);
+			GManager.ShowReloadBar();
+			isReloading = true;
+			AManager.PlaySound(heldWeapons[activeWeaponSlot].Stance == WeaponStance.Pistol ? 
+								Sound.PistolReload : Sound.RifleReload);
+		}
+
+		if (isReloading && reloadTimeElapsed < 
+                heldWeapons[activeWeaponSlot].ReloadTime) {
+			reloadTimeElapsed += delta;
+			GManager.UpdateReloadBar(reloadTimeElapsed / heldWeapons[activeWeaponSlot].ReloadTime * 100);
+
+		} else if (isReloading) {
+			ReloadWeapon();
+		}
+    }
+
+
+    /// <summary>Checks for swapping input and does so if conditions are met.</summary>
+    public void CheckSwapInput() {
+		if (Input.IsActionJustPressed("swap")) {
+			if (isReloading)
+                CancelReload();
+
+            activeWeaponSlot = (activeWeaponSlot + 1) % maxNumWeapons;
+			SetWeapon(activeWeaponSlot);
+		}
+    }
+
+
+    private void CancelReload() {
+        isReloading = false;
+        reloadTimeElapsed = 0;
+        GManager.HideReloadBar();
+    }
 
 
 	/// <summary>
@@ -240,7 +253,8 @@ public partial class Player : CharacterBody2D
 
 	/// <summary>Load the JSON file associated with the weapon.</summary>
 	private void LoadWeaponsJson() {
-		Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>> jsonDict = (Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>>)Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
+		Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>> jsonDict = 
+            (Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>>) Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
 
 		foreach (System.Collections.Generic.KeyValuePair<String, Godot.Collections.Dictionary<String, String>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;

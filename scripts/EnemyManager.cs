@@ -66,7 +66,6 @@ public partial class EnemyManager : Node2D
 
 	public override void _Process (double delta) {
 		// If killed amount to spawn this Round, go into safe mode
-		// NOTE: Possible bug here, need to make sure all infected dead before ending round
 		if (KilledInfected >= Round * 1.5 + 5) {
 			KilledInfected = 0;
 			infectedSpawned = 0;
