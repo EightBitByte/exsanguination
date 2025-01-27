@@ -3,3 +3,4 @@
 build
 *.csproj
 *.csproj.old
+*.sln
