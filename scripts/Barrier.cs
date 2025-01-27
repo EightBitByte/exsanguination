@@ -5,13 +5,25 @@
 using Godot;
 using System;
 
+/// <summary>
+/// Defines an area within the map that can be accessed.
+/// </summary>
+public enum Area {
+	SpawnRoom,
+	OuterHallwayI,
+	OuterHallwayII
+}
+
 public partial class Barrier : StaticBody2D
 {
+	[Signal]
+	public delegate void AreaOpenedEventHandler(Area area);
+
 	[Export]
 	public int Cost = 100;
 
 	[Export]
-	public string BarrierName = "default";
+	public int[] OpensAreas = {-1};
 
 	private Player player;
 	private EnemyManager EManager;
@@ -34,8 +46,6 @@ public partial class Barrier : StaticBody2D
 		if (Input.IsActionJustPressed("buy") && player.HasEnoughPoints(Cost) && playerInBuyArea) {
 			player.AddPoints(-Cost);
 			GManager.HidePurchaseLabel();
-			//TODO: Make this a signal
-			EManager.Call("OpenedArea", BarrierName);
 			AManager.PlaySound(Sound.Buy);
 
 			QueueFree();

@@ -21,10 +21,10 @@ public partial class EnemyManager : Node
 	[Export]
 	private int StartingInfectedHP = 30;
 
-	public int infectedAlive = 0; 		
+	private int infectedAlive = 0; 		
 	private int infectedSpawned = 0;
-	public int KilledInfected = 0;		
-	private int infectedHealth;
+	private int killedInfected = 0;		
+	private int currentInfectedHealth;	// Infected health on spawn
 	private double infectedHealthMultiplier = 1.1;
 
 	PackedScene ENEMY_SCENE;
@@ -38,8 +38,8 @@ public partial class EnemyManager : Node
 	// Upon clearing the barricade at `key`, unlocks the enemy spawn points at 
 	// `value`.
 	// NOTE: Maybe defer to JSON data?
-	private readonly Dictionary<string, string[]> unlocks = new() {
-		{"Spawn Room", new string[] {"Outer Hallway I", "Outer Hallway II"}},
+	private readonly Dictionary<Area, Area[]> unlocks = new() {
+		{Area.SpawnRoom, new Area[] {Area.OuterHallwayI, Area.OuterHallwayII}},
 	};
 
 
@@ -61,14 +61,14 @@ public partial class EnemyManager : Node
 
 		// Set zombie parameters
 		// NOTE: Maybe add speed?
-		infectedHealth = StartingInfectedHP;
+		currentInfectedHealth = StartingInfectedHP;
 	}
 
 
 	public override void _Process (double delta) {
 		// If killed amount to spawn this Round, go into safe mode
-		if (KilledInfected >= Round * 1.5 + 5) {
-			KilledInfected = 0;
+		if (killedInfected >= Round * 1.5 + 5) {
+			killedInfected = 0;
 			infectedSpawned = 0;
 			++Round;
 
@@ -86,21 +86,18 @@ public partial class EnemyManager : Node
 	public void SpawnEnemy (Vector2 position) {
 		Enemy newEnemy = ENEMY_SCENE.Instantiate<Enemy>();
 		newEnemy.GlobalPosition = position;
-		newEnemy.MaxHP = infectedHealth;
+		newEnemy.MaxHP = currentInfectedHealth;
 
 		newEnemy.EnemyInjured += player.AddPoints;
 		newEnemy.AttackedPlayer += player.Hurt;
+		newEnemy.EnemyKilled += OnEnemyKill;
 		GetTree().Root.CallDeferred("add_child", newEnemy);
 	}
 
 
-	/// <summary>
-	/// Called by the barrier upon purchase to open up new enemy spawns.
-	/// </summary>
-	/// <param name="barrierName">The name of the barrier that was unlocked.</param>
-	public void OpenedArea (string barrierName) {
-		if (barrierName != "default")
-			foreach (string spawnpointName in unlocks[barrierName])
+	public void OpenedArea (Area barrier) {
+		if ((int)barrier != -1)
+			foreach (Area spawnpointName in unlocks[barrier])
 				enabledSpawnPoints.Add(GetNode<Node2D>($"./{spawnpointName}"));
 	}
 
@@ -126,15 +123,16 @@ public partial class EnemyManager : Node
 	/// <summary>
 	/// Called when the safe timer times out. Starts the next round.
 	/// </summary>
-	private void OnSafeTimerTick()
-	{
+	private void OnSafeTimerTick() {
 		RoundLabel.Text = $"Round {Round}";
-		infectedHealth = (int)(infectedHealth * infectedHealthMultiplier);
+		currentInfectedHealth = (int)(currentInfectedHealth * infectedHealthMultiplier);
 
 		safeTimer.Stop();
 		spawnTimer.Start();
 	}
+
+	private void OnEnemyKill() {
+		--infectedAlive;
+		++killedInfected;
+	}
 }
-
-
-

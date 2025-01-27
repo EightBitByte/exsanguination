@@ -15,6 +15,9 @@ public partial class Enemy : CharacterBody2D
 	public delegate void EnemyInjuredEventHandler(int hitBounty);
 
 	[Signal]
+	public delegate void EnemyKilledEventHandler();
+
+	[Signal]
 	public delegate void AttackedPlayerEventHandler(int damage);
 
 	[Export]
@@ -51,7 +54,6 @@ public partial class Enemy : CharacterBody2D
 	private NavigationAgent2D Pathfinding;
 	private Sprite2D Sprite;
 	private Area2D AttackBox;
-	private EnemyManager EManager;
 	private double pathRecalculationTimeElapsedMs = 0;
 	private double attackCooldownTimeElapsedMs = 0;
 	private double timeElapsedWhilePlayerInProximityMs = 0;
@@ -63,11 +65,9 @@ public partial class Enemy : CharacterBody2D
 	private float maxBloodPoolScale = 0.15f;
 
 
-	public override void _Ready()
-	{
+	public override void _Ready () {
 		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
 		Player = SceneNode.GetNode<CharacterBody2D>("./Player");
-		EManager = SceneNode.GetNode<EnemyManager>("./Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
@@ -80,8 +80,7 @@ public partial class Enemy : CharacterBody2D
 	}
 
 
-	public override void _PhysicsProcess(double delta)
-	{
+	public override void _PhysicsProcess (double delta) {
 		pathRecalculationTimeElapsedMs += delta;
 		attackCooldownTimeElapsedMs += delta;
 		
@@ -118,14 +117,14 @@ public partial class Enemy : CharacterBody2D
 
 	public void Hurt(float damage) {
 		health -= damage;
-		EmitSignal(SignalName.EnemyInjured, HitBounty);
 		SpawnBloodPool();
 
 		if (health <= 0) {
 			EmitSignal(SignalName.EnemyInjured, KillBounty);
-			++EManager.KilledInfected;
-			--EManager.infectedAlive;
+			EmitSignal(SignalName.EnemyKilled);
 			QueueFree();
+		} else {
+			EmitSignal(SignalName.EnemyInjured, HitBounty);
 		}
 	}
 
