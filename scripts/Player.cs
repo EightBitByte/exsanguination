@@ -135,10 +135,8 @@ public partial class Player : CharacterBody2D
 		characterSpriteNode.Rotation = (float)viewAngle + (float)viewOffset;
 
 		CheckShootingInput();
-        CheckReloadInput();
+        CheckReloadInput(delta);
         CheckSwapInput();
-
-
 	}
 
 
@@ -179,7 +177,7 @@ public partial class Player : CharacterBody2D
 
 
     /// <summary>Checks for reload input and does so if conditions are met.</summary>
-    public void CheckReloadInput() {
+    public void CheckReloadInput(double delta) {
 		bool magazineFull = ammunition[activeWeaponSlot].AmmoInMagazine 
                             == heldWeapons[activeWeaponSlot].MagazineSize;
 		bool reserveEmpty = ammunition[activeWeaponSlot].AmmoInReserve == 0;
