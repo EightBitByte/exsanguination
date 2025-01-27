@@ -152,6 +152,25 @@ script = ExtResource("2_yod21")
 [node name="GUI Manager" type="Node" parent="."]
 script = ExtResource("1_5sne8")
 
+[node name="Enemy Manager" type="Node" parent="."]
+script = ExtResource("17_auaga")
+
+[node name="Spawn Timer" type="Timer" parent="Enemy Manager"]
+wait_time = 5.0
+autostart = true
+
+[node name="Safe Timer" type="Timer" parent="Enemy Manager"]
+wait_time = 15.0
+
+[node name="Spawn Room" type="Node2D" parent="Enemy Manager"]
+position = Vector2(475, -275)
+
+[node name="Outer Hallway I" type="Node2D" parent="Enemy Manager"]
+position = Vector2(1250, 225)
+
+[node name="Outer Hallway II" type="Node2D" parent="Enemy Manager"]
+position = Vector2(-1250, -1875)
+
 [node name="GUI" type="CanvasLayer" parent="."]
 
 [node name="Vignette" type="ColorRect" parent="GUI"]
@@ -512,25 +531,6 @@ texture_progress = ExtResource("7_2rldi")
 [node name="Infection Tick" type="Timer" parent="Player"]
 autostart = true
 
-[node name="Enemy Manager" type="Node2D" parent="."]
-script = ExtResource("17_auaga")
-
-[node name="Spawn Timer" type="Timer" parent="Enemy Manager"]
-wait_time = 5.0
-autostart = true
-
-[node name="Safe Timer" type="Timer" parent="Enemy Manager"]
-wait_time = 15.0
-
-[node name="Spawn Room" type="Node2D" parent="Enemy Manager"]
-position = Vector2(475, -275)
-
-[node name="Outer Hallway I" type="Node2D" parent="Enemy Manager"]
-position = Vector2(1250, 225)
-
-[node name="Outer Hallway II" type="Node2D" parent="Enemy Manager"]
-position = Vector2(-1250, -1875)
-
 [node name="Tilemap" type="TileMapLayer" parent="."]
 texture_filter = 3
 use_parent_material = true
@@ -603,9 +603,9 @@ texture = ExtResource("11_1h6ax")
 [node name="Cure" parent="." instance=ExtResource("23_j04j5")]
 position = Vector2(-75, 625)
 
-[connection signal="timeout" from="Player/Infection Tick" to="Player" method="OnInfectionTick"]
 [connection signal="timeout" from="Enemy Manager/Spawn Timer" to="Enemy Manager" method="OnSpawnTimerTick"]
 [connection signal="timeout" from="Enemy Manager/Safe Timer" to="Enemy Manager" method="OnSafeTimerTick"]
+[connection signal="timeout" from="Player/Infection Tick" to="Player" method="OnInfectionTick"]
 [connection signal="body_entered" from="Shop Area" to="Shop Area" method="OnShopEnter"]
 [connection signal="body_exited" from="Shop Area" to="Shop Area" method="OnShopExit"]
 [connection signal="CureConsume" from="Cure" to="Player" method="OnCureConsume"]

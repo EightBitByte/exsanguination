@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 using NodeArray = Godot.Collections.Array<Godot.Node2D>;
 
-public partial class EnemyManager : Node2D
+public partial class EnemyManager : Node
 {
 	[Export]
 	private int Round = 1;
