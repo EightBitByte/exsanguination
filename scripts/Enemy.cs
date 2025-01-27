@@ -62,12 +62,12 @@ public partial class Enemy : CharacterBody2D
 	private float minBloodPoolScale = 0.10f;
 	private float maxBloodPoolScale = 0.15f;
 
-	private static string rootPath = "/root/MainScene/";
 
 	public override void _Ready()
 	{
-		Player = GetNode<CharacterBody2D>(rootPath + "Player");
-		EManager = GetNode<EnemyManager>(rootPath + "Enemy Manager");
+		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Player = SceneNode.GetNode<CharacterBody2D>("./Player");
+		EManager = SceneNode.GetNode<EnemyManager>("./Enemy Manager");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);

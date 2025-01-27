@@ -26,9 +26,6 @@ public partial class Player : CharacterBody2D
 	/// <summary>The number of milliseconds in a second.</summary>
 	const int MILLIS = 1000;
 
-	private static readonly string MainScenePath = "/root/MainScene/";
-	private static readonly string GUIPath = MainScenePath + "GUI/";
-
 	[Export]
 	public int MaxHP = 100;
 	
@@ -100,12 +97,13 @@ public partial class Player : CharacterBody2D
 
 	public override void _Ready() {
 		// Load resources
-		GManager = GetNode<GUIManager>(MainScenePath + "GUI Manager");
-		AManager = GetNode<AudioManager>(MainScenePath + "Audio Manager");
+		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		GManager = SceneNode.GetNode<GUIManager>("./GUI Manager");
+		AManager = SceneNode.GetNode<AudioManager>("./Audio Manager");
 
-		characterSpriteNode = GetNode<Sprite2D>(MainScenePath + "Player/Player Sprite");
-		weaponSpriteNode = GetNode<Sprite2D>(MainScenePath + "Player/Player Sprite/Weapon Sprite");
-		underarmSpriteNode = GetNode<Sprite2D>(MainScenePath + "Player/Player Sprite/Underarm");
+		characterSpriteNode = SceneNode.GetNode<Sprite2D>("./Player/Player Sprite");
+		weaponSpriteNode = SceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Weapon Sprite");
+		underarmSpriteNode = SceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Underarm");
 
 		pistolStance = GD.Load<Texture2D>("res://assets/Stance-Pistol.svg");
 		rifleStance = GD.Load<Texture2D>("res://assets/Stance-Rifle.svg");

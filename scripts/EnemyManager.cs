@@ -45,11 +45,12 @@ public partial class EnemyManager : Node
 
 	public override void _Ready () {
 		// Load resources
+		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 		spawnTimer = GetNode<Timer>("./Spawn Timer");
 		safeTimer = GetNode<Timer>("./Safe Timer");
-		RoundLabel = GetNode<RichTextLabel>("/root/MainScene/GUI/Round Label");
-		player = GetNode<Player>("/root/MainScene/Player");
+		RoundLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Round Label");
+		player = SceneNode.GetNode<Player>("./Player");
 
 		rng = new();
 		rng.Randomize();
