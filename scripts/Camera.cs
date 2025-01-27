@@ -16,7 +16,7 @@ public partial class Camera : Camera2D
 	public override void _Ready()
 	{
 		MakeCurrent();
-		followTarget = GetNode<Node2D>("/root/main_scene/Player");
+		followTarget = GetNode<Node2D>("/root/MainScene/Player");
 	}
 
 	public override void _Process(double delta)

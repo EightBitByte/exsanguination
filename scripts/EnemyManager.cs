@@ -48,8 +48,8 @@ public partial class EnemyManager : Node
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 		spawnTimer = GetNode<Timer>("./Spawn Timer");
 		safeTimer = GetNode<Timer>("./Safe Timer");
-		RoundLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Round Label");
-		player = GetNode<Player>("/root/main_scene/Player");
+		RoundLabel = GetNode<RichTextLabel>("/root/MainScene/GUI/Round Label");
+		player = GetNode<Player>("/root/MainScene/Player");
 
 		rng = new();
 		rng.Randomize();

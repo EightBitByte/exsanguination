@@ -62,7 +62,7 @@ public partial class Enemy : CharacterBody2D
 	private float minBloodPoolScale = 0.10f;
 	private float maxBloodPoolScale = 0.15f;
 
-	private static string rootPath = "/root/main_scene/";
+	private static string rootPath = "/root/MainScene/";
 
 	public override void _Ready()
 	{

@@ -22,10 +22,10 @@ public partial class Barrier : StaticBody2D
 
 	public override void _Ready()
 	{
-		EManager = GetNode<EnemyManager>("/root/main_scene/Enemy Manager");
-		GManager = GetNode<GUIManager>("/root/main_scene/GUI Manager");
-		AManager = GetNode<AudioManager>("/root/main_scene/Audio Manager");
-		player = GetNode<Player>("/root/main_scene/Player");
+		EManager = GetNode<EnemyManager>("/root/MainScene/Enemy Manager");
+		GManager = GetNode<GUIManager>("/root/MainScene/GUI Manager");
+		AManager = GetNode<AudioManager>("/root/MainScene/Audio Manager");
+		player = GetNode<Player>("/root/MainScene/Player");
 	}
 
 	public override void _Process(double delta)

@@ -18,7 +18,7 @@ public partial class Shop : Area2D
 
 	private bool playerInShopArea = false;
 
-	private static readonly string rootPath = "/root/main_scene/";
+	private static readonly string rootPath = "/root/MainScene/";
 
 	public override void _Ready()
 	{

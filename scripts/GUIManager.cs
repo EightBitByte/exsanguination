@@ -14,21 +14,23 @@ public partial class GUIManager : Node
 	private ShaderMaterial hurtVignette;
 	private TextureButton gameOverButton;
 
+	private string rootPath = "/root/MainScene/";
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		// Load == 
-		pointLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Point Label");
-		gunLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Gun Label");
-		ammoLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Ammo Label");
-		purchaseLabel = GetNode<RichTextLabel>("/root/main_scene/GUI/Purchase Label");
+		pointLabel = GetNode<RichTextLabel>(rootPath + "GUI/Point Label");
+		gunLabel = GetNode<RichTextLabel>(rootPath + "GUI/Gun Label");
+		ammoLabel = GetNode<RichTextLabel>(rootPath + "GUI/Ammo Label");
+		purchaseLabel = GetNode<RichTextLabel>(rootPath + "GUI/Purchase Label");
 
-		reloadBar = GetNode<TextureProgressBar>("/root/main_scene/Player/Reload Bar");
-		infectionBar = GetNode<TextureProgressBar>("/root/main_scene/GUI/Infection Bar");
-		vignetteBox = GetNode<ColorRect>("/root/main_scene/GUI/Vignette");
+		reloadBar = GetNode<TextureProgressBar>(rootPath + "Player/Reload Bar");
+		infectionBar = GetNode<TextureProgressBar>(rootPath + "GUI/Infection Bar");
+		vignetteBox = GetNode<ColorRect>(rootPath + "GUI/Vignette");
 		hurtVignette = (ShaderMaterial)vignetteBox.Material;
-		gameOverScreen = GetNode<ColorRect>("/root/main_scene/GUI/Game Over");
-		gameOverButton = GetNode<TextureButton>("/root/main_scene/GUI/Game Over/TextureButton");
+		gameOverScreen = GetNode<ColorRect>(rootPath + "GUI/Game Over");
+		gameOverButton = GetNode<TextureButton>(rootPath + "GUI/Game Over/TextureButton");
 
 		// Set up ==
 		hurtVignette.SetShaderParameter("inner_radius", 1.0);

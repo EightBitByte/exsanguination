@@ -40,7 +40,7 @@ public partial class AudioManager : Node
 		buySound = GD.Load<AudioStreamMP3>("res://assets/buy.mp3");
 		pillSound = GD.Load<AudioStreamWav>("res://assets/pill.wav");
 
-		player = GetNode<Player>("/root/main_scene/Player");
+		player = GetNode<Player>("/root/MainScene/Player");
 
 		for (int i = 0; i < AudioPlayerLimit; ++i) {
 			audioStreamPlayerArray[i] = new AudioStreamPlayer2D();

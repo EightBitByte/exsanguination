@@ -16,8 +16,8 @@ public partial class Cure : Area2D
 
 	public override void _Ready()
 	{
-		AManager = GetNode<AudioManager>("/root/main_scene/Audio Manager");
-		GManager = GetNode<GUIManager>("/root/main_scene/GUI Manager");
+		AManager = GetNode<AudioManager>("/root/MainScene/Audio Manager");
+		GManager = GetNode<GUIManager>("/root/MainScene/GUI Manager");
 	}
 
 	public override void _Process(double delta)

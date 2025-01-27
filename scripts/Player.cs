@@ -26,7 +26,7 @@ public partial class Player : CharacterBody2D
 	/// <summary>The number of milliseconds in a second.</summary>
 	const int MILLIS = 1000;
 
-	private static readonly string MainScenePath = "/root/main_scene/";
+	private static readonly string MainScenePath = "/root/MainScene/";
 	private static readonly string GUIPath = MainScenePath + "GUI/";
 
 	[Export]

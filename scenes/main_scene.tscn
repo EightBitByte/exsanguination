@@ -144,7 +144,7 @@ source_geometry_group_name = &"navigation_polygon_source_group"
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oaj36"]
 size = Vector2(9.16441, 10.6356)
 
-[node name="main_scene" type="Node2D"]
+[node name="MainScene" type="Node2D"]
 
 [node name="Audio Manager" type="Node" parent="."]
 script = ExtResource("2_yod21")
