@@ -1,3 +1,5 @@
 # Godot 4+ specific ignores
 .godot/
 build
+*.csproj
+*.csproj.old
