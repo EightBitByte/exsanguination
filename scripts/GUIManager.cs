@@ -3,46 +3,27 @@
 // Manages the GUI elements, such as health, ammo, and purchase labels.
 
 using Godot;
-using System;
 
 public partial class GUIManager : Node
 {
-
-	private RichTextLabel pointLabel, gunLabel, ammoLabel, purchaseLabel;
-	private TextureProgressBar reloadBar, infectionBar;
-	private ColorRect vignetteBox, gameOverScreen;
-	private ShaderMaterial hurtVignette;
-	private TextureButton gameOverButton;
+	SharedData Global;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		// Load == 
-		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
-		pointLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Point Label");
-		gunLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Gun Label");
-		ammoLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Ammo Label");
-		purchaseLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Purchase Label");
+		Global = SharedData.Instance;
 
-		reloadBar = SceneNode.GetNode<TextureProgressBar>("./Player/Reload Bar");
-		infectionBar = SceneNode.GetNode<TextureProgressBar>("./GUI/Infection Bar");
-		vignetteBox = SceneNode.GetNode<ColorRect>("./GUI/Vignette");
-		hurtVignette = (ShaderMaterial)vignetteBox.Material;
-		gameOverScreen = SceneNode.GetNode<ColorRect>("./GUI/Game Over");
-		gameOverButton = SceneNode.GetNode<TextureButton>("./GUI/Game Over/TextureButton");
-
-		// Set up ==
-		hurtVignette.SetShaderParameter("inner_radius", 1.0);
-		vignetteBox.Visible = false;
-		reloadBar.Visible = false;
-		purchaseLabel.Visible = false;
+		Global.hurtVignette.SetShaderParameter("inner_radius", 1.0);
+		Global.vignetteBox.Visible = false;
+		Global.reloadBar.Visible = false;
+		Global.purchaseLabel.Visible = false;
 	}
 
 	/// <summary>Updates the points label.</summary>
 	/// <param name="points">The number of points held by the player.</param>
 	public void UpdatePoints(int points) {
 		string cents = points % 100 == 0 ? "00" : (points % 100).ToString();
-		pointLabel.Text = $"${points/100}.{cents}";
+		Global.pointLabel.Text = $"${points/100}.{cents}";
 	}
 
 
@@ -58,12 +39,12 @@ public partial class GUIManager : Node
 		}
 
 		if (percentHP == 1.0) {
-			vignetteBox.Visible = false;
+			Global.vignetteBox.Visible = false;
 		} else {
-			vignetteBox.Visible = true;
+			Global.vignetteBox.Visible = true;
 		}
 
-		hurtVignette.SetShaderParameter("inner_radius", strength);
+		Global.hurtVignette.SetShaderParameter("inner_radius", strength);
 	}
 
 
@@ -73,7 +54,7 @@ public partial class GUIManager : Node
 	/// <param name="magazine">The number of bullets in the magazine of the current weapon.</param>
 	/// <param name="reserve">The number of bullets in reserve currently.</param>
 	public void UpdateAmmo (Ammo currentAmmo) {
-		ammoLabel.Text = $"{currentAmmo.AmmoInMagazine} / {currentAmmo.AmmoInReserve}";
+		Global.ammoLabel.Text = $"{currentAmmo.AmmoInMagazine} / {currentAmmo.AmmoInReserve}";
 	}
 
 
@@ -84,54 +65,54 @@ public partial class GUIManager : Node
 	public void ShowPurchaseLabel (int cost) {
 		string cents = cost % 100 == 0 ? "00" : (cost % 100).ToString();
 
-		purchaseLabel.Text = $"[F] Clear for ${cost/100}.{cents}";
-		purchaseLabel.Visible = true;
+		Global.purchaseLabel.Text = $"[F] Clear for ${cost/100}.{cents}";
+		Global.purchaseLabel.Visible = true;
 	}
 
 
 	public void HidePurchaseLabel () {
-		purchaseLabel.Visible = false;
+		Global.purchaseLabel.Visible = false;
 	}
 
 
 	public void ShowReloadBar () {
-		reloadBar.Visible = true;
+		Global.reloadBar.Visible = true;
 	}
 
 
 	public void HideReloadBar () {
-		reloadBar.Visible = false;
+		Global.reloadBar.Visible = false;
 	}
 
 
 	public void UpdateReloadBar (double percent) {
-		reloadBar.Value = percent;
+		Global.reloadBar.Value = percent;
 	}
 
 
 	public void UpdateGunLabel (string gunName) {
-		gunLabel.Text = gunName;
+		Global.gunLabel.Text = gunName;
 	}
 
 
 	public void UpdateInfectionBar (double progress) {
-		infectionBar.Value = progress;
+		Global.infectionBar.Value = progress;
 	}
 
 
 	public void ShowLabel(string text) {
-		purchaseLabel.Visible = true;
-		purchaseLabel.Text = text;
+		Global.purchaseLabel.Visible = true;
+		Global.purchaseLabel.Text = text;
 	}
 
 
 	public void HideLabel() {
-		purchaseLabel.Visible = false;
+		Global.purchaseLabel.Visible = false;
 	}
 
 
 	public void ShowGameOver() {
-		gameOverScreen.Visible = true;
+		Global.gameOverScreen.Visible = true;
 	}
 
 }
