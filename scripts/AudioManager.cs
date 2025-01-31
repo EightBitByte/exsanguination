@@ -4,6 +4,7 @@
 
 using Godot;
 using System;
+using System.Linq;
 
 public enum Sound {
 	PistolShot,
@@ -32,7 +33,7 @@ public partial class AudioManager : Node
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 
 		pistolShot = GD.Load<AudioStreamWav>("res://assets/pistolshot.wav");
 		rifleShot = GD.Load<AudioStreamWav>("res://assets/rifleshot.wav");
@@ -45,8 +46,8 @@ public partial class AudioManager : Node
 		player = SceneNode.GetNode<Player>("./Player");
 
 		for (int i = 0; i < AudioPlayerLimit; ++i) {
-            audioStreamPlayerArray[i] = new AudioStreamPlayer2D { GlobalPosition = player.GlobalPosition };
-            player.AddChild(audioStreamPlayerArray[i]);
+			audioStreamPlayerArray[i] = new AudioStreamPlayer2D { GlobalPosition = player.GlobalPosition };
+			player.AddChild(audioStreamPlayerArray[i]);
 		}
 	}
 

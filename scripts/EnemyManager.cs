@@ -45,7 +45,7 @@ public partial class EnemyManager : Node
 
 	public override void _Ready () {
 		// Load resources
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		ENEMY_SCENE = GD.Load<PackedScene>("res://scenes/enemy.tscn");
 		spawnTimer = GetNode<Timer>("./Spawn Timer");
 		safeTimer = GetNode<Timer>("./Safe Timer");

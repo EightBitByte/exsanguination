@@ -548,41 +548,35 @@ script = ExtResource("1_yk2pb")
 [node name="Starting Room Barrier" parent="." instance=ExtResource("9_bxsr3")]
 position = Vector2(0, 325)
 scale = Vector2(0.220325, 0.220325)
-BarrierName = "Spawn Room"
 
 [node name="North Room Barrier" parent="." instance=ExtResource("9_bxsr3")]
 position = Vector2(1, -1989)
 rotation = 3.14159
 scale = Vector2(0.220325, 0.220325)
 Cost = 800
-BarrierName = "North Room"
 
 [node name="Middle Room Left" parent="." instance=ExtResource("9_bxsr3")]
 position = Vector2(-599, -800)
 rotation = 1.5708
 scale = Vector2(0.306957, 0.306957)
 Cost = 800
-BarrierName = "North Room"
 
 [node name="Middle Room Right" parent="." instance=ExtResource("9_bxsr3")]
 position = Vector2(602, -800)
 rotation = 1.5708
 scale = Vector2(0.306957, 0.306957)
 Cost = 800
-BarrierName = "North Room"
 
 [node name="North Hallway Barrier" parent="." instance=ExtResource("9_bxsr3")]
 position = Vector2(796, -2403)
 scale = Vector2(0.309821, 0.309821)
 Cost = 500
-BarrierName = "North Hallway"
 
 [node name="East Hallway Barrier" parent="." instance=ExtResource("9_bxsr3")]
 position = Vector2(1039, -2184)
 rotation = 1.5708
 scale = Vector2(0.309821, 0.309821)
 Cost = 1000
-BarrierName = "East Hallway"
 
 [node name="Shop Area" type="Area2D" parent="."]
 script = ExtResource("18_3g30q")

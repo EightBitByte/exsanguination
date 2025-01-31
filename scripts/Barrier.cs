@@ -34,7 +34,7 @@ public partial class Barrier : StaticBody2D
 
 	public override void _Ready()
 	{
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		EManager = SceneNode.GetNode<EnemyManager>("./Enemy Manager");
 		GManager = SceneNode.GetNode<GUIManager>("./GUI Manager");
 		AManager = SceneNode.GetNode<AudioManager>("./Audio Manager");

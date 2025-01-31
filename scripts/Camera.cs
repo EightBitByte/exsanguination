@@ -15,7 +15,7 @@ public partial class Camera : Camera2D
 
 	public override void _Ready()
 	{
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		MakeCurrent();
 		followTarget = SceneNode.GetNode<Node2D>("./Player");
 	}

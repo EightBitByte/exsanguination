@@ -18,19 +18,18 @@ public partial class Shop : Area2D
 
 	private bool playerInShopArea = false;
 
-	private static readonly string rootPath = "/root/MainScene/";
-
 	public override void _Ready()
 	{
-		player = GetNode<Player>(rootPath + "Player");
-		ShopGUI = GetNode<TextureRect>(rootPath + "GUI/Shop");
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
+		player = SceneNode.GetNode<Player>("Player");
+		ShopGUI = SceneNode.GetNode<TextureRect>("GUI/Shop");
 
-		GManager = GetNode<GUIManager>(rootPath + "GUI Manager");
-		AManager = GetNode<AudioManager>(rootPath + "Audio Manager");
+		GManager = SceneNode.GetNode<GUIManager>("GUI Manager");
+		AManager = SceneNode.GetNode<AudioManager>("Audio Manager");
 
-		Buys[0] = GetNode<TextureButton>(rootPath + "GUI/Shop/Weapon I/Button");
-		Buys[1] = GetNode<TextureButton>(rootPath + "GUI/Shop/Weapon II/Button");
-		Buys[2] = GetNode<TextureButton>(rootPath + "GUI/Shop/Weapon III/Button");
+		Buys[0] = SceneNode.GetNode<TextureButton>("GUI/Shop/Weapon I/Button");
+		Buys[1] = SceneNode.GetNode<TextureButton>("GUI/Shop/Weapon II/Button");
+		Buys[2] = SceneNode.GetNode<TextureButton>("GUI/Shop/Weapon III/Button");
 
 		Buys[0].Pressed += () => {PlayerBuys(0);};
 		Buys[1].Pressed += () => {PlayerBuys(1);};

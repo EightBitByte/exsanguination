@@ -14,13 +14,11 @@ public partial class GUIManager : Node
 	private ShaderMaterial hurtVignette;
 	private TextureButton gameOverButton;
 
-	private string rootPath = "/root/MainScene/";
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		// Load == 
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		pointLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Point Label");
 		gunLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Gun Label");
 		ammoLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Ammo Label");

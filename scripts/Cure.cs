@@ -16,7 +16,7 @@ public partial class Cure : Area2D
 
 	public override void _Ready()
 	{
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		AManager = SceneNode.GetNode<AudioManager>("./Audio Manager");
 		GManager = SceneNode.GetNode<GUIManager>("./GUI Manager");
 	}

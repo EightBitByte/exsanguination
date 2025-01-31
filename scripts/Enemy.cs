@@ -66,7 +66,7 @@ public partial class Enemy : CharacterBody2D
 
 
 	public override void _Ready () {
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		Player = SceneNode.GetNode<CharacterBody2D>("./Player");
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);

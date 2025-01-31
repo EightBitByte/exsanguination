@@ -95,9 +95,10 @@ public partial class Player : CharacterBody2D
 	private GUIManager GManager;
 	private AudioManager AManager;
 
+
 	public override void _Ready() {
 		// Load resources
-		Node2D SceneNode = GetNode("/root").GetChild<Node2D>(0);
+		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		GManager = SceneNode.GetNode<GUIManager>("./GUI Manager");
 		AManager = SceneNode.GetNode<AudioManager>("./Audio Manager");
 
@@ -120,7 +121,10 @@ public partial class Player : CharacterBody2D
 		GiveWeapon(WeaponId.ColtM1911, 0);
 		GiveWeapon(WeaponId.None, 1);
 		SetWeapon(0);
+
+		// SignalSingleton.Instance.MyVariable = 2;
 	}
+
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process (double delta) {
