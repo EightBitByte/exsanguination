@@ -88,30 +88,11 @@ public partial class Player : CharacterBody2D
 	private Vector2 pistolPos = new(100, -372), riflePos = new(108, -260);
 	private Vector2 pistolScale = new(0.25f, -0.25f), rifleScale = new(0.75f, -0.75f);
 
-	private PackedScene bulletScene;
-	private Sprite2D characterSpriteNode, weaponSpriteNode, underarmSpriteNode; 
-	private Texture2D pistolStance, rifleStance, unarmedStance, enemyTexture;
-
-	private GUIManager GManager;
-	private AudioManager AManager;
-
+	SharedData Global;
 
 	public override void _Ready() {
 		// Load resources
-		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
-		GManager = SceneNode.GetNode<GUIManager>("./GUI Manager");
-		AManager = SceneNode.GetNode<AudioManager>("./Audio Manager");
-
-		characterSpriteNode = SceneNode.GetNode<Sprite2D>("./Player/Player Sprite");
-		weaponSpriteNode = SceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Weapon Sprite");
-		underarmSpriteNode = SceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Underarm");
-
-		pistolStance = GD.Load<Texture2D>("res://assets/Stance-Pistol.svg");
-		rifleStance = GD.Load<Texture2D>("res://assets/Stance-Rifle.svg");
-		unarmedStance = GD.Load<Texture2D>("res://assets/Stance-Unarmed.svg");
-		enemyTexture = GD.Load<Texture2D>("res://assets/Enemy Sprite.svg");
-
-		bulletScene = GD.Load<PackedScene>("res://scenes/bullet.tscn");
+		Global = SharedData.Instance;
 
 		// Set up weapons
 		ammunition[0] = new();
@@ -121,8 +102,6 @@ public partial class Player : CharacterBody2D
 		GiveWeapon(WeaponId.ColtM1911, 0);
 		GiveWeapon(WeaponId.None, 1);
 		SetWeapon(0);
-
-		// SignalSingleton.Instance.MyVariable = 2;
 	}
 
 
@@ -134,7 +113,7 @@ public partial class Player : CharacterBody2D
 		Vector2 mousePos = GetViewport().GetMousePosition() - viewportCenter;
 		double viewAngle = Math.Atan2(mousePos.Y, mousePos.X);
 
-		characterSpriteNode.Rotation = (float)viewAngle + (float)viewOffset;
+		Global.CharacterSpriteNode.Rotation = (float)viewAngle + (float)viewOffset;
 
 		CheckShootingInput();
         CheckReloadInput(delta);
@@ -146,10 +125,11 @@ public partial class Player : CharacterBody2D
 		Vector2 moveDirection = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 		timeSinceDamageMs += delta;
 
+		// Start regen
 		if (timeSinceDamageMs > damageHealCooldownMs / MILLIS && HP < 100) {
 			HP = HP + HPRegenAmount > MaxHP ? MaxHP : HP + HPRegenAmount;
-			GManager.AdjustHurtVignette(1.0 * HP / MaxHP);
 			timeSinceDamageMs = (damageHealCooldownMs - HPRegenDelayMs) / MILLIS;
+			EmitSignal(SharedData.SignalName.PlayerHurt, 1.0 * HP / MaxHP);
 		}
 		
 		Velocity = moveDirection * Speed;
@@ -172,7 +152,7 @@ public partial class Player : CharacterBody2D
 		} else if (holdingAWeapon && ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || 
 				(heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire") 
 				&& shootingEnabled))) {
-			AManager.PlaySound(Sound.DryFire);
+			EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.DryFire);
 		}
 
 	}
@@ -186,17 +166,18 @@ public partial class Player : CharacterBody2D
 
 		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty 
                 && !isReloading && shootingEnabled) {
-			GManager.UpdateReloadBar(0);
-			GManager.ShowReloadBar();
 			isReloading = true;
-			AManager.PlaySound(heldWeapons[activeWeaponSlot].Stance == WeaponStance.Pistol ? 
-								Sound.PistolReload : Sound.RifleReload);
+			EmitSignal(SharedData.SignalName.ToggleReloadBar, true);
+			EmitSignal(SharedData.SignalName.UpdateReloadBar, 0);
+			EmitSignal(SharedData.SignalName.PlaySound, 
+				(int)Global.StanceToSound(heldWeapons[activeWeaponSlot].Stance));
 		}
 
 		if (isReloading && reloadTimeElapsed < 
                 heldWeapons[activeWeaponSlot].ReloadTime) {
 			reloadTimeElapsed += delta;
-			GManager.UpdateReloadBar(reloadTimeElapsed / heldWeapons[activeWeaponSlot].ReloadTime * 100);
+			EmitSignal(SharedData.SignalName.UpdateReloadBar, 
+				reloadTimeElapsed / heldWeapons[activeWeaponSlot].ReloadTime * 100);
 
 		} else if (isReloading) {
 			ReloadWeapon();
@@ -219,7 +200,7 @@ public partial class Player : CharacterBody2D
     private void CancelReload() {
         isReloading = false;
         reloadTimeElapsed = 0;
-        GManager.HideReloadBar();
+		EmitSignal(SharedData.SignalName.ToggleReloadBar, false);
     }
 
 
@@ -229,7 +210,7 @@ public partial class Player : CharacterBody2D
 	/// <param name="points">The number of points to add or subtract.</param>
 	public void AddPoints (int points) {
 		Points += points;
-		GManager.UpdatePoints(Points);
+		EmitSignal(SharedData.SignalName.UpdatePointLabel, Points);
 	}
 
 
@@ -242,7 +223,7 @@ public partial class Player : CharacterBody2D
 			infectionProgress += 0.01f;
 
 		HP = HP < attackDamage ? 0 : HP - attackDamage;
-		GManager.AdjustHurtVignette(1.0 * HP / MaxHP);
+		EmitSignal(SharedData.SignalName.PlayerHurt, 1.0 * HP / MaxHP);
 
 		if (HP <= 0)
 			GameOver();
@@ -251,12 +232,13 @@ public partial class Player : CharacterBody2D
 	}
 
 
+	// TODO: 🚚 Player.cs -> SharedData.cs
 	/// <summary>Load the JSON file associated with the weapon.</summary>
 	private void LoadWeaponsJson() {
 		Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>> jsonDict = 
             (Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>>) Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
 
-		foreach (System.Collections.Generic.KeyValuePair<String, Godot.Collections.Dictionary<String, String>> pair in jsonDict) {
+		foreach (KeyValuePair<string, Godot.Collections.Dictionary<string, string>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
 
 			Weapon addedWeapon = new Weapon(int.Parse(pair.Key), weaponDict);
@@ -280,25 +262,26 @@ public partial class Player : CharacterBody2D
 	/// Shoots a bullet from the player's weapon.
 	/// </summary>
 	public void ShootBullet() {
-		Bullet bullet = bulletScene.Instantiate<Bullet>();
+		Bullet bullet = Global.BulletScene.Instantiate<Bullet>();
 		bullet.BulletDamage = heldWeapons[activeWeaponSlot].BulletDamage;
 
 		// Position bullet to come out of front of player
-		float rotationOffset = characterSpriteNode.Rotation - (float)viewOffset;
+		float rotationOffset = Global.CharacterSpriteNode.Rotation - (float)viewOffset;
 		Vector2 bulletOffset = new Vector2(120, 0).Rotated(rotationOffset);
 		bullet.Position = Position + bulletOffset;
 		bullet.Rotation = rotationOffset;
 
 		ammunition[activeWeaponSlot].AmmoInMagazine -= 1;
-		GManager.UpdateAmmo(ammunition[activeWeaponSlot]);
+		EmitUpdateAmmoSignal();
 
 		GetTree().Root.AddChild(bullet);
 		firingCooldown = 0;
+		
+		Sound soundToEmit = heldWeapons[activeWeaponSlot].Stance == WeaponStance.Pistol
+								? Sound.PistolShot
+								: Sound.RifleShot;
 
-		if (heldWeapons[activeWeaponSlot].Stance == WeaponStance.Pistol)
-			AManager.PlaySound(Sound.PistolShot);
-		else
-			AManager.PlaySound(Sound.RifleShot);
+		EmitSignal(SharedData.SignalName.PlaySound, (int)soundToEmit);
 	}
 
 
@@ -315,8 +298,8 @@ public partial class Player : CharacterBody2D
 		ammunition[activeWeaponSlot].AmmoInReserve -= amtToReload;
 
 		// Update HUD
-		GManager.UpdateAmmo(ammunition[activeWeaponSlot]);
-		GManager.HideReloadBar();
+		EmitUpdateAmmoSignal();
+		EmitSignal(SharedData.SignalName.ToggleReloadBar, false);
 
 		isReloading = false;
 		reloadTimeElapsed = 0;
@@ -347,30 +330,35 @@ public partial class Player : CharacterBody2D
 	private void SetWeapon (int slotNum) {
 		activeWeaponSlot = slotNum;
 		RateOfFireMs = 1 / heldWeapons[activeWeaponSlot].RateOfFire;
-		GManager.UpdateGunLabel(heldWeapons[activeWeaponSlot].Name);
+		EmitSignal(SharedData.SignalName.UpdateWeaponLabel, 
+					heldWeapons[activeWeaponSlot].Name);
 
-		if (heldWeapons[activeWeaponSlot].Stance == WeaponStance.Pistol) {
-			characterSpriteNode.Texture = pistolStance;
-			weaponSpriteNode.Scale = pistolScale;
-			weaponSpriteNode.Position = pistolPos;
-			weaponSpriteNode.Visible = true;
-			underarmSpriteNode.Visible = false;
-		} else if (heldWeapons[activeWeaponSlot].Stance == WeaponStance.Rifle) {
-			characterSpriteNode.Texture = rifleStance;
-			weaponSpriteNode.Scale = rifleScale;
-			weaponSpriteNode.Position = riflePos;
-			weaponSpriteNode.Visible = true;
-			underarmSpriteNode.Visible = true;
-		} else {
-			characterSpriteNode.Texture = unarmedStance;
-			weaponSpriteNode.Visible = false;
-			underarmSpriteNode.Visible = false;
+		switch (heldWeapons[activeWeaponSlot].Stance) {
+			case WeaponStance.Pistol:
+				Global.CharacterSpriteNode.Texture = Global.PistolStance;
+				Global.WeaponSpriteNode.Scale = pistolScale;
+				Global.WeaponSpriteNode.Position = pistolPos;
+				Global.WeaponSpriteNode.Visible = true;
+				Global.UnderarmSpriteNode.Visible = false;
+				break;
+			case WeaponStance.Rifle:
+				Global.CharacterSpriteNode.Texture = Global.RifleStance;
+				Global.WeaponSpriteNode.Scale = rifleScale;
+				Global.WeaponSpriteNode.Position = riflePos;
+				Global.WeaponSpriteNode.Visible = true;
+				Global.UnderarmSpriteNode.Visible = true;
+				break;
+			default:
+				Global.CharacterSpriteNode.Texture = Global.UnarmedStance;
+				Global.WeaponSpriteNode.Visible = false;
+				Global.UnderarmSpriteNode.Visible = false;
+				break;
 		}
 
 		if (heldWeapons[activeWeaponSlot].Name != "None")
-			weaponSpriteNode.Texture = weaponTextures[heldWeapons[activeWeaponSlot].ID - 1];
+			Global.WeaponSpriteNode.Texture = weaponTextures[heldWeapons[activeWeaponSlot].ID - 1];
 
-		GManager.UpdateAmmo(ammunition[activeWeaponSlot]);
+		EmitUpdateAmmoSignal();
 	}
 
 
@@ -383,29 +371,40 @@ public partial class Player : CharacterBody2D
 		else
 			infectionProgress += 0.01f;
 
-		GManager.UpdateInfectionBar(infectionProgress * 100);
+		EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
+					infectionProgress * 100);
 	}
 
 
-	// TODO: Create custom signal for this.
-	/// <summary>
-	/// Triggers the game over for the player.
-	/// </summary>
 	private void GameOver() {
-		GManager.ShowGameOver();
+		EmitSignal(SharedData.SignalName.GameOver);
 		shootingEnabled = false;
 		movementEnabled = false;
 		
-		characterSpriteNode.Texture = enemyTexture;
-		weaponSpriteNode.Visible = false;
+		Global.CharacterSpriteNode.Texture = Global.EnemyTexture;
+		Global.WeaponSpriteNode.Visible = false;
 	}
+
 
 	/// <summary>
 	/// On consumption of a cure, resets the infection progression.
 	/// </summary>
 	private void OnCureConsume() {
 		infectionProgress = 0f;
-		GManager.UpdateInfectionBar(infectionProgress * 100);
+		EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
+					infectionProgress * 100);
+		EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Pill);
 	}
 
+
+	private void EmitUpdateAmmoSignal() {
+		EmitSignal(SharedData.SignalName.UpdateAmmoLabel, 
+					ammunition[activeWeaponSlot].AmmoInMagazine,
+					ammunition[activeWeaponSlot].AmmoInReserve);
+	}
+
+
+	private void ToggleShooting(bool isEnabled) {
+		shootingEnabled = isEnabled;
+	}
 }

@@ -7,26 +7,21 @@ using System;
 
 public partial class Cure : Area2D
 {
-	[Signal]
-	public delegate void CureConsumeEventHandler();
 
 	private bool playerInCureArea = false;
-	private AudioManager AManager;
-	private GUIManager GManager;
+
+	private SharedData Global;
 
 	public override void _Ready()
 	{
-		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
-		AManager = SceneNode.GetNode<AudioManager>("./Audio Manager");
-		GManager = SceneNode.GetNode<GUIManager>("./GUI Manager");
+		Global = SharedData.Instance;
 	}
 
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("buy") && playerInCureArea) {
-			EmitSignal(SignalName.CureConsume);
-			GManager.HideLabel();
-			AManager.PlaySound(Sound.Pill);
+			EmitSignal(SharedData.SignalName.CureConsume);
+			EmitSignal(SharedData.SignalName.HideActiveLabel);
 			QueueFree();
 		}
 	}
@@ -34,7 +29,7 @@ public partial class Cure : Area2D
 	private void OnPlayerEnteredCureArea(Node2D body)
 	{
 		if (body.Name == "Player") {
-			GManager.ShowLabel("[F] Stabilize Infection");
+			EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Stabilize Infection");
 			playerInCureArea = true;
 		}
 	}
@@ -44,7 +39,7 @@ public partial class Cure : Area2D
 	{
 		if (body.Name == "Player") {
 			playerInCureArea = false;
-			GManager.HideLabel();
+			EmitSignal(SharedData.SignalName.HideActiveLabel);
 		}
 	}
 }

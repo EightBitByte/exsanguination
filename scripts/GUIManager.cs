@@ -13,21 +13,24 @@ public partial class GUIManager : Node
 	{
 		Global = SharedData.Instance;
 
-		Global.hurtVignette.SetShaderParameter("inner_radius", 1.0);
-		Global.vignetteBox.Visible = false;
-		Global.reloadBar.Visible = false;
-		Global.purchaseLabel.Visible = false;
+		Global.HurtVignette.SetShaderParameter("inner_radius", 1.0);
+		Global.VignetteBox.Visible = false;
+		Global.ReloadBar.Visible = false;
+		Global.ActiveLabel.Visible = false;
 	}
+
 
 	/// <summary>Updates the points label.</summary>
 	/// <param name="points">The number of points held by the player.</param>
 	public void UpdatePoints(int points) {
 		string cents = points % 100 == 0 ? "00" : (points % 100).ToString();
-		Global.pointLabel.Text = $"${points/100}.{cents}";
+		Global.PointLabel.Text = $"${points/100}.{cents}";
 	}
 
 
-	/// <summary>Adjusts the hurt vignette (red around edges of screen) on the GUI.</summary>
+	/// <summary>
+	/// Adjusts the hurt vignette (red around edges of screen) on the GUI.
+	/// </summary>
 	public void AdjustHurtVignette (double percentHP) {
 		double strength;
 
@@ -39,12 +42,12 @@ public partial class GUIManager : Node
 		}
 
 		if (percentHP == 1.0) {
-			Global.vignetteBox.Visible = false;
+			Global.VignetteBox.Visible = false;
 		} else {
-			Global.vignetteBox.Visible = true;
+			Global.VignetteBox.Visible = true;
 		}
 
-		Global.hurtVignette.SetShaderParameter("inner_radius", strength);
+		Global.HurtVignette.SetShaderParameter("inner_radius", strength);
 	}
 
 
@@ -53,66 +56,51 @@ public partial class GUIManager : Node
 	/// </summary>
 	/// <param name="magazine">The number of bullets in the magazine of the current weapon.</param>
 	/// <param name="reserve">The number of bullets in reserve currently.</param>
-	public void UpdateAmmo (Ammo currentAmmo) {
-		Global.ammoLabel.Text = $"{currentAmmo.AmmoInMagazine} / {currentAmmo.AmmoInReserve}";
+	public void UpdateAmmo (int ammoInMagazine, int ammoInReserve) {
+		Global.AmmoLabel.Text = $"{ammoInMagazine} / {ammoInReserve}";
 	}
 
 
-	/// <summary>
-	/// Show the purchase label for the given barrier at <c>cost</c> cost.
-	/// </summary>
-	/// <param name="cost">The amount to display on the label.</param>
-	public void ShowPurchaseLabel (int cost) {
+	public void ShowActiveLabel (int cost) {
 		string cents = cost % 100 == 0 ? "00" : (cost % 100).ToString();
 
-		Global.purchaseLabel.Text = $"[F] Clear for ${cost/100}.{cents}";
-		Global.purchaseLabel.Visible = true;
+		Global.ActiveLabel.Text = $"[F] Clear for ${cost/100}.{cents}";
+		Global.ActiveLabel.Visible = true;
+	}
+
+	public void ShowActiveLabel (string activeText) {
+		Global.ActiveLabel.Text = activeText;
+		Global.ActiveLabel.Visible = true;
 	}
 
 
-	public void HidePurchaseLabel () {
-		Global.purchaseLabel.Visible = false;
+	public void HideActiveLabel () {
+		Global.ActiveLabel.Visible = false;
 	}
 
 
-	public void ShowReloadBar () {
-		Global.reloadBar.Visible = true;
+	public void ToggleReloadBar (bool enabled) {
+		Global.ReloadBar.Visible = enabled;
 	}
 
 
-	public void HideReloadBar () {
-		Global.reloadBar.Visible = false;
+	public void UpdateReloadBar (double reloadProgress) {
+		Global.ReloadBar.Value = reloadProgress;
 	}
 
 
-	public void UpdateReloadBar (double percent) {
-		Global.reloadBar.Value = percent;
+	public void UpdateWeaponLabel (string weaponName) {
+		Global.WeaponLabel.Text = weaponName;
 	}
 
 
-	public void UpdateGunLabel (string gunName) {
-		Global.gunLabel.Text = gunName;
+	public void UpdateInfectionBar (double infectionProgress) {
+		Global.InfectionBar.Value = infectionProgress;
 	}
 
 
-	public void UpdateInfectionBar (double progress) {
-		Global.infectionBar.Value = progress;
-	}
-
-
-	public void ShowLabel(string text) {
-		Global.purchaseLabel.Visible = true;
-		Global.purchaseLabel.Text = text;
-	}
-
-
-	public void HideLabel() {
-		Global.purchaseLabel.Visible = false;
-	}
-
-
-	public void ShowGameOver() {
-		Global.gameOverScreen.Visible = true;
+	public void ShowGameOver () {
+		Global.GameOverScreen.Visible = true;
 	}
 
 }

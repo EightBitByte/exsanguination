@@ -16,7 +16,7 @@ public partial class EnemyManager : Node
 	private int Round = 1;
 
 	[Export]
-	private int SpawnLimit = 5;			// Max infected on map at one time
+	private int MaxInfectedActive = 5;			// Max infected on map at one time
 
 	[Export]
 	private int StartingInfectedHP = 30;
@@ -107,7 +107,7 @@ public partial class EnemyManager : Node
 	/// </summary>
 	private void OnSpawnTimerTick () {
 		// If the amount spawned doesn't exceed the spawn limit, spawn
-		if (infectedAlive < SpawnLimit && infectedSpawned < Round * 1.5 + 5) {
+		if (infectedAlive < MaxInfectedActive && ReachedInfectedSpawnLimit()) {
 			++infectedAlive;
 			++infectedSpawned;
 
@@ -131,8 +131,14 @@ public partial class EnemyManager : Node
 		spawnTimer.Start();
 	}
 
+
 	private void OnEnemyKill() {
 		--infectedAlive;
 		++killedInfected;
+	}
+
+	
+	private bool ReachedInfectedSpawnLimit() {
+		return infectedSpawned < Round * 1.5 + 5;
 	}
 }

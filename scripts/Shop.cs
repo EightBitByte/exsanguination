@@ -10,22 +10,14 @@ public partial class Shop : Area2D
 {
 	// TODO: Make the shop dynamically update (add JSON?)
 	private TextureButton[] Buys = new TextureButton[3];
-	private TextureRect ShopGUI;
-	private Player player;
-
-	private GUIManager GManager;
-	private AudioManager AManager;
 
 	private bool playerInShopArea = false;
+	private SharedData Global;
 
 	public override void _Ready()
 	{
 		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
-		player = SceneNode.GetNode<Player>("Player");
-		ShopGUI = SceneNode.GetNode<TextureRect>("GUI/Shop");
-
-		GManager = SceneNode.GetNode<GUIManager>("GUI Manager");
-		AManager = SceneNode.GetNode<AudioManager>("Audio Manager");
+		Global = SharedData.Instance;
 
 		Buys[0] = SceneNode.GetNode<TextureButton>("GUI/Shop/Weapon I/Button");
 		Buys[1] = SceneNode.GetNode<TextureButton>("GUI/Shop/Weapon II/Button");
@@ -39,19 +31,19 @@ public partial class Shop : Area2D
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("buy") && playerInShopArea) {
-			ShopGUI.Visible = true;
-			GManager.HideLabel();
+			Global.ShopGUI.Visible = true;
+			EmitSignal(SharedData.SignalName.HideActiveLabel);
 		}
 
-		if (ShopGUI.Visible) {
+		if (Global.ShopGUI.Visible) {
 			SetActiveStatusOfButton(500, Buys[0]);
 			SetActiveStatusOfButton(1000, Buys[1]);
 			SetActiveStatusOfButton(2000, Buys[2]);
 
 			if (Input.IsActionJustPressed("exit")) {
-				ShopGUI.Visible = false;
-				GManager.ShowLabel("[F] Open Shop");
-				player.shootingEnabled = true;
+				Global.ShopGUI.Visible = false;
+				EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Open Shop");
+				EmitSignal(SharedData.SignalName.ToggleShooting, true);
 			}
 		}
 	}
@@ -63,13 +55,13 @@ public partial class Shop : Area2D
 	/// <param name="cost">The number of points the player must have to purchase this item.</param>
 	/// <param name="button">A reference to the button to disable/enable.</param>
 	private void SetActiveStatusOfButton(int cost, TextureButton button) {
-		button.Disabled = !player.HasEnoughPoints(cost);
+		button.Disabled = !Global.PlayerNode.HasEnoughPoints(cost);
 	}
 
 	private void OnShopEnter(Node2D body) {
 		if (body.Name == "Player") {
-			GManager.ShowLabel("[F] Open Shop");
-			player.shootingEnabled = false;
+			EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Open Shop");
+			EmitSignal(SharedData.SignalName.ToggleShooting, false);
 			playerInShopArea = true;
 		}
 	}
@@ -77,29 +69,31 @@ public partial class Shop : Area2D
 	private void OnShopExit(Node2D body) {
 		if (body.Name == "Player") {
 			playerInShopArea = false;
-			GManager.HideLabel();
-			player.shootingEnabled = true;
-			ShopGUI.Visible = false;
+			EmitSignal(SharedData.SignalName.HideActiveLabel);
+			EmitSignal(SharedData.SignalName.ToggleShooting, true);
+			Global.ShopGUI.Visible = false;
 		}
 	}
 
 	private void PlayerBuys(int buttonIdx) {
 		switch (buttonIdx) {
 			case 0:
-				player.GiveWeapon(WeaponId.ColtM1911);
-				player.AddPoints(-500);
+				EmitSignal(SharedData.SignalName.GiveWeapon, 
+							(int)WeaponId.ColtM1911);
+				EmitSignal(SharedData.SignalName.ModifyPoints, -500);
 				break;
 			case 1:
-				player.GiveWeapon(WeaponId.M4Carbine);
-				player.AddPoints(-1000);
+				EmitSignal(SharedData.SignalName.GiveWeapon, 
+							(int)WeaponId.M4Carbine);
+				EmitSignal(SharedData.SignalName.ModifyPoints, -1000);
 				break;
 			case 2:
-				// TODO: Give the player a cure. Preferably, through a signal.
-				player.AddPoints(-2000);
+				EmitSignal(SharedData.SignalName.CureConsume);
+				EmitSignal(SharedData.SignalName.ModifyPoints, -2000);
 				break;
 		}
 
-		AManager.PlaySound(Sound.Buy);
+		EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
 	}
 }
 

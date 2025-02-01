@@ -25,57 +25,47 @@ public partial class AudioManager : Node
 	private int currentAudioPlayerIdx = 0;
 
 	private AudioStreamPlayer2D[] audioStreamPlayerArray = new AudioStreamPlayer2D[10];
-	private AudioStreamWav pistolShot, rifleShot, dryFire, pillSound;
-	private AudioStreamMP3 pistolReload, rifleReload, buySound;
 
-	private Player player;
+	private SharedData Global;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
-
-		pistolShot = GD.Load<AudioStreamWav>("res://assets/pistolshot.wav");
-		rifleShot = GD.Load<AudioStreamWav>("res://assets/rifleshot.wav");
-		pistolReload = GD.Load<AudioStreamMP3>("res://assets/pistolreload.mp3");
-		rifleReload = GD.Load<AudioStreamMP3>("res://assets/riflereload.mp3");
-		dryFire = GD.Load<AudioStreamWav>("res://assets/dryfire.wav");
-		buySound = GD.Load<AudioStreamMP3>("res://assets/buy.mp3");
-		pillSound = GD.Load<AudioStreamWav>("res://assets/pill.wav");
-
-		player = SceneNode.GetNode<Player>("./Player");
+		Global = SharedData.Instance;
 
 		for (int i = 0; i < AudioPlayerLimit; ++i) {
-			audioStreamPlayerArray[i] = new AudioStreamPlayer2D { GlobalPosition = player.GlobalPosition };
-			player.AddChild(audioStreamPlayerArray[i]);
+			audioStreamPlayerArray[i] = new AudioStreamPlayer2D 
+				{ GlobalPosition = Global.PlayerNode.GlobalPosition };
+			Global.PlayerNode.AddChild(audioStreamPlayerArray[i]);
 		}
 	}
 
-	public void PlaySound(Sound sound) {
+	public void PlaySound(int soundID) {
 		currentAudioPlayerIdx = (currentAudioPlayerIdx + 1) % AudioPlayerLimit;
-		AudioStreamPlayer2D currentAudioPlayer2D = audioStreamPlayerArray[currentAudioPlayerIdx];
+		AudioStreamPlayer2D currentAudioPlayer2D = 
+			audioStreamPlayerArray[currentAudioPlayerIdx];
 
-		switch (sound) {
+		switch ((Sound)soundID) {
 			case Sound.PistolShot:
-				currentAudioPlayer2D.Stream = pistolShot;
+				currentAudioPlayer2D.Stream = Global.PistolShot;
 				break;
 			case Sound.RifleShot:
-				currentAudioPlayer2D.Stream = rifleShot;
+				currentAudioPlayer2D.Stream = Global.RifleShot;
 				break;
 			case Sound.PistolReload:
-				currentAudioPlayer2D.Stream = pistolReload;
+				currentAudioPlayer2D.Stream = Global.PistolReload;
 				break;
 			case Sound.RifleReload:
-				currentAudioPlayer2D.Stream = rifleReload;
+				currentAudioPlayer2D.Stream = Global.RifleReload;
 				break;
 			case Sound.DryFire:
-				currentAudioPlayer2D.Stream = dryFire;
+				currentAudioPlayer2D.Stream = Global.DryFire;
 				break;
 			case Sound.Buy:
-				currentAudioPlayer2D.Stream = buySound;
+				currentAudioPlayer2D.Stream = Global.BuySound;
 				break;
 			case Sound.Pill:
-				currentAudioPlayer2D.Stream = pillSound;
+				currentAudioPlayer2D.Stream = Global.PillSound;
 				break;
 		}
 

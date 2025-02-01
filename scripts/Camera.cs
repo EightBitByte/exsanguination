@@ -13,11 +13,14 @@ public partial class Camera : Camera2D
 
 	Node2D followTarget;
 
+	SharedData Global;
+
 	public override void _Ready()
 	{
-		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
 		MakeCurrent();
-		followTarget = SceneNode.GetNode<Node2D>("./Player");
+		Global = SharedData.Instance;
+
+		followTarget = Global.PlayerNode;
 	}
 
 	public override void _Process(double delta)

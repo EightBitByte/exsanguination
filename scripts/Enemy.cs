@@ -144,12 +144,14 @@ public partial class Enemy : CharacterBody2D
 		GetTree().Root.AddChild(bloodpool);
 	}
 
+
 	private void OnAttackBoxEntered(Node2D body)
 	{
 		// TODO: Needs a more robust way of checking. Perhaps comparing the reference to the Character itself?
 		if (body.Name == "Player")
 			playerInAttackBox = true;
 	}
+
 
 	private void OnAttackBoxExited(Node2D body)
 	{

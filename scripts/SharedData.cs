@@ -15,11 +15,66 @@ public partial class SharedData : Node2D
 	/// </summary>
 	public static SharedData Instance {get; private set;}
 
-	public RichTextLabel pointLabel, gunLabel, ammoLabel, purchaseLabel;
-	public TextureProgressBar reloadBar, infectionBar;
-	public ColorRect vignetteBox, gameOverScreen;
-	public ShaderMaterial hurtVignette;
-	public TextureButton gameOverButton;
+	// Begin definitions of GUI signals
+	[Signal]
+	public delegate void UpdatePointLabelEventHandler (int points);
+	[Signal]
+	public delegate void PlayerHurtEventHandler (double percentHP);
+	[Signal]
+	public delegate void UpdateAmmoLabelEventHandler (int ammoInMagazine, 
+		int ammoInReserve);	
+	[Signal]
+	public delegate void ShowActiveLabelEventHandler (string labelText);
+	[Signal]
+	public delegate void ShowPurchaseLabelEventHandler (int cost);
+	[Signal]
+	public delegate void HideActiveLabelEventHandler ();
+	[Signal]
+	public delegate void ToggleReloadBarEventHandler (bool enabled);
+	[Signal]
+	public delegate void UpdateReloadBarEventHandler (double reloadProgress);
+	[Signal]
+	public delegate void UpdateWeaponLabelEventHandler (string weaponName);
+	[Signal]
+	public delegate void UpdateInfectionBarEventHandler (double infectionProgress);
+	
+	// Begin definitions of Audio signals
+	[Signal]
+	public delegate void PlaySoundEventHandler (int soundID);
+
+	// Begin definition of Player signals
+	[Signal]
+	public delegate void ModifyPointsEventHandler (int points);
+	[Signal]
+	public delegate void CureConsumeEventHandler ();
+	[Signal]
+	public delegate void ToggleShootingEventHandler (bool enabled);
+	[Signal]
+	public delegate void GameOverEventHandler();
+	[Signal]
+	public delegate void GiveWeaponEventHandler(int weaponID);
+
+	public AudioStreamWav PistolShot, RifleShot, DryFire, PillSound, 
+						  PistolReload, RifleReload, BuySound;
+
+	public RichTextLabel PointLabel, WeaponLabel, AmmoLabel, ActiveLabel;
+	public TextureProgressBar ReloadBar, InfectionBar;
+	public ColorRect VignetteBox, GameOverScreen;
+	public ShaderMaterial HurtVignette;
+	public TextureButton GameOverButton;
+
+	public Timer SpawnTimer, SafeTimer;
+	public PackedScene EnemyScene, BulletScene, BloodPoolScene;
+
+	public Player PlayerNode;
+	public GUIManager GUIManagerInstance;
+	public AudioManager AudioManagerInstance;
+
+	public Sprite2D CharacterSpriteNode, WeaponSpriteNode, UnderarmSpriteNode;
+	public Texture2D PistolStance, RifleStance, UnarmedStance, EnemyTexture;
+	public TextureRect ShopGUI;
+
+	private static readonly string scenePath = "res://scenes/";
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -28,17 +83,12 @@ public partial class SharedData : Node2D
 
 		Node2D SceneNode = GetRootSceneNode();
 
-		pointLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Point Label");
-		gunLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Gun Label");
-		ammoLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Ammo Label");
-		purchaseLabel = SceneNode.GetNode<RichTextLabel>("./GUI/Purchase Label");
-
-		reloadBar = SceneNode.GetNode<TextureProgressBar>("./Player/Reload Bar");
-		infectionBar = SceneNode.GetNode<TextureProgressBar>("./GUI/Infection Bar");
-		vignetteBox = SceneNode.GetNode<ColorRect>("./GUI/Vignette");
-		hurtVignette = (ShaderMaterial)vignetteBox.Material;
-		gameOverScreen = SceneNode.GetNode<ColorRect>("./GUI/Game Over");
-		gameOverButton = SceneNode.GetNode<TextureButton>("./GUI/Game Over/TextureButton");
+		LoadGUINodes(SceneNode);
+		LoadCharacterNodes(SceneNode);
+		LoadEssentialScenes();
+		LoadAudioAssets();
+		LoadTextureAssets();
+		ConnectGUISignals();
 	}
 
 	/// <summary>
@@ -50,5 +100,87 @@ public partial class SharedData : Node2D
 				return (Node2D)n;
 
 		return null;
+	}
+
+	/// <summary>
+	/// Translates a stance to the sound the weapon makes.
+	/// </summary>
+	public Sound StanceToSound(WeaponStance stance) {
+		switch (stance) {
+			case WeaponStance.Pistol:
+				return Sound.PistolShot;
+			case WeaponStance.Rifle:
+				return Sound.PistolShot;
+			default:
+				return Sound.DryFire;
+		}
+	}
+
+
+	private void LoadGUINodes(Node2D sceneNode) {
+		PointLabel = sceneNode.GetNode<RichTextLabel>("./GUI/Point Label");
+		WeaponLabel = sceneNode.GetNode<RichTextLabel>("./GUI/Weapon Label");
+		AmmoLabel = sceneNode.GetNode<RichTextLabel>("./GUI/Ammo Label");
+		ActiveLabel = sceneNode.GetNode<RichTextLabel>("./GUI/Active Label");
+
+		ReloadBar = sceneNode.GetNode<TextureProgressBar>("./Player/Reload Bar");
+		InfectionBar = sceneNode.GetNode<TextureProgressBar>("./GUI/Infection Bar");
+		VignetteBox = sceneNode.GetNode<ColorRect>("./GUI/Vignette");
+		HurtVignette = (ShaderMaterial)VignetteBox.Material;
+		GameOverScreen = sceneNode.GetNode<ColorRect>("./GUI/Game Over");
+		GameOverButton = sceneNode.GetNode<TextureButton>("./GUI/Game Over/TextureButton");
+		ShopGUI = sceneNode.GetNode<TextureRect>("./GUI/Shop");
+	}
+
+
+	private void LoadAudioAssets() {
+		PistolShot = GD.Load<AudioStreamWav>("res://assets/pistolshot.wav");
+		RifleShot = GD.Load<AudioStreamWav>("res://assets/rifleshot.wav");
+		PistolReload = GD.Load<AudioStreamWav>("res://assets/pistolreload.wav");
+		RifleReload = GD.Load<AudioStreamWav>("res://assets/riflereload.wav");
+		DryFire = GD.Load<AudioStreamWav>("res://assets/dryfire.wav");
+		BuySound = GD.Load<AudioStreamWav>("res://assets/buy.wav");
+		PillSound = GD.Load<AudioStreamWav>("res://assets/pill.wav");
+	}
+
+	
+	private void LoadCharacterNodes(Node2D sceneNode) {
+		SpawnTimer = sceneNode.GetNode<Timer>("./Enemy Manager/Spawn Timer");
+		SafeTimer = sceneNode.GetNode<Timer>("./Enemy Manager/Safe Timer");
+		PlayerNode = sceneNode.GetNode<Player>("./Player");
+		AudioManagerInstance = sceneNode.GetNode<AudioManager>("./Audio Manager");
+		GUIManagerInstance = sceneNode.GetNode<GUIManager>("./GUI Manager");
+		CharacterSpriteNode = sceneNode.GetNode<Sprite2D>("./Player/Player Sprite");
+		WeaponSpriteNode = sceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Weapon Sprite");
+		UnderarmSpriteNode = sceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Underarm");
+	}
+
+
+	private void LoadTextureAssets() {
+		PistolStance = GD.Load<Texture2D>("res://assets/Stance-Pistol.svg");
+		RifleStance = GD.Load<Texture2D>("res://assets/Stance-Rifle.svg");
+		UnarmedStance = GD.Load<Texture2D>("res://assets/Stance-Unarmed.svg");
+		EnemyTexture = GD.Load<Texture2D>("res://assets/Enemy Sprite.svg");
+	}
+
+
+	private void LoadEssentialScenes() {
+		EnemyScene = GD.Load<PackedScene>(scenePath + "enemy.tscn");
+		BulletScene = GD.Load<PackedScene>(scenePath + "bullet.tscn");
+		BloodPoolScene = GD.Load<PackedScene>(scenePath + "blood_pool.tscn");
+	}
+
+
+	private void ConnectGUISignals() {
+		UpdatePointLabel += GUIManagerInstance.UpdatePoints;	
+		PlayerHurt += GUIManagerInstance.AdjustHurtVignette;
+		UpdateAmmoLabel += GUIManagerInstance.UpdateAmmo;
+		ShowActiveLabel += GUIManagerInstance.ShowActiveLabel;
+		ShowPurchaseLabel += GUIManagerInstance.ShowActiveLabel;
+		HideActiveLabel += GUIManagerInstance.HideActiveLabel;
+		ToggleReloadBar += GUIManagerInstance.ToggleReloadBar;
+		UpdateReloadBar += GUIManagerInstance.UpdateReloadBar;
+		UpdateWeaponLabel += GUIManagerInstance.UpdateWeaponLabel;
+		UpdateInfectionBar += GUIManagerInstance.UpdateInfectionBar;
 	}
 }
