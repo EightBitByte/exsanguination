@@ -241,7 +241,7 @@ public partial class Player : CharacterBody2D
 		foreach (KeyValuePair<string, Godot.Collections.Dictionary<string, string>> pair in jsonDict) {
 			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
 
-			Weapon addedWeapon = new Weapon(int.Parse(pair.Key), weaponDict);
+			Weapon addedWeapon = new (int.Parse(pair.Key), weaponDict);
 			allWeapons.Add(addedWeapon);
 			if (addedWeapon.Name != "None")
 				weaponTextures.Add(GD.Load<Texture2D>($"res://assets/{addedWeapon.Name}.svg"));

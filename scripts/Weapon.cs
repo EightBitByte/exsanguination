@@ -14,7 +14,7 @@ public enum WeaponStance {
     None
 }
 
-class Weapon {
+public class Weapon {
     public int ID {get;}
 
     /// <summary>The name of the weapon.</summary>

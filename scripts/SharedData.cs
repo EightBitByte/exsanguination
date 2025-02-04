@@ -3,7 +3,7 @@
 // Implements an autoload singleton for loading all shared assets and functions.
 
 using Godot;
-using System;
+using System.Collections.Generic;
 
 /// <summary>
 // Implements an autoload singleton for loading all shared assets and functions.
@@ -76,6 +76,9 @@ public partial class SharedData : Node2D
 	public Texture2D PistolStance, RifleStance, UnarmedStance, EnemyTexture;
 	public TextureRect ShopGUI;
 
+	public List<Weapon> AllWeapons = new(); 
+	public List<Texture2D> weaponTextures = new();
+
 	private static readonly string scenePath = "res://scenes/";
 
 	// Called when the node enters the scene tree for the first time.
@@ -90,8 +93,10 @@ public partial class SharedData : Node2D
 		LoadEssentialScenes();
 		LoadAudioAssets();
 		LoadTextureAssets();
+		LoadWeaponsJson();
 		ConnectGUISignals();
 	}
+
 
 	/// <summary>
 	/// Returns the scene <c>Node2D</c> with a name that ends with 'Scene'.
@@ -170,6 +175,11 @@ public partial class SharedData : Node2D
 		EnemyScene = GD.Load<PackedScene>(scenePath + "enemy.tscn");
 		BulletScene = GD.Load<PackedScene>(scenePath + "bullet.tscn");
 		BloodPoolScene = GD.Load<PackedScene>(scenePath + "blood_pool.tscn");
+	}
+
+
+	private void LoadWeaponsJson() {
+		//TODO: Move from Player.cs
 	}
 
 
