@@ -15,6 +15,8 @@ public partial class SharedData : Node2D
 	/// </summary>
 	public static SharedData Instance {get; private set;}
 
+	private static readonly string assetsBasePath = "res://assets/";
+
 	// Begin definitions of GUI signals
 	[Signal]
 	public delegate void UpdatePointLabelEventHandler (int points);
@@ -134,13 +136,13 @@ public partial class SharedData : Node2D
 
 
 	private void LoadAudioAssets() {
-		PistolShot = GD.Load<AudioStreamWav>("res://assets/pistolshot.wav");
-		RifleShot = GD.Load<AudioStreamWav>("res://assets/rifleshot.wav");
-		PistolReload = GD.Load<AudioStreamWav>("res://assets/pistolreload.wav");
-		RifleReload = GD.Load<AudioStreamWav>("res://assets/riflereload.wav");
-		DryFire = GD.Load<AudioStreamWav>("res://assets/dryfire.wav");
-		BuySound = GD.Load<AudioStreamWav>("res://assets/buy.wav");
-		PillSound = GD.Load<AudioStreamWav>("res://assets/pill.wav");
+		PistolShot = GD.Load<AudioStreamWav>(assetsBasePath + "pistolshot.wav");
+		RifleShot = GD.Load<AudioStreamWav>(assetsBasePath + "rifleshot.wav");
+		PistolReload = GD.Load<AudioStreamWav>(assetsBasePath + "pistolreload.wav");
+		RifleReload = GD.Load<AudioStreamWav>(assetsBasePath + "riflereload.wav");
+		DryFire = GD.Load<AudioStreamWav>(assetsBasePath + "dryfire.wav");
+		BuySound = GD.Load<AudioStreamWav>(assetsBasePath + "buy.wav");
+		PillSound = GD.Load<AudioStreamWav>(assetsBasePath + "pill.wav");
 	}
 
 	
@@ -157,10 +159,10 @@ public partial class SharedData : Node2D
 
 
 	private void LoadTextureAssets() {
-		PistolStance = GD.Load<Texture2D>("res://assets/Stance-Pistol.svg");
-		RifleStance = GD.Load<Texture2D>("res://assets/Stance-Rifle.svg");
-		UnarmedStance = GD.Load<Texture2D>("res://assets/Stance-Unarmed.svg");
-		EnemyTexture = GD.Load<Texture2D>("res://assets/Enemy Sprite.svg");
+		PistolStance = GD.Load<Texture2D>(assetsBasePath + "Stance-Pistol.svg");
+		RifleStance = GD.Load<Texture2D>(assetsBasePath + "Stance-Rifle.svg");
+		UnarmedStance = GD.Load<Texture2D>(assetsBasePath + "Stance-Unarmed.svg");
+		EnemyTexture = GD.Load<Texture2D>(assetsBasePath + "Enemy Sprite.svg");
 	}
 
 

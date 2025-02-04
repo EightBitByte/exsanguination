@@ -209,7 +209,7 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Gun Label" type="RichTextLabel" parent="GUI"]
+[node name="Weapon Label" type="RichTextLabel" parent="GUI"]
 offset_left = 25.0
 offset_top = 575.0
 offset_right = 243.0
@@ -219,7 +219,7 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Purchase Label" type="RichTextLabel" parent="GUI"]
+[node name="Active Label" type="RichTextLabel" parent="GUI"]
 offset_left = 500.0
 offset_top = 600.0
 offset_right = 661.0
