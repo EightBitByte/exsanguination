@@ -42,9 +42,9 @@ public partial class Barrier : StaticBody2D
 	public override void _Process(double delta)
 	{
 		if (Input.IsActionJustPressed("buy") && player.HasEnoughPoints(Cost) && playerInBuyArea) {
-			EmitSignal(SharedData.SignalName.ModifyPoints, -Cost);
-			EmitSignal(SharedData.SignalName.HideActiveLabel);
-			EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
+			SharedData.Instance.EmitSignal(SharedData.SignalName.ModifyPoints, -Cost);
+			SharedData.Instance.EmitSignal(SharedData.SignalName.HideActiveLabel);
+			SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
 
 			QueueFree();
 		}
@@ -60,7 +60,7 @@ public partial class Barrier : StaticBody2D
 		// TODO: This seems a little odd, is there anyway we can not have to check 
 		// this in this manner? It seems not very flexible to change.
 		if (body.Name == "Player") {
-			EmitSignal(SharedData.SignalName.ShowPurchaseLabel, Cost);
+			SharedData.Instance.EmitSignal(SharedData.SignalName.ShowPurchaseLabel, Cost);
 			playerInBuyArea = true;
 		}
 	}
@@ -73,7 +73,7 @@ public partial class Barrier : StaticBody2D
 	private void OnBuyAreaExited(Node2D body)
 	{
 		if (body.Name == "Player") {
-			EmitSignal(SharedData.SignalName.HideActiveLabel);
+			SharedData.Instance.EmitSignal(SharedData.SignalName.HideActiveLabel);
 			playerInBuyArea = false;
 		}
 	}

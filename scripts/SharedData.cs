@@ -112,16 +112,14 @@ public partial class SharedData : Node2D
 	/// <summary>
 	/// Translates a stance to the sound the weapon makes.
 	/// </summary>
-	public Sound StanceToSound(WeaponStance stance) {
-		switch (stance) {
-			case WeaponStance.Pistol:
-				return Sound.PistolShot;
-			case WeaponStance.Rifle:
-				return Sound.PistolShot;
-			default:
-				return Sound.DryFire;
-		}
-	}
+	public Sound StanceToSound(WeaponStance stance, bool isReloadSound = false) {
+        return stance switch
+        {
+            WeaponStance.Pistol => isReloadSound ? Sound.PistolReload : Sound.PistolShot,
+            WeaponStance.Rifle => isReloadSound ? Sound.RifleReload : Sound.RifleShot,
+            _ => Sound.DryFire,
+        };
+    }
 
 
 	private void LoadGUINodes(Node2D sceneNode) {
@@ -194,5 +192,6 @@ public partial class SharedData : Node2D
 		UpdateReloadBar += GUIManagerInstance.UpdateReloadBar;
 		UpdateWeaponLabel += GUIManagerInstance.UpdateWeaponLabel;
 		UpdateInfectionBar += GUIManagerInstance.UpdateInfectionBar;
+		PlaySound += AudioManagerInstance.PlaySound;
 	}
 }

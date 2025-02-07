@@ -602,4 +602,3 @@ position = Vector2(-75, 625)
 [connection signal="timeout" from="Player/Infection Tick" to="Player" method="OnInfectionTick"]
 [connection signal="body_entered" from="Shop Area" to="Shop Area" method="OnShopEnter"]
 [connection signal="body_exited" from="Shop Area" to="Shop Area" method="OnShopExit"]
-[connection signal="CureConsume" from="Cure" to="Player" method="OnCureConsume"]
