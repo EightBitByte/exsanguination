@@ -50,7 +50,6 @@ public partial class Enemy : CharacterBody2D
 	[Export]
 	private float BloodSpread = 50;
 
-	private CharacterBody2D Player;
 	private NavigationAgent2D Pathfinding;
 	private Sprite2D Sprite;
 	private Area2D AttackBox;
@@ -64,10 +63,12 @@ public partial class Enemy : CharacterBody2D
 	private float minBloodPoolScale = 0.10f;
 	private float maxBloodPoolScale = 0.15f;
 
+	private SharedData Global;
 
 	public override void _Ready () {
-		Node2D SceneNode = SharedData.Instance.GetRootSceneNode();
-		Player = SceneNode.GetNode<CharacterBody2D>("./Player");
+		Global = SharedData.Instance;
+
+		Node2D SceneNode = Global.GetRootSceneNode();
 		Pathfinding = GetChild<NavigationAgent2D>(2);
 		Sprite = GetChild<Sprite2D>(0);
 		AttackBox = GetChild<Area2D>(4);
@@ -86,13 +87,13 @@ public partial class Enemy : CharacterBody2D
 		
 		// Recalculate pathfinding every so often
 		if (pathRecalculationTimeElapsedMs > MsToRecalculatePath / MILLIS) {
-			Pathfinding.TargetPosition = Player.Position;
+			Pathfinding.TargetPosition = Global.PlayerNode.Position;
 			pathRecalculationTimeElapsedMs = 0;
 		}
 
 		// If we're close enough to the player for long enough, and it's been long 
 		// enough since our last attack
-		if (Position.DistanceTo(Player.Position) < AttackRange) {
+		if (Position.DistanceTo(Global.PlayerNode.Position) < AttackRange) {
 			timeElapsedWhilePlayerInProximityMs += delta;
 
 			if (timeElapsedWhilePlayerInProximityMs > TimeInProximityBeforeAttack / MILLIS 
@@ -147,8 +148,7 @@ public partial class Enemy : CharacterBody2D
 
 	private void OnAttackBoxEntered(Node2D body)
 	{
-		// TODO: Needs a more robust way of checking. Perhaps comparing the reference to the Character itself?
-		if (body.Name == "Player")
+		if (body == Global.PlayerNode)
 			playerInAttackBox = true;
 	}
 

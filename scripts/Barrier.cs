@@ -41,10 +41,11 @@ public partial class Barrier : StaticBody2D
 
 	public override void _Process(double delta)
 	{
-		if (Input.IsActionJustPressed("buy") && player.HasEnoughPoints(Cost) && playerInBuyArea) {
-			SharedData.Instance.EmitSignal(SharedData.SignalName.ModifyPoints, -Cost);
-			SharedData.Instance.EmitSignal(SharedData.SignalName.HideActiveLabel);
-			SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
+		if (Input.IsActionJustPressed("buy") 
+			&& Global.PlayerNode.HasEnoughPoints(Cost) && playerInBuyArea) {
+			Global.EmitSignal(SharedData.SignalName.ModifyPoints, -Cost);
+			Global.EmitSignal(SharedData.SignalName.HideActiveLabel);
+			Global.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
 
 			QueueFree();
 		}
@@ -57,10 +58,8 @@ public partial class Barrier : StaticBody2D
 	/// <param name="body">The `Node2D` that entered.</param>
 	private void OnBuyAreaEntered(Node2D body)
 	{
-		// TODO: This seems a little odd, is there anyway we can not have to check 
-		// this in this manner? It seems not very flexible to change.
-		if (body.Name == "Player") {
-			SharedData.Instance.EmitSignal(SharedData.SignalName.ShowPurchaseLabel, Cost);
+		if (body == Global.PlayerNode) {
+			Global.EmitSignal(SharedData.SignalName.ShowPurchaseLabel, Cost);
 			playerInBuyArea = true;
 		}
 	}
@@ -73,7 +72,7 @@ public partial class Barrier : StaticBody2D
 	private void OnBuyAreaExited(Node2D body)
 	{
 		if (body.Name == "Player") {
-			SharedData.Instance.EmitSignal(SharedData.SignalName.HideActiveLabel);
+			Global.EmitSignal(SharedData.SignalName.HideActiveLabel);
 			playerInBuyArea = false;
 		}
 	}
