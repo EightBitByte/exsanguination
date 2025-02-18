@@ -244,7 +244,7 @@ public partial class Player : CharacterBody2D
 			Weapon addedWeapon = new (int.Parse(pair.Key), weaponDict);
 			allWeapons.Add(addedWeapon);
 			if (addedWeapon.Name != "None")
-				weaponTextures.Add(GD.Load<Texture2D>($"res://assets/{addedWeapon.Name}.svg"));
+				weaponTextures.Add(GD.Load<Texture2D>($"res://assets/textures/{addedWeapon.Name}.svg"));
 		}
 	}
 

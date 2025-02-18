@@ -1,31 +1,47 @@
-[gd_scene load_steps=42 format=4 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=59 format=4 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Script" path="res://scripts/GUIManager.cs" id="1_5sne8"]
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
 [ext_resource type="Script" path="res://scripts/Player.cs" id="1_ntr3v"]
 [ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
-[ext_resource type="Texture2D" uid="uid://dyh62qlpgtmbo" path="res://assets/Shop Bg.svg" id="2_fwgpn"]
+[ext_resource type="Texture2D" uid="uid://dyh62qlpgtmbo" path="res://assets/gui/Shop Bg.svg" id="2_fwgpn"]
 [ext_resource type="Texture2D" uid="uid://bi5ssmtx142j2" path="res://assets/labtiles.svg" id="2_tqpo8"]
 [ext_resource type="Script" path="res://scripts/AudioManager.cs" id="2_yod21"]
-[ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/Stance-Pistol.svg" id="3_mfhfp"]
+[ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/textures/Stance-Pistol.svg" id="3_mfhfp"]
 [ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
-[ext_resource type="Texture2D" uid="uid://781jsmi2sck2" path="res://assets/Buy Button.svg" id="4_ld4gv"]
-[ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/Colt M1911.svg" id="4_shskx"]
-[ext_resource type="Texture2D" uid="uid://4qglpjgbrglk" path="res://assets/Inactive Button.svg" id="5_etxfw"]
-[ext_resource type="Texture2D" uid="uid://bjdqov06nbxwe" path="res://assets/Underarm.svg" id="5_lhbfy"]
-[ext_resource type="Texture2D" uid="uid://bq7tmy6bc2q3l" path="res://assets/Bullet Bar (Under).svg" id="6_6rh7v"]
-[ext_resource type="Texture2D" uid="uid://botbk8ae3f676" path="res://assets/M4 Carbine.svg" id="6_xsn6i"]
-[ext_resource type="Texture2D" uid="uid://2rcj7oay3h8j" path="res://assets/Pill.svg" id="7_0q3sp"]
-[ext_resource type="Texture2D" uid="uid://b1i7msbcq3nwc" path="res://assets/Bullet Bar (Over).svg" id="7_2rldi"]
-[ext_resource type="Texture2D" uid="uid://pqqij2kaldfr" path="res://assets/Infection Bar (Under).svg" id="8_ybgqi"]
-[ext_resource type="Texture2D" uid="uid://kwrlb0eckmbh" path="res://assets/Infection Bar (Over).svg" id="9_75kfn"]
+[ext_resource type="Texture2D" uid="uid://781jsmi2sck2" path="res://assets/gui/Buy Button.svg" id="4_ld4gv"]
+[ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/textures/Colt M1911.svg" id="4_shskx"]
+[ext_resource type="Texture2D" uid="uid://4qglpjgbrglk" path="res://assets/gui/Inactive Button.svg" id="5_etxfw"]
+[ext_resource type="Texture2D" uid="uid://bjdqov06nbxwe" path="res://assets/textures/Underarm.svg" id="5_lhbfy"]
+[ext_resource type="Texture2D" uid="uid://bq7tmy6bc2q3l" path="res://assets/gui/Bullet Bar (Under).svg" id="6_6rh7v"]
+[ext_resource type="Texture2D" uid="uid://botbk8ae3f676" path="res://assets/textures/M4 Carbine.svg" id="6_xsn6i"]
+[ext_resource type="Texture2D" uid="uid://2rcj7oay3h8j" path="res://assets/textures/Pill.svg" id="7_0q3sp"]
+[ext_resource type="Texture2D" uid="uid://b1i7msbcq3nwc" path="res://assets/gui/Bullet Bar (Over).svg" id="7_2rldi"]
+[ext_resource type="Texture2D" uid="uid://pqqij2kaldfr" path="res://assets/gui/Infection Bar (Under).svg" id="8_ybgqi"]
+[ext_resource type="Texture2D" uid="uid://kwrlb0eckmbh" path="res://assets/gui/Infection Bar (Over).svg" id="9_75kfn"]
 [ext_resource type="PackedScene" uid="uid://gedcfjwo3233" path="res://scenes/barrier.tscn" id="9_bxsr3"]
-[ext_resource type="Texture2D" uid="uid://d33f8bth4acey" path="res://assets/Infection Bar (Progress).svg" id="10_e26s3"]
-[ext_resource type="Texture2D" uid="uid://dhwl66hpr0kxe" path="res://assets/Janitor.svg" id="11_1h6ax"]
+[ext_resource type="Texture2D" uid="uid://d33f8bth4acey" path="res://assets/gui/Infection Bar (Progress).svg" id="10_e26s3"]
+[ext_resource type="Texture2D" uid="uid://dhwl66hpr0kxe" path="res://assets/textures/Janitor.svg" id="11_1h6ax"]
+[ext_resource type="Texture2D" uid="uid://cef8vmomthnt7" path="res://assets/ Leg Anim F1.png" id="15_0cuvc"]
+[ext_resource type="Texture2D" uid="uid://c333v0vamnfng" path="res://assets/ Leg Anim F2.png" id="16_huc1s"]
+[ext_resource type="Texture2D" uid="uid://cr0vebxvykrfg" path="res://assets/ Leg Anim F3.png" id="17_6n4ko"]
 [ext_resource type="Script" path="res://scripts/EnemyManager.cs" id="17_auaga"]
 [ext_resource type="Script" path="res://scripts/Shop.cs" id="18_3g30q"]
+[ext_resource type="Texture2D" uid="uid://cohkyhh4krxvm" path="res://assets/ Leg Anim F4.png" id="18_t8sfu"]
+[ext_resource type="Texture2D" uid="uid://eeioaesj5vtu" path="res://assets/ Leg Anim F5.png" id="19_b4i0d"]
+[ext_resource type="Texture2D" uid="uid://cr4eyrbul17ui" path="res://assets/ Leg Anim F6.png" id="20_vyh3o"]
 [ext_resource type="Texture2D" uid="uid://cwt2rpjr7tuyg" path="res://assets/updated-tiles.png" id="21_ljfax"]
+[ext_resource type="Texture2D" uid="uid://7dmxksec8go8" path="res://assets/ Leg Anim F7.png" id="21_lk08k"]
+[ext_resource type="Texture2D" uid="uid://dr6v5561olq4a" path="res://assets/ Leg Anim F8.png" id="22_njg3x"]
+[ext_resource type="Texture2D" uid="uid://bgs5k7eddvwmi" path="res://assets/ Leg Anim F9.png" id="23_3n4ff"]
 [ext_resource type="PackedScene" uid="uid://w35065sxijv1" path="res://scenes/cure.tscn" id="23_j04j5"]
+[ext_resource type="Texture2D" uid="uid://c31fwuiq1xtj5" path="res://assets/ Leg Anim F10.png" id="24_dkewr"]
+[ext_resource type="Texture2D" uid="uid://cxw5v5viopxcn" path="res://assets/ Leg Anim F11.png" id="25_1dagc"]
+[ext_resource type="Texture2D" uid="uid://dngfxm6qyivxx" path="res://assets/ Leg Anim F12.png" id="26_5isid"]
+[ext_resource type="Texture2D" uid="uid://be2mn8ctmbcyj" path="res://assets/ Leg Anim F13.png" id="27_g0n7q"]
+[ext_resource type="Texture2D" uid="uid://bnh3elqrfa76f" path="res://assets/ Leg Anim F14.png" id="28_1tsr8"]
+[ext_resource type="Texture2D" uid="uid://cxr3hm082820f" path="res://assets/ Leg Anim F15.png" id="29_2ewo3"]
+[ext_resource type="Texture2D" uid="uid://cfg4ag3rt40c2" path="res://assets/ Leg Anim F16.png" id="30_tbs7m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d58rs"]
 shader = ExtResource("3_p5f76")
@@ -34,6 +50,62 @@ shader_parameter/outer_radius = 1.0
 shader_parameter/vignette_strength = 1.0
 shader_parameter/dither_strength = 0.05
 shader_parameter/vignette_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_g2bnw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("15_0cuvc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_huc1s")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_6n4ko")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_t8sfu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_b4i0d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_vyh3o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_lk08k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_njg3x")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_3n4ff")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_dkewr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_1dagc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_5isid")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_g0n7q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_1tsr8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_2ewo3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_tbs7m")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 20.0
+}]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_owf11"]
 radius = 54.0833
@@ -524,10 +596,25 @@ z_index = 2
 position = Vector2(9, 0)
 script = ExtResource("1_ntr3v")
 
+[node name="Leg Animation" type="AnimatedSprite2D" parent="Player"]
+show_behind_parent = true
+scale = Vector2(0.25, 0.25)
+sprite_frames = SubResource("SpriteFrames_g2bnw")
+animation = &"Walk"
+autoplay = "Walk"
+frame = 9
+frame_progress = 0.253691
+
 [node name="Player Sprite" type="Sprite2D" parent="Player"]
 z_index = 2
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_mfhfp")
+
+[node name="Underarm" type="Sprite2D" parent="Player/Player Sprite"]
+visible = false
+z_index = -2
+position = Vector2(0, -208)
+texture = ExtResource("5_lhbfy")
 
 [node name="Weapon Sprite" type="Sprite2D" parent="Player/Player Sprite"]
 z_index = -1
@@ -535,12 +622,6 @@ position = Vector2(100, -372)
 rotation = 1.5708
 scale = Vector2(0.25, -0.25)
 texture = ExtResource("4_shskx")
-
-[node name="Underarm" type="Sprite2D" parent="Player/Player Sprite"]
-visible = false
-z_index = -2
-position = Vector2(0, -208)
-texture = ExtResource("5_lhbfy")
 
 [node name="Physics Collider" type="CollisionShape2D" parent="Player"]
 z_index = -1
@@ -584,26 +665,26 @@ scale = Vector2(0.220325, 0.220325)
 Cost = 800
 
 [node name="Middle Room Left" parent="." instance=ExtResource("9_bxsr3")]
-position = Vector2(-600, -750)
+position = Vector2(-600, -775)
 rotation = 1.5708
-scale = Vector2(0.306957, 0.306957)
+scale = Vector2(0.282933, 0.282933)
 Cost = 800
 
 [node name="Middle Room Right" parent="." instance=ExtResource("9_bxsr3")]
-position = Vector2(600, -750)
+position = Vector2(600, -775)
 rotation = 1.5708
-scale = Vector2(0.306957, 0.306957)
+scale = Vector2(0.277365, 0.277365)
 Cost = 800
 
 [node name="North Hallway Barrier" parent="." instance=ExtResource("9_bxsr3")]
-position = Vector2(796, -2403)
-scale = Vector2(0.309821, 0.309821)
+position = Vector2(800, -2350)
+scale = Vector2(0.214721, 0.214721)
 Cost = 500
 
 [node name="East Hallway Barrier" parent="." instance=ExtResource("9_bxsr3")]
-position = Vector2(1039, -2184)
+position = Vector2(1000, -2175)
 rotation = 1.5708
-scale = Vector2(0.309821, 0.309821)
+scale = Vector2(0.287185, 0.287185)
 Cost = 1000
 
 [node name="Shop Area" type="Area2D" parent="."]

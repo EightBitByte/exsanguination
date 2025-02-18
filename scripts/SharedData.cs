@@ -139,13 +139,13 @@ public partial class SharedData : Node2D
 
 
 	private void LoadAudioAssets() {
-		PistolShot = GD.Load<AudioStreamWav>(assetsBasePath + "pistolshot.wav");
-		RifleShot = GD.Load<AudioStreamWav>(assetsBasePath + "rifleshot.wav");
-		PistolReload = GD.Load<AudioStreamWav>(assetsBasePath + "pistolreload.wav");
-		RifleReload = GD.Load<AudioStreamWav>(assetsBasePath + "riflereload.wav");
-		DryFire = GD.Load<AudioStreamWav>(assetsBasePath + "dryfire.wav");
-		BuySound = GD.Load<AudioStreamWav>(assetsBasePath + "buy.wav");
-		PillSound = GD.Load<AudioStreamWav>(assetsBasePath + "pill.wav");
+		PistolShot = GD.Load<AudioStreamWav>(assetsBasePath + "audio/pistolshot.wav");
+		RifleShot = GD.Load<AudioStreamWav>(assetsBasePath + "audio/rifleshot.wav");
+		PistolReload = GD.Load<AudioStreamWav>(assetsBasePath + "audio/pistolreload.wav");
+		RifleReload = GD.Load<AudioStreamWav>(assetsBasePath + "audio/riflereload.wav");
+		DryFire = GD.Load<AudioStreamWav>(assetsBasePath + "audio/dryfire.wav");
+		BuySound = GD.Load<AudioStreamWav>(assetsBasePath + "audio/buy.wav");
+		PillSound = GD.Load<AudioStreamWav>(assetsBasePath + "audio/pill.wav");
 	}
 
 	
@@ -162,10 +162,10 @@ public partial class SharedData : Node2D
 
 
 	private void LoadTextureAssets() {
-		PistolStance = GD.Load<Texture2D>(assetsBasePath + "Stance-Pistol.svg");
-		RifleStance = GD.Load<Texture2D>(assetsBasePath + "Stance-Rifle.svg");
-		UnarmedStance = GD.Load<Texture2D>(assetsBasePath + "Stance-Unarmed.svg");
-		EnemyTexture = GD.Load<Texture2D>(assetsBasePath + "Enemy Sprite.svg");
+		PistolStance = GD.Load<Texture2D>(assetsBasePath + "textures/Stance-Pistol.svg");
+		RifleStance = GD.Load<Texture2D>(assetsBasePath + "textures/Stance-Rifle.svg");
+		UnarmedStance = GD.Load<Texture2D>(assetsBasePath + "textures/Stance-Unarmed.svg");
+		EnemyTexture = GD.Load<Texture2D>(assetsBasePath + "textures/Enemy-Sprite.svg");
 	}
 
 
