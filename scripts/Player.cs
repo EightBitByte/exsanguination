@@ -5,7 +5,6 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
 
 public class Ammo
 {
@@ -75,9 +74,6 @@ public partial class Player : CharacterBody2D
 	/// <summary>The ammunition counts of the two respective weapons.</summary>
 	private Ammo[] ammunition = new Ammo[2];
 
-	private List<Weapon> allWeapons = new List<Weapon>(); 
-	private List<Texture2D> weaponTextures = new List<Texture2D>();
-
 	private int activeWeaponSlot = 0;
     private int maxNumWeapons = 2;
 	public bool isReloading = false, 
@@ -98,7 +94,6 @@ public partial class Player : CharacterBody2D
 		ammunition[0] = new();
 		ammunition[1] = new();
 
-		LoadWeaponsJson();
 		GiveWeapon(WeaponId.ColtM1911, 0);
 		GiveWeapon(WeaponId.None, 1);
 		SetWeapon(0);
@@ -233,24 +228,6 @@ public partial class Player : CharacterBody2D
 		timeSinceDamageMs = 0;
 	}
 
-
-	// TODO: 🚚 Player.cs -> SharedData.cs
-	/// <summary>Loads the JSON file associated with the weapons.</summary>
-	private void LoadWeaponsJson() {
-		Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>> jsonDict = 
-            (Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>>) Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
-
-		foreach (KeyValuePair<string, Godot.Collections.Dictionary<string, string>> pair in jsonDict) {
-			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
-
-			Weapon addedWeapon = new (int.Parse(pair.Key), weaponDict);
-			allWeapons.Add(addedWeapon);
-			if (addedWeapon.Name != "None")
-				weaponTextures.Add(GD.Load<Texture2D>($"res://assets/textures/{addedWeapon.Name}.svg"));
-		}
-	}
-
-
 	/// <summary>
 	/// Returns whether the player has enough points to purchase the item with 
 	//  <c>cost</c> points.
@@ -320,7 +297,7 @@ public partial class Player : CharacterBody2D
 			slot = heldWeapons[1].Name == "None" ? 1 : activeWeaponSlot;
 		}
 
-		heldWeapons[slot] = allWeapons[(int)weaponID];
+		heldWeapons[slot] = Global.AllWeapons[(int)weaponID];
 		ammunition[slot].AmmoInMagazine = heldWeapons[slot].MagazineSize;
 		ammunition[slot].AmmoInReserve = heldWeapons[slot].ReserveSize;
 		SetWeapon(slot);
@@ -334,7 +311,8 @@ public partial class Player : CharacterBody2D
 	private void SetWeapon (int slotNum) {
 		activeWeaponSlot = slotNum;
 		RateOfFireMs = 1 / heldWeapons[activeWeaponSlot].RateOfFire;
-		Global.EmitSignal(SharedData.SignalName.UpdateWeaponLabel, heldWeapons[activeWeaponSlot].Name);
+		Global.EmitSignal(SharedData.SignalName.UpdateWeaponLabel, 
+			heldWeapons[activeWeaponSlot].Name);
 
 		switch (heldWeapons[activeWeaponSlot].Stance) {
 			case WeaponStance.Pistol:
@@ -358,8 +336,10 @@ public partial class Player : CharacterBody2D
 				break;
 		}
 
-		if (heldWeapons[activeWeaponSlot].Name != "None")
-			Global.WeaponSpriteNode.Texture = weaponTextures[heldWeapons[activeWeaponSlot].ID - 1];
+		if (heldWeapons[activeWeaponSlot].ID != (int)WeaponId.None) {
+			Global.WeaponSpriteNode.Texture = 
+				Global.WeaponTextures[heldWeapons[activeWeaponSlot].ID - 1];
+		}
 
 		EmitUpdateAmmoSignal();
 	}

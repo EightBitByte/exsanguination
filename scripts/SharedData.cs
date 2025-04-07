@@ -77,7 +77,7 @@ public partial class SharedData : Node2D
 	public TextureRect ShopGUI;
 
 	public List<Weapon> AllWeapons = new(); 
-	public List<Texture2D> weaponTextures = new();
+	public List<Texture2D> WeaponTextures = new();
 
 	private static readonly string scenePath = "res://scenes/";
 
@@ -178,7 +178,18 @@ public partial class SharedData : Node2D
 
 
 	private void LoadWeaponsJson() {
-		//TODO: Move from Player.cs
+		Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>> jsonDict = 
+            (Godot.Collections.Dictionary<string, Godot.Collections.Dictionary<string, string>>) Json.ParseString(System.IO.File.ReadAllText("data/weapons.json"));
+
+		foreach (KeyValuePair<string, Godot.Collections.Dictionary<string, string>> pair in jsonDict) {
+			Godot.Collections.Dictionary<string, string> weaponDict = pair.Value;
+
+			Weapon addedWeapon = new (int.Parse(pair.Key), weaponDict);
+			AllWeapons.Add(addedWeapon);
+			if (addedWeapon.Name != "None")
+				WeaponTextures.Add(GD.Load<Texture2D>($"res://assets/textures/{addedWeapon.Name}.svg"));
+
+		}
 	}
 
 
