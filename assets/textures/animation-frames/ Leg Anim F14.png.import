@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c31fwuiq1xtj5"
-path="res://.godot/imported/ Leg Anim F10.png-b36b3d47ca2d680cf31a5f50e4498a8d.ctex"
+uid="uid://bnh3elqrfa76f"
+path="res://.godot/imported/ Leg Anim F14.png-e5c431aa16c8d55c1f0cd73175d641f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ Leg Anim F10.png"
-dest_files=["res://.godot/imported/ Leg Anim F10.png-b36b3d47ca2d680cf31a5f50e4498a8d.ctex"]
+source_file="res://assets/textures/animation-frames/ Leg Anim F14.png"
+dest_files=["res://.godot/imported/ Leg Anim F14.png-e5c431aa16c8d55c1f0cd73175d641f7.ctex"]
 
 [params]
 

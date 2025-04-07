@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dr6v5561olq4a"
-path="res://.godot/imported/ Leg Anim F8.png-f21050fecca44e8a55c5383866e1d59b.ctex"
+uid="uid://cffuh48b7yp4k"
+path="res://.godot/imported/Enemy-Leg-Animation-16.png-bed225cfc4923715a944af83a73d3e86.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ Leg Anim F8.png"
-dest_files=["res://.godot/imported/ Leg Anim F8.png-f21050fecca44e8a55c5383866e1d59b.ctex"]
+source_file="res://assets/textures/animation-frames/Enemy-Leg-Animation-16.png"
+dest_files=["res://.godot/imported/Enemy-Leg-Animation-16.png-bed225cfc4923715a944af83a73d3e86.ctex"]
 
 [params]
 

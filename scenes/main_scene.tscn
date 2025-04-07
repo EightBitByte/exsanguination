@@ -22,26 +22,26 @@
 [ext_resource type="PackedScene" uid="uid://gedcfjwo3233" path="res://scenes/barrier.tscn" id="9_bxsr3"]
 [ext_resource type="Texture2D" uid="uid://d33f8bth4acey" path="res://assets/gui/Infection Bar (Progress).svg" id="10_e26s3"]
 [ext_resource type="Texture2D" uid="uid://dhwl66hpr0kxe" path="res://assets/textures/Janitor.svg" id="11_1h6ax"]
-[ext_resource type="Texture2D" uid="uid://cef8vmomthnt7" path="res://assets/ Leg Anim F1.png" id="15_0cuvc"]
-[ext_resource type="Texture2D" uid="uid://c333v0vamnfng" path="res://assets/ Leg Anim F2.png" id="16_huc1s"]
-[ext_resource type="Texture2D" uid="uid://cr0vebxvykrfg" path="res://assets/ Leg Anim F3.png" id="17_6n4ko"]
+[ext_resource type="Texture2D" uid="uid://cef8vmomthnt7" path="res://assets/textures/animation-frames/ Leg Anim F1.png" id="15_0cuvc"]
+[ext_resource type="Texture2D" uid="uid://c333v0vamnfng" path="res://assets/textures/animation-frames/ Leg Anim F2.png" id="16_huc1s"]
+[ext_resource type="Texture2D" uid="uid://cr0vebxvykrfg" path="res://assets/textures/animation-frames/ Leg Anim F3.png" id="17_6n4ko"]
 [ext_resource type="Script" path="res://scripts/EnemyManager.cs" id="17_auaga"]
 [ext_resource type="Script" path="res://scripts/Shop.cs" id="18_3g30q"]
-[ext_resource type="Texture2D" uid="uid://cohkyhh4krxvm" path="res://assets/ Leg Anim F4.png" id="18_t8sfu"]
-[ext_resource type="Texture2D" uid="uid://eeioaesj5vtu" path="res://assets/ Leg Anim F5.png" id="19_b4i0d"]
-[ext_resource type="Texture2D" uid="uid://cr4eyrbul17ui" path="res://assets/ Leg Anim F6.png" id="20_vyh3o"]
+[ext_resource type="Texture2D" uid="uid://cohkyhh4krxvm" path="res://assets/textures/animation-frames/ Leg Anim F4.png" id="18_t8sfu"]
+[ext_resource type="Texture2D" uid="uid://eeioaesj5vtu" path="res://assets/textures/animation-frames/ Leg Anim F5.png" id="19_b4i0d"]
+[ext_resource type="Texture2D" uid="uid://cr4eyrbul17ui" path="res://assets/textures/animation-frames/ Leg Anim F6.png" id="20_vyh3o"]
 [ext_resource type="Texture2D" uid="uid://cwt2rpjr7tuyg" path="res://assets/updated-tiles.png" id="21_ljfax"]
-[ext_resource type="Texture2D" uid="uid://7dmxksec8go8" path="res://assets/ Leg Anim F7.png" id="21_lk08k"]
-[ext_resource type="Texture2D" uid="uid://dr6v5561olq4a" path="res://assets/ Leg Anim F8.png" id="22_njg3x"]
-[ext_resource type="Texture2D" uid="uid://bgs5k7eddvwmi" path="res://assets/ Leg Anim F9.png" id="23_3n4ff"]
+[ext_resource type="Texture2D" uid="uid://7dmxksec8go8" path="res://assets/textures/animation-frames/ Leg Anim F7.png" id="21_lk08k"]
+[ext_resource type="Texture2D" uid="uid://dr6v5561olq4a" path="res://assets/textures/animation-frames/ Leg Anim F8.png" id="22_njg3x"]
+[ext_resource type="Texture2D" uid="uid://bgs5k7eddvwmi" path="res://assets/textures/animation-frames/ Leg Anim F9.png" id="23_3n4ff"]
 [ext_resource type="PackedScene" uid="uid://w35065sxijv1" path="res://scenes/cure.tscn" id="23_j04j5"]
-[ext_resource type="Texture2D" uid="uid://c31fwuiq1xtj5" path="res://assets/ Leg Anim F10.png" id="24_dkewr"]
-[ext_resource type="Texture2D" uid="uid://cxw5v5viopxcn" path="res://assets/ Leg Anim F11.png" id="25_1dagc"]
-[ext_resource type="Texture2D" uid="uid://dngfxm6qyivxx" path="res://assets/ Leg Anim F12.png" id="26_5isid"]
-[ext_resource type="Texture2D" uid="uid://be2mn8ctmbcyj" path="res://assets/ Leg Anim F13.png" id="27_g0n7q"]
-[ext_resource type="Texture2D" uid="uid://bnh3elqrfa76f" path="res://assets/ Leg Anim F14.png" id="28_1tsr8"]
-[ext_resource type="Texture2D" uid="uid://cxr3hm082820f" path="res://assets/ Leg Anim F15.png" id="29_2ewo3"]
-[ext_resource type="Texture2D" uid="uid://cfg4ag3rt40c2" path="res://assets/ Leg Anim F16.png" id="30_tbs7m"]
+[ext_resource type="Texture2D" uid="uid://c31fwuiq1xtj5" path="res://assets/textures/animation-frames/ Leg Anim F10.png" id="24_dkewr"]
+[ext_resource type="Texture2D" uid="uid://cxw5v5viopxcn" path="res://assets/textures/animation-frames/ Leg Anim F11.png" id="25_1dagc"]
+[ext_resource type="Texture2D" uid="uid://dngfxm6qyivxx" path="res://assets/textures/animation-frames/ Leg Anim F12.png" id="26_5isid"]
+[ext_resource type="Texture2D" uid="uid://be2mn8ctmbcyj" path="res://assets/textures/animation-frames/ Leg Anim F13.png" id="27_g0n7q"]
+[ext_resource type="Texture2D" uid="uid://bnh3elqrfa76f" path="res://assets/textures/animation-frames/ Leg Anim F14.png" id="28_1tsr8"]
+[ext_resource type="Texture2D" uid="uid://cxr3hm082820f" path="res://assets/textures/animation-frames/ Leg Anim F15.png" id="29_2ewo3"]
+[ext_resource type="Texture2D" uid="uid://cfg4ag3rt40c2" path="res://assets/textures/animation-frames/ Leg Anim F16.png" id="30_tbs7m"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d58rs"]
 shader = ExtResource("3_p5f76")
@@ -601,8 +601,8 @@ show_behind_parent = true
 scale = Vector2(0.25, 0.25)
 sprite_frames = SubResource("SpriteFrames_g2bnw")
 animation = &"Walk"
-frame = 9
-frame_progress = 0.253691
+frame = 15
+frame_progress = 0.422313
 
 [node name="Player Sprite" type="Sprite2D" parent="Player"]
 z_index = 2

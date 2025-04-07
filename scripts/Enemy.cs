@@ -69,9 +69,9 @@ public partial class Enemy : CharacterBody2D
 		Global = SharedData.Instance;
 
 		Node2D SceneNode = Global.GetRootSceneNode();
-		Pathfinding = GetChild<NavigationAgent2D>(2);
-		Sprite = GetChild<Sprite2D>(0);
-		AttackBox = GetChild<Area2D>(4);
+		Pathfinding = GetNode<NavigationAgent2D>("Pathfinding");
+		Sprite = GetNode<Sprite2D>("Sprite2D");
+		AttackBox = GetNode<Area2D>("Attack Box");
 
 		bloodPoolScene = GD.Load<PackedScene>("res://scenes/blood_pool.tscn");
 		rng = new();

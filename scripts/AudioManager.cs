@@ -36,9 +36,9 @@ public partial class AudioManager : Node
 	public override void _Ready()
 	{
 		Global = SharedData.Instance;
-        reloadAudioPlayer = new()
+		reloadAudioPlayer = new()
 			{ GlobalPosition = Global.PlayerNode.GlobalPosition };
-        Global.PlayerNode.AddChild(reloadAudioPlayer);
+		Global.PlayerNode.AddChild(reloadAudioPlayer);
 
 		for (int i = 0; i < AudioPlayerLimit; ++i) {
 			audioStreamPlayerArray[i] = new AudioStreamPlayer2D 

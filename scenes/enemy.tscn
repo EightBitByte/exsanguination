@@ -1,7 +1,79 @@
-[gd_scene load_steps=6 format=3 uid="uid://tcedrpts7qeu"]
+[gd_scene load_steps=23 format=3 uid="uid://tcedrpts7qeu"]
 
 [ext_resource type="Script" path="res://scripts/Enemy.cs" id="1_7rms5"]
 [ext_resource type="Texture2D" uid="uid://40jn7p1k8g7x" path="res://assets/textures/Enemy-Sprite.svg" id="2_cyi7p"]
+[ext_resource type="Texture2D" uid="uid://bj2knvq04owgh" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-01.png" id="2_quf4e"]
+[ext_resource type="Texture2D" uid="uid://wlfqt6sl7whh" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-02.png" id="3_5h26m"]
+[ext_resource type="Texture2D" uid="uid://cr0sneo2j4n1f" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-03.png" id="4_nr1dc"]
+[ext_resource type="Texture2D" uid="uid://bb1ss744085e4" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-04.png" id="5_ow0ke"]
+[ext_resource type="Texture2D" uid="uid://84slu6yvtes6" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-05.png" id="6_6mp6p"]
+[ext_resource type="Texture2D" uid="uid://dcoijg4crc81p" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-06.png" id="7_u7byr"]
+[ext_resource type="Texture2D" uid="uid://ur2qv5mabpi1" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-07.png" id="8_rp1ik"]
+[ext_resource type="Texture2D" uid="uid://ow3tv16kb308" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-08.png" id="9_ibkv3"]
+[ext_resource type="Texture2D" uid="uid://0g2v1sfrwns7" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-09.png" id="10_cyqwe"]
+[ext_resource type="Texture2D" uid="uid://cjg57ys7edh2h" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-10.png" id="11_vihsp"]
+[ext_resource type="Texture2D" uid="uid://dvcn0saiv3111" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-11.png" id="12_hu2vr"]
+[ext_resource type="Texture2D" uid="uid://bqdly5dkgi7d2" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-12.png" id="13_vygj1"]
+[ext_resource type="Texture2D" uid="uid://b2ki0gn1v82wb" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-13.png" id="14_hb6qp"]
+[ext_resource type="Texture2D" uid="uid://b4vhotfw74435" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-14.png" id="15_mgvj1"]
+[ext_resource type="Texture2D" uid="uid://bl0kbtoaje0k0" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-15.png" id="16_utspu"]
+[ext_resource type="Texture2D" uid="uid://cffuh48b7yp4k" path="res://assets/textures/animation-frames/Enemy-Leg-Animation-16.png" id="17_po6wt"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_blqhc"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_quf4e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_5h26m")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_nr1dc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ow0ke")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_6mp6p")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_u7byr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_rp1ik")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_ibkv3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_cyqwe")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_vihsp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_hu2vr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_vygj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_hb6qp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_mgvj1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_utspu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_po6wt")
+}],
+"loop": true,
+"name": &"Walk",
+"speed": 20.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a2vqs"]
 size = Vector2(432, 232)
@@ -15,6 +87,14 @@ size = Vector2(571, 261.5)
 [node name="Enemy" type="CharacterBody2D"]
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_7rms5")
+
+[node name="LegSprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1, 1)
+sprite_frames = SubResource("SpriteFrames_blqhc")
+animation = &"Walk"
+autoplay = "Walk"
+frame = 7
+frame_progress = 0.500035
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 2
