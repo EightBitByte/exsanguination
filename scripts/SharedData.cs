@@ -95,6 +95,7 @@ public partial class SharedData : Node2D
 		LoadTextureAssets();
 		LoadWeaponsJson();
 		ConnectGUISignals();
+		ConnectActionSignals();
 	}
 
 
@@ -193,5 +194,9 @@ public partial class SharedData : Node2D
 		UpdateWeaponLabel += GUIManagerInstance.UpdateWeaponLabel;
 		UpdateInfectionBar += GUIManagerInstance.UpdateInfectionBar;
 		PlaySound += AudioManagerInstance.PlaySound;
+	}
+
+	private void ConnectActionSignals() {
+		CureConsume += PlayerNode.ResetInfection;
 	}
 }

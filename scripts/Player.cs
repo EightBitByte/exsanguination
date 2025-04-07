@@ -250,7 +250,8 @@ public partial class Player : CharacterBody2D
 
 
 	/// <summary>
-	/// Returns whether the player has enough points to purchase the item with <c>cost</c> points.
+	/// Returns whether the player has enough points to purchase the item with 
+	//  <c>cost</c> points.
 	/// </summary>
 	/// <param name="cost">The number of points the item costs.</param>
 	public bool HasEnoughPoints(int cost) {
@@ -308,6 +309,7 @@ public partial class Player : CharacterBody2D
 
 	/// <summary>
 	/// Gives the player weapon with ID <c>weaponID</c> in slot <c>slot</c>.
+	/// If slot is -1, will assign to next available slot.
 	/// </summary>
 	/// <param name="weaponID">The ID of the weapon to give the player.</param>
 	/// <param name="slot">The slot in which to place the weapon.</param>
@@ -388,11 +390,12 @@ public partial class Player : CharacterBody2D
 	/// <summary>
 	/// On consumption of a cure, resets the infection progression.
 	/// </summary>
-	private void OnCureConsume() {
+	public void ResetInfection() {
 		infectionProgress = 0f;
 		SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
-					infectionProgress * 100);
-		SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Pill);
+			infectionProgress * 100);
+		SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, 
+			(int)Sound.Pill);
 	}
 
 
