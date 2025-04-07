@@ -4,7 +4,6 @@
 
 using Godot;
 using System;
-using System.Collections.Generic;
 
 public class Ammo
 {
@@ -47,6 +46,9 @@ public partial class Player : CharacterBody2D
 	[Export]
 	/// <summary>The number of milliseconds between each bullet fired.</summary>
 	public float RateOfFireMs = 200;
+
+	[Export]
+	public float RotationSpeed = (float)Math.PI * 3;
 
 	/// <summary>
 	/// The number of radians to offset the rotation of the sprite to follow the 
@@ -128,6 +130,7 @@ public partial class Player : CharacterBody2D
 		}
 		
 		Velocity = moveDirection * Speed;
+		RotateLegSprite(moveDirection, delta);
 
 		if (movementEnabled)
 			MoveAndSlide();
@@ -392,5 +395,21 @@ public partial class Player : CharacterBody2D
 
 	private void ToggleShooting(bool isEnabled) {
 		shootingEnabled = isEnabled;
+	}
+
+	// Rotates the leg sprites in the direction the player is moving.
+	private void RotateLegSprite(Vector2 moveDirection, double delta) {
+		if (moveDirection != Vector2.Zero) {
+			Global.LegAnimationNode.Play();
+			float adjustedRotation = Global.LegAnimationNode.Rotation - (float)(Math.PI / 2);
+
+			float rotationDifference = 
+				Mathf.Wrap((float)Math.Atan2(moveDirection.Y, moveDirection.X) - adjustedRotation, (float)-Math.PI, (float)Math.PI);
+			Global.LegAnimationNode.Rotation += 
+				Mathf.Clamp(RotationSpeed * (float)delta, 0, Math.Abs(rotationDifference)) * Math.Sign(rotationDifference);
+		} else {
+			Global.LegAnimationNode.Stop();
+			Global.LegAnimationNode.Frame = 7;
+		}
 	}
 }

@@ -75,6 +75,7 @@ public partial class SharedData : Node2D
 	public GUIManager GUIManagerInstance;
 	public AudioManager AudioManagerInstance;
 
+	public AnimatedSprite2D LegAnimationNode;
 	public Sprite2D CharacterSpriteNode, WeaponSpriteNode, UnderarmSpriteNode;
 	public Texture2D PistolStance, RifleStance, UnarmedStance, EnemyTexture;
 	public TextureRect ShopGUI;
@@ -161,6 +162,7 @@ public partial class SharedData : Node2D
 		AudioManagerInstance = sceneNode.GetNode<AudioManager>("./Audio Manager");
 		GUIManagerInstance = sceneNode.GetNode<GUIManager>("./GUI Manager");
 		CharacterSpriteNode = sceneNode.GetNode<Sprite2D>("./Player/Player Sprite");
+		LegAnimationNode = sceneNode.GetNode<AnimatedSprite2D>("./Player/Leg Animation");
 		WeaponSpriteNode = sceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Weapon Sprite");
 		UnderarmSpriteNode = sceneNode.GetNode<Sprite2D>("./Player/Player Sprite/Underarm");
 	}
