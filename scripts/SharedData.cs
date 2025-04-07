@@ -3,6 +3,7 @@
 // Implements an autoload singleton for loading all shared assets and functions.
 
 using Godot;
+using System;
 using System.Collections.Generic;
 
 /// <summary>
@@ -43,6 +44,8 @@ public partial class SharedData : Node2D
 	// Begin definitions of Audio signals
 	[Signal]
 	public delegate void PlaySoundEventHandler (int soundID);
+	[Signal]
+	public delegate void CancelReloadSoundEventHandler ();
 
 	// Begin definition of Player signals
 	[Signal]
@@ -95,6 +98,7 @@ public partial class SharedData : Node2D
 		LoadTextureAssets();
 		LoadWeaponsJson();
 		ConnectGUISignals();
+		ConnectAudioSignals();
 		ConnectActionSignals();
 	}
 
@@ -204,9 +208,13 @@ public partial class SharedData : Node2D
 		UpdateReloadBar += GUIManagerInstance.UpdateReloadBar;
 		UpdateWeaponLabel += GUIManagerInstance.UpdateWeaponLabel;
 		UpdateInfectionBar += GUIManagerInstance.UpdateInfectionBar;
-		PlaySound += AudioManagerInstance.PlaySound;
 	}
 
+
+	private void ConnectAudioSignals() {
+		PlaySound += AudioManagerInstance.PlaySound;
+		CancelReloadSound += AudioManagerInstance.CancelReloadSound;
+	}
 
 	private void ConnectActionSignals() {
 		CureConsume += PlayerNode.ResetInfection;

@@ -183,8 +183,10 @@ public partial class Player : CharacterBody2D
     /// <summary>Checks for swapping input and does so if conditions are met.</summary>
     public void CheckSwapInput() {
 		if (Input.IsActionJustPressed("swap")) {
-			if (isReloading)
+			if (isReloading) {
                 CancelReload();
+				Global.EmitSignal(SharedData.SignalName.CancelReloadSound);
+			}
 
             activeWeaponSlot = (activeWeaponSlot + 1) % maxNumWeapons;
 			SetWeapon(activeWeaponSlot);

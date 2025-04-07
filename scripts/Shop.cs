@@ -32,7 +32,7 @@ public partial class Shop : Area2D
 	{
 		if (Input.IsActionJustPressed("buy") && playerInShopArea) {
 			Global.ShopGUI.Visible = true;
-			EmitSignal(SharedData.SignalName.HideActiveLabel);
+			Global.EmitSignal(SharedData.SignalName.HideActiveLabel);
 		}
 
 		if (Global.ShopGUI.Visible) {
@@ -42,8 +42,8 @@ public partial class Shop : Area2D
 
 			if (Input.IsActionJustPressed("exit")) {
 				Global.ShopGUI.Visible = false;
-				EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Open Shop");
-				EmitSignal(SharedData.SignalName.ToggleShooting, true);
+				Global.EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Open Shop");
+				Global.EmitSignal(SharedData.SignalName.ToggleShooting, true);
 			}
 		}
 	}
@@ -60,8 +60,8 @@ public partial class Shop : Area2D
 
 	private void OnShopEnter(Node2D body) {
 		if (body.Name == "Player") {
-			EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Open Shop");
-			EmitSignal(SharedData.SignalName.ToggleShooting, false);
+			Global.EmitSignal(SharedData.SignalName.ShowActiveLabel, "[F] Open Shop");
+			Global.EmitSignal(SharedData.SignalName.ToggleShooting, false);
 			playerInShopArea = true;
 		}
 	}
@@ -69,8 +69,8 @@ public partial class Shop : Area2D
 	private void OnShopExit(Node2D body) {
 		if (body.Name == "Player") {
 			playerInShopArea = false;
-			EmitSignal(SharedData.SignalName.HideActiveLabel);
-			EmitSignal(SharedData.SignalName.ToggleShooting, true);
+			Global.EmitSignal(SharedData.SignalName.HideActiveLabel);
+			Global.EmitSignal(SharedData.SignalName.ToggleShooting, true);
 			Global.ShopGUI.Visible = false;
 		}
 	}
@@ -78,22 +78,22 @@ public partial class Shop : Area2D
 	private void PlayerBuys(int buttonIdx) {
 		switch (buttonIdx) {
 			case 0:
-				EmitSignal(SharedData.SignalName.GiveWeapon, 
+				Global.EmitSignal(SharedData.SignalName.GiveWeapon, 
 							(int)WeaponId.ColtM1911);
-				EmitSignal(SharedData.SignalName.ModifyPoints, -500);
+				Global.EmitSignal(SharedData.SignalName.ModifyPoints, -500);
 				break;
 			case 1:
-				EmitSignal(SharedData.SignalName.GiveWeapon, 
+				Global.EmitSignal(SharedData.SignalName.GiveWeapon, 
 							(int)WeaponId.M4Carbine);
-				EmitSignal(SharedData.SignalName.ModifyPoints, -1000);
+				Global.EmitSignal(SharedData.SignalName.ModifyPoints, -1000);
 				break;
 			case 2:
-				EmitSignal(SharedData.SignalName.CureConsume);
-				EmitSignal(SharedData.SignalName.ModifyPoints, -2000);
+				Global.EmitSignal(SharedData.SignalName.CureConsume);
+				Global.EmitSignal(SharedData.SignalName.ModifyPoints, -2000);
 				break;
 		}
 
-		EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
+		Global.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.Buy);
 	}
 }
 
