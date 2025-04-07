@@ -196,7 +196,9 @@ public partial class SharedData : Node2D
 		PlaySound += AudioManagerInstance.PlaySound;
 	}
 
+
 	private void ConnectActionSignals() {
 		CureConsume += PlayerNode.ResetInfection;
+		ModifyPoints += PlayerNode.ModifyPoints;
 	}
 }

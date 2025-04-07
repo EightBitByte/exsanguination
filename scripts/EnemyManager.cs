@@ -88,13 +88,16 @@ public partial class EnemyManager : Node
 		newEnemy.GlobalPosition = position;
 		newEnemy.MaxHP = currentInfectedHealth;
 
-		newEnemy.EnemyInjured += player.AddPoints;
+		newEnemy.EnemyInjured += player.ModifyPoints;
 		newEnemy.AttackedPlayer += player.Hurt;
 		newEnemy.EnemyKilled += OnEnemyKill;
 		GetTree().Root.CallDeferred("add_child", newEnemy);
 	}
 
-
+	/// <summary>
+	/// Adds new spawn points for the enemies.
+	/// </summary>
+	/// <param name="barrier"></param>
 	public void OpenedArea (Area barrier) {
 		if ((int)barrier != -1)
 			foreach (Area spawnpointName in unlocks[barrier])

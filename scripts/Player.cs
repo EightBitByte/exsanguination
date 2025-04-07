@@ -129,7 +129,7 @@ public partial class Player : CharacterBody2D
 		if (timeSinceDamageMs > damageHealCooldownMs / MILLIS && HP < 100) {
 			HP = HP + HPRegenAmount > MaxHP ? MaxHP : HP + HPRegenAmount;
 			timeSinceDamageMs = (damageHealCooldownMs - HPRegenDelayMs) / MILLIS;
-			SharedData.Instance.EmitSignal(SharedData.SignalName.PlayerHurt, 1.0 * HP / MaxHP);
+			Global.EmitSignal(SharedData.SignalName.PlayerHurt, 1.0 * HP / MaxHP);
 		}
 		
 		Velocity = moveDirection * Speed;
@@ -152,7 +152,7 @@ public partial class Player : CharacterBody2D
 		} else if (holdingAWeapon && ((semiAutoFire && !weaponHasAmmoInMag && shootingEnabled) || 
 				(heldWeapons[activeWeaponSlot].Automatic && Input.IsActionJustPressed("fire") 
 				&& shootingEnabled))) {
-			SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.DryFire);
+			Global.EmitSignal(SharedData.SignalName.PlaySound, (int)Sound.DryFire);
 		}
 
 	}
@@ -167,16 +167,16 @@ public partial class Player : CharacterBody2D
 		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty 
                 && !isReloading && shootingEnabled) {
 			isReloading = true;
-			SharedData.Instance.EmitSignal(SharedData.SignalName.ToggleReloadBar, true);
-			SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateReloadBar, 0);
-			SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, 
+			Global.EmitSignal(SharedData.SignalName.ToggleReloadBar, true);
+			Global.EmitSignal(SharedData.SignalName.UpdateReloadBar, 0);
+			Global.EmitSignal(SharedData.SignalName.PlaySound, 
 				(int)Global.StanceToSound(heldWeapons[activeWeaponSlot].Stance, true));
 		}
 
 		if (isReloading && reloadTimeElapsed < 
                 heldWeapons[activeWeaponSlot].ReloadTime) {
 			reloadTimeElapsed += delta;
-			SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateReloadBar, 
+			Global.EmitSignal(SharedData.SignalName.UpdateReloadBar, 
 				reloadTimeElapsed / heldWeapons[activeWeaponSlot].ReloadTime * 100);
 
 		} else if (isReloading) {
@@ -200,7 +200,8 @@ public partial class Player : CharacterBody2D
     private void CancelReload() {
         isReloading = false;
         reloadTimeElapsed = 0;
-		SharedData.Instance.EmitSignal(SharedData.SignalName.ToggleReloadBar, false);
+		Global.EmitSignal(SharedData.SignalName.ToggleReloadBar, 
+			false);
     }
 
 
@@ -208,9 +209,10 @@ public partial class Player : CharacterBody2D
 	/// Add (or subtract) <c>points</c> to the player's bank.
 	/// </summary>
 	/// <param name="points">The number of points to add or subtract.</param>
-	public void AddPoints (int points) {
+	public void ModifyPoints (int points) {
 		Points += points;
-		SharedData.Instance.EmitSignal(SharedData.SignalName.UpdatePointLabel, Points);
+		Global.EmitSignal(SharedData.SignalName.UpdatePointLabel, 
+			Points);
 	}
 
 
@@ -223,7 +225,7 @@ public partial class Player : CharacterBody2D
 			infectionProgress += 0.01f;
 
 		HP = HP < attackDamage ? 0 : HP - attackDamage;
-		SharedData.Instance.EmitSignal(SharedData.SignalName.PlayerHurt, 1.0 * HP / MaxHP);
+		Global.EmitSignal(SharedData.SignalName.PlayerHurt, 1.0 * HP / MaxHP);
 
 		if (HP <= 0)
 			GameOver();
@@ -282,7 +284,7 @@ public partial class Player : CharacterBody2D
 								? Sound.PistolShot
 								: Sound.RifleShot;
 
-		SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, (int)soundToEmit);
+		Global.EmitSignal(SharedData.SignalName.PlaySound, (int)soundToEmit);
 	}
 
 
@@ -300,7 +302,7 @@ public partial class Player : CharacterBody2D
 
 		// Update HUD
 		EmitUpdateAmmoSignal();
-		SharedData.Instance.EmitSignal(SharedData.SignalName.ToggleReloadBar, false);
+		Global.EmitSignal(SharedData.SignalName.ToggleReloadBar, false);
 
 		isReloading = false;
 		reloadTimeElapsed = 0;
@@ -332,7 +334,7 @@ public partial class Player : CharacterBody2D
 	private void SetWeapon (int slotNum) {
 		activeWeaponSlot = slotNum;
 		RateOfFireMs = 1 / heldWeapons[activeWeaponSlot].RateOfFire;
-		SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateWeaponLabel, heldWeapons[activeWeaponSlot].Name);
+		Global.EmitSignal(SharedData.SignalName.UpdateWeaponLabel, heldWeapons[activeWeaponSlot].Name);
 
 		switch (heldWeapons[activeWeaponSlot].Stance) {
 			case WeaponStance.Pistol:
@@ -372,13 +374,13 @@ public partial class Player : CharacterBody2D
 		else
 			infectionProgress += 0.01f;
 
-		SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
+		Global.EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
 					infectionProgress * 100);
 	}
 
 
 	private void GameOver() {
-		SharedData.Instance.EmitSignal(SharedData.SignalName.GameOver);
+		Global.EmitSignal(SharedData.SignalName.GameOver);
 		shootingEnabled = false;
 		movementEnabled = false;
 		
@@ -388,19 +390,19 @@ public partial class Player : CharacterBody2D
 
 
 	/// <summary>
-	/// On consumption of a cure, resets the infection progression.
+	/// Resets the infection progression, updating audio and GUI respectively.
 	/// </summary>
 	public void ResetInfection() {
 		infectionProgress = 0f;
-		SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
+		Global.EmitSignal(SharedData.SignalName.UpdateInfectionBar, 
 			infectionProgress * 100);
-		SharedData.Instance.EmitSignal(SharedData.SignalName.PlaySound, 
+		Global.EmitSignal(SharedData.SignalName.PlaySound, 
 			(int)Sound.Pill);
 	}
 
 
 	private void EmitUpdateAmmoSignal() {
-		SharedData.Instance.EmitSignal(SharedData.SignalName.UpdateAmmoLabel, 
+		Global.EmitSignal(SharedData.SignalName.UpdateAmmoLabel, 
 					ammunition[activeWeaponSlot].AmmoInMagazine,
 					ammunition[activeWeaponSlot].AmmoInReserve);
 	}

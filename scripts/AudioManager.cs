@@ -3,8 +3,6 @@
 // Manages playback of audio, such as shooting sounds, infected noises, etc.
 
 using Godot;
-using System;
-using System.Linq;
 
 public enum Sound {
 	PistolShot,
