@@ -1,4 +1,4 @@
-[gd_scene load_steps=59 format=4 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=62 format=4 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Script" path="res://scripts/GUIManager.cs" id="1_5sne8"]
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
@@ -42,6 +42,9 @@
 [ext_resource type="Texture2D" uid="uid://bnh3elqrfa76f" path="res://assets/textures/animation-frames/ Leg Anim F14.png" id="28_1tsr8"]
 [ext_resource type="Texture2D" uid="uid://cxr3hm082820f" path="res://assets/textures/animation-frames/ Leg Anim F15.png" id="29_2ewo3"]
 [ext_resource type="Texture2D" uid="uid://cfg4ag3rt40c2" path="res://assets/textures/animation-frames/ Leg Anim F16.png" id="30_tbs7m"]
+[ext_resource type="Texture2D" uid="uid://q8fbf0focgy4" path="res://assets/gui/Stamina-Under.png" id="35_hxd30"]
+[ext_resource type="Texture2D" uid="uid://c5m8n2q7vd2sk" path="res://assets/gui/Stamina-Over.png" id="36_ijgby"]
+[ext_resource type="Texture2D" uid="uid://c6mn6b6qvqvwd" path="res://assets/gui/Stamina-Progress.png" id="37_heq4r"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_d58rs"]
 shader = ExtResource("3_p5f76")
@@ -628,9 +631,9 @@ shape = SubResource("CircleShape2D_owf11")
 
 [node name="Reload Bar" type="TextureProgressBar" parent="Player"]
 z_index = 1
-offset_left = -95.0
+offset_left = -106.0
 offset_top = -120.0
-offset_right = 745.0
+offset_right = 734.0
 offset_bottom = 54.0
 scale = Vector2(0.231032, 0.231032)
 texture_under = ExtResource("6_6rh7v")
@@ -638,6 +641,17 @@ texture_progress = ExtResource("7_2rldi")
 
 [node name="Infection Tick" type="Timer" parent="Player"]
 autostart = true
+
+[node name="Stamina Bar" type="TextureProgressBar" parent="Player"]
+offset_left = -47.0
+offset_top = 58.0
+offset_right = 939.0
+offset_bottom = 269.0
+scale = Vector2(0.08, 0.08)
+value = 100.0
+texture_under = ExtResource("35_hxd30")
+texture_over = ExtResource("36_ijgby")
+texture_progress = ExtResource("37_heq4r")
 
 [node name="Tilemap" type="TileMapLayer" parent="."]
 texture_filter = 3

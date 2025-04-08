@@ -40,6 +40,8 @@ public partial class SharedData : Node2D
 	public delegate void UpdateWeaponLabelEventHandler (string weaponName);
 	[Signal]
 	public delegate void UpdateInfectionBarEventHandler (double infectionProgress);
+	[Signal]
+	public delegate void UpdateStaminaBarEventHandler (float percentStamina);
 	
 	// Begin definitions of Audio signals
 	[Signal]
@@ -58,12 +60,14 @@ public partial class SharedData : Node2D
 	public delegate void GameOverEventHandler();
 	[Signal]
 	public delegate void GiveWeaponEventHandler(int weaponID);
+	[Signal]
+	public delegate void SetExhaustionBarEventHandler (bool isExhausted);
 
 	public AudioStreamWav PistolShot, RifleShot, DryFire, PillSound, 
 						  PistolReload, RifleReload, BuySound;
 
 	public RichTextLabel PointLabel, WeaponLabel, AmmoLabel, ActiveLabel;
-	public TextureProgressBar ReloadBar, InfectionBar;
+	public TextureProgressBar ReloadBar, InfectionBar, StaminaBar;
 	public ColorRect VignetteBox, GameOverScreen;
 	public ShaderMaterial HurtVignette;
 	public TextureButton GameOverButton;
@@ -77,7 +81,9 @@ public partial class SharedData : Node2D
 
 	public AnimatedSprite2D LegAnimationNode;
 	public Sprite2D CharacterSpriteNode, WeaponSpriteNode, UnderarmSpriteNode;
-	public Texture2D PistolStance, RifleStance, UnarmedStance, EnemyTexture;
+	public Texture2D PistolStance, RifleStance, UnarmedStance, EnemyTexture,
+		ExhaustedStaminaBarUnderTexture, ExhaustedStaminaBarProgressTexture,
+		StaminaBarUnderTexture, StaminaBarProgressTexture;
 	public TextureRect ShopGUI;
 
 	public List<Weapon> AllWeapons = new(); 
@@ -135,6 +141,7 @@ public partial class SharedData : Node2D
 		ActiveLabel = sceneNode.GetNode<RichTextLabel>("./GUI/Active Label");
 
 		ReloadBar = sceneNode.GetNode<TextureProgressBar>("./Player/Reload Bar");
+		StaminaBar = sceneNode.GetNode<TextureProgressBar>("./Player/Stamina Bar");
 		InfectionBar = sceneNode.GetNode<TextureProgressBar>("./GUI/Infection Bar");
 		VignetteBox = sceneNode.GetNode<ColorRect>("./GUI/Vignette");
 		HurtVignette = (ShaderMaterial)VignetteBox.Material;
@@ -173,6 +180,11 @@ public partial class SharedData : Node2D
 		RifleStance = GD.Load<Texture2D>(assetsBasePath + "textures/Stance-Rifle.svg");
 		UnarmedStance = GD.Load<Texture2D>(assetsBasePath + "textures/Stance-Unarmed.svg");
 		EnemyTexture = GD.Load<Texture2D>(assetsBasePath + "textures/Enemy-Sprite.svg");
+
+		ExhaustedStaminaBarProgressTexture = GD.Load<Texture2D>(assetsBasePath + "gui/Exhausted-Progress.png");
+		ExhaustedStaminaBarUnderTexture = GD.Load<Texture2D>(assetsBasePath + "gui/Exhausted-Under.png");
+		StaminaBarProgressTexture = GD.Load<Texture2D>(assetsBasePath + "gui/Stamina-Progress.png");
+		StaminaBarUnderTexture = GD.Load<Texture2D>(assetsBasePath + "gui/Stamina-Under.png");
 	}
 
 
@@ -210,6 +222,9 @@ public partial class SharedData : Node2D
 		UpdateReloadBar += GUIManagerInstance.UpdateReloadBar;
 		UpdateWeaponLabel += GUIManagerInstance.UpdateWeaponLabel;
 		UpdateInfectionBar += GUIManagerInstance.UpdateInfectionBar;
+		UpdateStaminaBar += GUIManagerInstance.UpdateStaminaBar;
+		SetExhaustionBar += GUIManagerInstance.ToggleStaminaBar;
+		
 	}
 
 

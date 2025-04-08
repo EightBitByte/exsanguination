@@ -4,6 +4,7 @@
 
 using Godot;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 public class Ammo
 {
@@ -39,16 +40,23 @@ public partial class Player : CharacterBody2D
 	[Export]
 	private int HPRegenDelayMs = 100;
 
-	/// <summary>The speed at which the player moves.</summary>
+	/// <summary>The base speed at which the player moves.</summary>
 	[Export]
-	public float Speed = 400;
+	public float BaseSpeed = 400;
 
 	[Export]
 	/// <summary>The number of milliseconds between each bullet fired.</summary>
 	public float RateOfFireMs = 200;
 
 	[Export]
-	public float RotationSpeed = (float)Math.PI * 3;
+	/// <summary> The maximum rate at which the legs can rotate around the body.</summary>
+	public float LegRotationSpeed = (float)Math.PI * 3;
+
+	[Export]
+	public int MaxStamina = 100;
+
+	[Export]
+	public float SprintSpeedModifier = 2f;
 
 	/// <summary>
 	/// The number of radians to offset the rotation of the sprite to follow the 
@@ -69,6 +77,11 @@ public partial class Player : CharacterBody2D
 	private double timeSinceDamageMs = 0;
 
 	public int Points = 0;
+	public float Stamina = 100;
+	private float StaminaDrain = 0.5f;
+	private float StaminaGain = 0.4f;
+
+	public float Speed;
 	private int HP = 100;
 	private float infectionProgress = 0f;
 	private Weapon[] heldWeapons = new Weapon[2];
@@ -79,6 +92,8 @@ public partial class Player : CharacterBody2D
 	private int activeWeaponSlot = 0;
     private int maxNumWeapons = 2;
 	public bool isReloading = false, 
+				isSprinting = false,
+				isExhausted = false,
 				movementEnabled = true, 
 				shootingEnabled = true;
 	private double reloadTimeElapsed = 0;
@@ -99,6 +114,8 @@ public partial class Player : CharacterBody2D
 		GiveWeapon(WeaponId.ColtM1911, 0);
 		GiveWeapon(WeaponId.None, 1);
 		SetWeapon(0);
+
+		Speed = BaseSpeed;
 	}
 
 
@@ -115,6 +132,7 @@ public partial class Player : CharacterBody2D
 		CheckShootingInput();
         CheckReloadInput(delta);
         CheckSwapInput();
+		CheckSprintInput();
 	}
 
 
@@ -181,6 +199,35 @@ public partial class Player : CharacterBody2D
 			ReloadWeapon();
 		}
     }
+
+
+	/// <summary>Checks for sprint input and initiates sprint if stamina allows.</summary>
+	public void CheckSprintInput() {
+		if (Input.IsActionJustPressed("sprint") && !isExhausted) {
+			isSprinting = true;
+			Speed *= SprintSpeedModifier;
+		} else if (Input.IsActionJustReleased("sprint")) {
+			isSprinting = false;
+			Speed = BaseSpeed;
+		}
+
+		if (isSprinting && Stamina < StaminaDrain) {
+			isSprinting = false;
+			isExhausted = true;
+			Speed = BaseSpeed;
+			Global.EmitSignal(SharedData.SignalName.SetExhaustionBar, true);
+		} else if (isSprinting) {
+			Stamina -= StaminaDrain;
+			Global.EmitSignal(SharedData.SignalName.UpdateStaminaBar, Stamina / MaxStamina);
+		} else if (!isSprinting && Stamina != MaxStamina) {
+			Stamina = Stamina + StaminaGain > MaxStamina ? MaxStamina 
+				: Stamina + StaminaGain;
+			Global.EmitSignal(SharedData.SignalName.UpdateStaminaBar, Stamina / MaxStamina);
+		} else if (!isSprinting && Stamina == MaxStamina && isExhausted) {
+			isExhausted = false;
+			Global.EmitSignal(SharedData.SignalName.SetExhaustionBar, false);
+		}
+	}
 
 
     /// <summary>Checks for swapping input and does so if conditions are met.</summary>
@@ -397,6 +444,7 @@ public partial class Player : CharacterBody2D
 		shootingEnabled = isEnabled;
 	}
 
+
 	// Rotates the leg sprites in the direction the player is moving.
 	private void RotateLegSprite(Vector2 moveDirection, double delta) {
 		if (moveDirection != Vector2.Zero) {
@@ -406,7 +454,7 @@ public partial class Player : CharacterBody2D
 			float rotationDifference = 
 				Mathf.Wrap((float)Math.Atan2(moveDirection.Y, moveDirection.X) - adjustedRotation, (float)-Math.PI, (float)Math.PI);
 			Global.LegAnimationNode.Rotation += 
-				Mathf.Clamp(RotationSpeed * (float)delta, 0, Math.Abs(rotationDifference)) * Math.Sign(rotationDifference);
+				Mathf.Clamp(LegRotationSpeed * (float)delta, 0, Math.Abs(rotationDifference)) * Math.Sign(rotationDifference);
 		} else {
 			Global.LegAnimationNode.Stop();
 			Global.LegAnimationNode.Frame = 7;

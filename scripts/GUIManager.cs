@@ -17,6 +17,7 @@ public partial class GUIManager : Node
 		Global.VignetteBox.Visible = false;
 		Global.ReloadBar.Visible = false;
 		Global.ActiveLabel.Visible = false;
+		Global.StaminaBar.Visible = false;
 	}
 
 
@@ -96,6 +97,31 @@ public partial class GUIManager : Node
 
 	public void UpdateInfectionBar (double infectionProgress) {
 		Global.InfectionBar.Value = infectionProgress;
+	}
+
+	public void UpdateStaminaBar (float stamina) {
+		Global.StaminaBar.Value = stamina * 100;
+
+		if (stamina > 0.9) {
+			Color modulate = Global.StaminaBar.Modulate;
+			modulate.A = -10 * stamina + 10;
+			Global.StaminaBar.Modulate = modulate;
+		} else if (stamina == 1.0) {
+			Global.StaminaBar.Visible = false;
+		} else {
+			Global.StaminaBar.Visible = true;
+		}
+	}
+
+
+	public void ToggleStaminaBar (bool isExhausted) {
+		if (isExhausted) {
+			Global.StaminaBar.TextureUnder = Global.ExhaustedStaminaBarUnderTexture;
+			Global.StaminaBar.TextureProgress = Global.ExhaustedStaminaBarProgressTexture;
+		} else {
+			Global.StaminaBar.TextureUnder = Global.StaminaBarUnderTexture;
+			Global.StaminaBar.TextureProgress = Global.StaminaBarProgressTexture;
+		}
 	}
 
 
