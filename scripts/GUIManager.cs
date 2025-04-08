@@ -125,8 +125,12 @@ public partial class GUIManager : Node
 	}
 
 
+	public void SetReticleRing(float scale) {
+		Global.ReticleRingNode.Scale = new(scale, scale);
+	}
+
+
 	public void ShowGameOver () {
 		Global.GameOverScreen.Visible = true;
 	}
-
 }

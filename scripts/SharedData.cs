@@ -42,6 +42,8 @@ public partial class SharedData : Node2D
 	public delegate void UpdateInfectionBarEventHandler (double infectionProgress);
 	[Signal]
 	public delegate void UpdateStaminaBarEventHandler (float percentStamina);
+	[Signal]
+	public delegate void SetReticleRingEventHandler (float scale);
 	
 	// Begin definitions of Audio signals
 	[Signal]
@@ -80,7 +82,7 @@ public partial class SharedData : Node2D
 	public AudioManager AudioManagerInstance;
 
 	public AnimatedSprite2D LegAnimationNode;
-	public Sprite2D CharacterSpriteNode, WeaponSpriteNode, UnderarmSpriteNode;
+	public Sprite2D CharacterSpriteNode, WeaponSpriteNode, UnderarmSpriteNode, ReticleNode, ReticleRingNode;
 	public Texture2D PistolStance, RifleStance, UnarmedStance, EnemyTexture,
 		ExhaustedStaminaBarUnderTexture, ExhaustedStaminaBarProgressTexture,
 		StaminaBarUnderTexture, StaminaBarProgressTexture;
@@ -148,6 +150,8 @@ public partial class SharedData : Node2D
 		GameOverScreen = sceneNode.GetNode<ColorRect>("./GUI/Game Over");
 		GameOverButton = sceneNode.GetNode<TextureButton>("./GUI/Game Over/TextureButton");
 		ShopGUI = sceneNode.GetNode<TextureRect>("./GUI/Shop");
+		ReticleNode = sceneNode.GetNode<Sprite2D>("./GUI/Reticle");
+		ReticleRingNode = sceneNode.GetNode<Sprite2D>("./GUI/Reticle/Ring");
 	}
 
 
@@ -224,7 +228,7 @@ public partial class SharedData : Node2D
 		UpdateInfectionBar += GUIManagerInstance.UpdateInfectionBar;
 		UpdateStaminaBar += GUIManagerInstance.UpdateStaminaBar;
 		SetExhaustionBar += GUIManagerInstance.ToggleStaminaBar;
-		
+		SetReticleRing += GUIManagerInstance.SetReticleRing;	
 	}
 
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=62 format=4 uid="uid://c6jqq2covcflg"]
+[gd_scene load_steps=64 format=4 uid="uid://c6jqq2covcflg"]
 
 [ext_resource type="Script" path="res://scripts/GUIManager.cs" id="1_5sne8"]
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
@@ -10,7 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/textures/Stance-Pistol.svg" id="3_mfhfp"]
 [ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
 [ext_resource type="Texture2D" uid="uid://781jsmi2sck2" path="res://assets/gui/Buy Button.svg" id="4_ld4gv"]
+[ext_resource type="Texture2D" uid="uid://6yfm2tg26q5t" path="res://assets/gui/Crosshair.png" id="4_nedfd"]
 [ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/textures/Colt M1911.svg" id="4_shskx"]
+[ext_resource type="Texture2D" uid="uid://o4o3iwfqhl45" path="res://assets/gui/Inaccuracy-Ring.png" id="5_bdvkq"]
 [ext_resource type="Texture2D" uid="uid://4qglpjgbrglk" path="res://assets/gui/Inactive Button.svg" id="5_etxfw"]
 [ext_resource type="Texture2D" uid="uid://bjdqov06nbxwe" path="res://assets/textures/Underarm.svg" id="5_lhbfy"]
 [ext_resource type="Texture2D" uid="uid://bq7tmy6bc2q3l" path="res://assets/gui/Bullet Bar (Under).svg" id="6_6rh7v"]
@@ -275,6 +277,14 @@ position = Vector2(1250, 225)
 position = Vector2(-1250, -1875)
 
 [node name="GUI" type="CanvasLayer" parent="."]
+
+[node name="Reticle" type="Sprite2D" parent="GUI"]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("4_nedfd")
+
+[node name="Ring" type="Sprite2D" parent="GUI/Reticle"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("5_bdvkq")
 
 [node name="Vignette" type="ColorRect" parent="GUI"]
 material = SubResource("ShaderMaterial_d58rs")

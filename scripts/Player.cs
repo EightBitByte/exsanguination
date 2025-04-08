@@ -80,6 +80,8 @@ public partial class Player : CharacterBody2D
 	public float Stamina = 100;
 	private float StaminaDrain = 0.5f;
 	private float StaminaGain = 0.4f;
+	private float inaccuracyDelayMs = 1000;
+	private float inaccuracy = 0;
 
 	public float Speed;
 	private int HP = 100;
@@ -122,12 +124,18 @@ public partial class Player : CharacterBody2D
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process (double delta) {
 		firingCooldown += delta;
+		inaccuracy = 1 - ((float)firingCooldown / (inaccuracyDelayMs / MILLIS));
+
+		if (firingCooldown < inaccuracyDelayMs / MILLIS)
+			Global.EmitSignal(SharedData.SignalName.SetReticleRing, 0.5 - (firingCooldown / (inaccuracyDelayMs / MILLIS) * 0.5));
 
 		Vector2 viewportCenter = GetViewportRect().Size / 2;
 		Vector2 mousePos = GetViewport().GetMousePosition() - viewportCenter;
 		double viewAngle = Math.Atan2(mousePos.Y, mousePos.X);
 
 		Global.CharacterSpriteNode.Rotation = (float)viewAngle + (float)viewOffset;
+
+		Global.ReticleNode.GlobalPosition = mousePos + viewportCenter;
 
 		CheckShootingInput();
         CheckReloadInput(delta);
