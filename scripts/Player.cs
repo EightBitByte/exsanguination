@@ -92,7 +92,7 @@ public partial class Player : CharacterBody2D
 	private Ammo[] ammunition = new Ammo[2];
 
 	private int activeWeaponSlot = 0;
-    private int maxNumWeapons = 2;
+	private int maxNumWeapons = 2;
 	public bool isReloading = false, 
 				isSprinting = false,
 				isExhausted = false,
@@ -138,8 +138,8 @@ public partial class Player : CharacterBody2D
 		Global.ReticleNode.GlobalPosition = mousePos + viewportCenter;
 
 		CheckShootingInput();
-        CheckReloadInput(delta);
-        CheckSwapInput();
+		CheckReloadInput(delta);
+		CheckSwapInput();
 		CheckSprintInput();
 	}
 
@@ -182,14 +182,14 @@ public partial class Player : CharacterBody2D
 	}
 
 
-    /// <summary>Checks for reload input and does so if conditions are met.</summary>
-    public void CheckReloadInput(double delta) {
+	/// <summary>Checks for reload input and does so if conditions are met.</summary>
+	public void CheckReloadInput(double delta) {
 		bool magazineFull = ammunition[activeWeaponSlot].AmmoInMagazine 
-                            == heldWeapons[activeWeaponSlot].MagazineSize;
+							== heldWeapons[activeWeaponSlot].MagazineSize;
 		bool reserveEmpty = ammunition[activeWeaponSlot].AmmoInReserve == 0;
 
 		if (Input.IsActionJustPressed("reload") && !magazineFull && !reserveEmpty 
-                && !isReloading && shootingEnabled) {
+				&& !isReloading && shootingEnabled) {
 			isReloading = true;
 			Global.EmitSignal(SharedData.SignalName.ToggleReloadBar, true);
 			Global.EmitSignal(SharedData.SignalName.UpdateReloadBar, 0);
@@ -198,7 +198,7 @@ public partial class Player : CharacterBody2D
 		}
 
 		if (isReloading && reloadTimeElapsed < 
-                heldWeapons[activeWeaponSlot].ReloadTime) {
+				heldWeapons[activeWeaponSlot].ReloadTime) {
 			reloadTimeElapsed += delta;
 			Global.EmitSignal(SharedData.SignalName.UpdateReloadBar, 
 				reloadTimeElapsed / heldWeapons[activeWeaponSlot].ReloadTime * 100);
@@ -206,7 +206,7 @@ public partial class Player : CharacterBody2D
 		} else if (isReloading) {
 			ReloadWeapon();
 		}
-    }
+	}
 
 
 	/// <summary>Checks for sprint input and initiates sprint if stamina allows.</summary>
@@ -238,26 +238,26 @@ public partial class Player : CharacterBody2D
 	}
 
 
-    /// <summary>Checks for swapping input and does so if conditions are met.</summary>
-    public void CheckSwapInput() {
+	/// <summary>Checks for swapping input and does so if conditions are met.</summary>
+	public void CheckSwapInput() {
 		if (Input.IsActionJustPressed("swap")) {
 			if (isReloading) {
-                CancelReload();
+				CancelReload();
 				Global.EmitSignal(SharedData.SignalName.CancelReloadSound);
 			}
 
-            activeWeaponSlot = (activeWeaponSlot + 1) % maxNumWeapons;
+			activeWeaponSlot = (activeWeaponSlot + 1) % maxNumWeapons;
 			SetWeapon(activeWeaponSlot);
 		}
-    }
+	}
 
 
-    private void CancelReload() {
-        isReloading = false;
-        reloadTimeElapsed = 0;
+	private void CancelReload() {
+		isReloading = false;
+		reloadTimeElapsed = 0;
 		Global.EmitSignal(SharedData.SignalName.ToggleReloadBar, 
 			false);
-    }
+	}
 
 
 	/// <summary>

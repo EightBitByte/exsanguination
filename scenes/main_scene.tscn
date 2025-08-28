@@ -1,14 +1,14 @@
 [gd_scene load_steps=64 format=4 uid="uid://c6jqq2covcflg"]
 
-[ext_resource type="Script" path="res://scripts/GUIManager.cs" id="1_5sne8"]
+[ext_resource type="Script" uid="uid://y8f5iaonivo" path="res://scripts/GUIManager.cs" id="1_5sne8"]
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="1_f7ih5"]
-[ext_resource type="Script" path="res://scripts/Player.cs" id="1_ntr3v"]
-[ext_resource type="Script" path="res://scripts/Camera.cs" id="1_yk2pb"]
+[ext_resource type="Script" uid="uid://bvrnwyx2usc0h" path="res://scripts/Player.cs" id="1_ntr3v"]
+[ext_resource type="Script" uid="uid://e6mhmaudvli2" path="res://scripts/Camera.cs" id="1_yk2pb"]
 [ext_resource type="Texture2D" uid="uid://dyh62qlpgtmbo" path="res://assets/gui/Shop Bg.svg" id="2_fwgpn"]
 [ext_resource type="Texture2D" uid="uid://bi5ssmtx142j2" path="res://assets/labtiles.svg" id="2_tqpo8"]
-[ext_resource type="Script" path="res://scripts/AudioManager.cs" id="2_yod21"]
+[ext_resource type="Script" uid="uid://c0dik06lahlu2" path="res://scripts/AudioManager.cs" id="2_yod21"]
 [ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/textures/Stance-Pistol.svg" id="3_mfhfp"]
-[ext_resource type="Shader" path="res://assets/vignette.gdshader" id="3_p5f76"]
+[ext_resource type="Shader" uid="uid://dnvyffgxhj7sl" path="res://assets/vignette.gdshader" id="3_p5f76"]
 [ext_resource type="Texture2D" uid="uid://781jsmi2sck2" path="res://assets/gui/Buy Button.svg" id="4_ld4gv"]
 [ext_resource type="Texture2D" uid="uid://6yfm2tg26q5t" path="res://assets/gui/Crosshair.png" id="4_nedfd"]
 [ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/textures/Colt M1911.svg" id="4_shskx"]
@@ -27,8 +27,8 @@
 [ext_resource type="Texture2D" uid="uid://cef8vmomthnt7" path="res://assets/textures/animation-frames/ Leg Anim F1.png" id="15_0cuvc"]
 [ext_resource type="Texture2D" uid="uid://c333v0vamnfng" path="res://assets/textures/animation-frames/ Leg Anim F2.png" id="16_huc1s"]
 [ext_resource type="Texture2D" uid="uid://cr0vebxvykrfg" path="res://assets/textures/animation-frames/ Leg Anim F3.png" id="17_6n4ko"]
-[ext_resource type="Script" path="res://scripts/EnemyManager.cs" id="17_auaga"]
-[ext_resource type="Script" path="res://scripts/Shop.cs" id="18_3g30q"]
+[ext_resource type="Script" uid="uid://d4mkyeey17pv0" path="res://scripts/EnemyManager.cs" id="17_auaga"]
+[ext_resource type="Script" uid="uid://otkcmklohaqe" path="res://scripts/Shop.cs" id="18_3g30q"]
 [ext_resource type="Texture2D" uid="uid://cohkyhh4krxvm" path="res://assets/textures/animation-frames/ Leg Anim F4.png" id="18_t8sfu"]
 [ext_resource type="Texture2D" uid="uid://eeioaesj5vtu" path="res://assets/textures/animation-frames/ Leg Anim F5.png" id="19_b4i0d"]
 [ext_resource type="Texture2D" uid="uid://cr4eyrbul17ui" path="res://assets/textures/animation-frames/ Leg Anim F6.png" id="20_vyh3o"]
@@ -140,26 +140,26 @@ polygon = PackedVector2Array(0, -50, 0, 25, -50, 25, -50, 50, 50, 50, 50, -50)
 texture = ExtResource("2_tqpo8")
 texture_region_size = Vector2i(100, 100)
 1:0/0 = 0
-1:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_0ng0b")
+1:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_0ng0b")
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, -50, 50, -50, 50, 0, -50, 0)
 2:0/0 = 0
-2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_72axe")
+2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_72axe")
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, -50, -50, 0, 0, 0, 0, 50, 50, 50, 50, -50)
 2:1/0 = 0
-2:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_rh82p")
+2:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_rh82p")
 2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 50, 50, 50, 50, -50)
 1:1/0 = 0
 0:1/0 = 0
-0:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_43f37")
+0:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_43f37")
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 50, -50, 50, -50, -50)
 0:2/0 = 0
-0:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_3pv2c")
+0:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_3pv2c")
 0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, 25, 0, -50, -50, -50, -50, 50, 50, 50, 50, 25)
 1:2/0 = 0
-1:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_i65v4")
+1:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_i65v4")
 1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, 25, 50, 25, 50, 50, -50, 50)
 2:2/0 = 0
-2:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_75n6q")
+2:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_75n6q")
 2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 25, -50, 25, -50, 50, 50, 50, 50, -50)
 3:0/0 = 0
 3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, 0, 50, 0, 50, 50, 0, 50)

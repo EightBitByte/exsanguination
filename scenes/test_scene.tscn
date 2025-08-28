@@ -1,9 +1,9 @@
 [gd_scene load_steps=40 format=4 uid="uid://d3lfniojiobx4"]
 
-[ext_resource type="Script" path="res://scripts/AudioManager.cs" id="1_wfy8g"]
-[ext_resource type="Script" path="res://scripts/GUIManager.cs" id="2_f3vvy"]
-[ext_resource type="Script" path="res://scripts/EnemyManager.cs" id="3_rea1e"]
-[ext_resource type="Shader" path="res://assets/vignette.gdshader" id="4_wq8tj"]
+[ext_resource type="Script" uid="uid://c0dik06lahlu2" path="res://scripts/AudioManager.cs" id="1_wfy8g"]
+[ext_resource type="Script" uid="uid://y8f5iaonivo" path="res://scripts/GUIManager.cs" id="2_f3vvy"]
+[ext_resource type="Script" uid="uid://d4mkyeey17pv0" path="res://scripts/EnemyManager.cs" id="3_rea1e"]
+[ext_resource type="Shader" uid="uid://dnvyffgxhj7sl" path="res://assets/vignette.gdshader" id="4_wq8tj"]
 [ext_resource type="Texture2D" uid="uid://dyh62qlpgtmbo" path="res://assets/gui/Shop Bg.svg" id="5_cl8kk"]
 [ext_resource type="Texture2D" uid="uid://b6uwg3asld80s" path="res://assets/textures/Colt M1911.svg" id="6_f20qh"]
 [ext_resource type="Texture2D" uid="uid://781jsmi2sck2" path="res://assets/gui/Buy Button.svg" id="7_avqjm"]
@@ -13,15 +13,15 @@
 [ext_resource type="Texture2D" uid="uid://pqqij2kaldfr" path="res://assets/gui/Infection Bar (Under).svg" id="11_qew04"]
 [ext_resource type="Texture2D" uid="uid://kwrlb0eckmbh" path="res://assets/gui/Infection Bar (Over).svg" id="12_yxhqq"]
 [ext_resource type="Texture2D" uid="uid://d33f8bth4acey" path="res://assets/gui/Infection Bar (Progress).svg" id="13_w7rnn"]
-[ext_resource type="Script" path="res://scripts/Player.cs" id="14_78w77"]
+[ext_resource type="Script" uid="uid://bvrnwyx2usc0h" path="res://scripts/Player.cs" id="14_78w77"]
 [ext_resource type="Texture2D" uid="uid://b5kkh6w0olsdu" path="res://assets/textures/Stance-Pistol.svg" id="15_cxxmd"]
 [ext_resource type="Texture2D" uid="uid://bjdqov06nbxwe" path="res://assets/textures/Underarm.svg" id="16_4l8c8"]
 [ext_resource type="Texture2D" uid="uid://bq7tmy6bc2q3l" path="res://assets/gui/Bullet Bar (Under).svg" id="17_ilmjq"]
 [ext_resource type="Texture2D" uid="uid://b1i7msbcq3nwc" path="res://assets/gui/Bullet Bar (Over).svg" id="18_213aq"]
 [ext_resource type="Texture2D" uid="uid://bi5ssmtx142j2" path="res://assets/labtiles.svg" id="19_0g31b"]
 [ext_resource type="Texture2D" uid="uid://dy00mt51jah1l" path="res://assets/devtiles.png" id="20_6mtjt"]
-[ext_resource type="Script" path="res://scripts/Camera.cs" id="21_dcitu"]
-[ext_resource type="Script" path="res://scripts/Shop.cs" id="22_ejyyt"]
+[ext_resource type="Script" uid="uid://e6mhmaudvli2" path="res://scripts/Camera.cs" id="21_dcitu"]
+[ext_resource type="Script" uid="uid://otkcmklohaqe" path="res://scripts/Shop.cs" id="22_ejyyt"]
 [ext_resource type="Texture2D" uid="uid://dhwl66hpr0kxe" path="res://assets/textures/Janitor.svg" id="23_br2dm"]
 [ext_resource type="PackedScene" uid="uid://w35065sxijv1" path="res://scenes/cure.tscn" id="24_tkcwo"]
 
@@ -64,29 +64,29 @@ polygon = PackedVector2Array(0, -50, 0, 25, -50, 25, -50, 50, 50, 50, 50, -50)
 texture = ExtResource("19_0g31b")
 texture_region_size = Vector2i(100, 100)
 0:0/0 = 0
-0:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_vdy3a")
+0:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_vdy3a")
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, -50, 50, -50, 50, 0, 0, 0, 0, 50, -50, 50)
 1:0/0 = 0
-1:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_0ng0b")
+1:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_0ng0b")
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, -50, 50, -50, 50, 0, -50, 0)
 2:0/0 = 0
-2:0/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_72axe")
+2:0/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_72axe")
 2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, -50, -50, 0, 0, 0, 0, 50, 50, 50, 50, -50)
 2:1/0 = 0
-2:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_rh82p")
+2:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_rh82p")
 2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 50, 50, 50, 50, -50)
 1:1/0 = 0
 0:1/0 = 0
-0:1/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_43f37")
+0:1/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_43f37")
 0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 50, -50, 50, -50, -50)
 0:2/0 = 0
-0:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_3pv2c")
+0:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_3pv2c")
 0:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, 25, 0, -50, -50, -50, -50, 50, 50, 50, 50, 25)
 1:2/0 = 0
-1:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_i65v4")
+1:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_i65v4")
 1:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(-50, 25, 50, 25, 50, 50, -50, 50)
 2:2/0 = 0
-2:2/0/occlusion_layer_0/polygon = SubResource("OccluderPolygon2D_75n6q")
+2:2/0/occlusion_layer_0/polygon_0/polygon = SubResource("OccluderPolygon2D_75n6q")
 2:2/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, -50, 0, 25, -50, 25, -50, 50, 50, 50, 50, -50)
 3:0/0 = 0
 3:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(0, 0, 50, 0, 50, 50, 0, 50)

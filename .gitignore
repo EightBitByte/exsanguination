@@ -4,3 +4,7 @@ build
 *.csproj
 *.csproj.old
 *.sln
+*.uid
+
+# vscode ignores
+.vscode

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 /// <summary>
 // Implements an autoload singleton for loading all shared assets and functions.
 /// </summary>
-public partial class SharedData : Node2D
+public partial class SharedData : Node
 {
 	/// <summary>
 	// The public instance of SharedData, which preloads and holds all of the assets.

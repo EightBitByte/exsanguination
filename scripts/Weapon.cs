@@ -8,63 +8,63 @@ using System;
 /// Represents the stance required for holding the weapon.
 /// </summary>
 public enum WeaponStance {
-    Rifle,
-    Pistol,
-    Melee,
-    None
+	Rifle,
+	Pistol,
+	Melee,
+	None
 }
 
 public class Weapon {
-    public int ID {get;}
+	public int ID {get;}
 
-    /// <summary>The name of the weapon.</summary>
-    public string Name {get;}
+	/// <summary>The name of the weapon.</summary>
+	public string Name {get;}
 
-    /// <summary>A description of the weapon.</summary>
-    public string Description {get;}
+	/// <summary>A description of the weapon.</summary>
+	public string Description {get;}
 
-    /// <summary>The damage caused by each bullet.</summary>
-    public float BulletDamage {get;}
+	/// <summary>The damage caused by each bullet.</summary>
+	public float BulletDamage {get;}
 
-    /// <summary>The number of rounds fired per second.</summary>
-    public float RateOfFire {get;} 
+	/// <summary>The number of rounds fired per second.</summary>
+	public float RateOfFire {get;} 
 
-    /// <summary>The time it takes to reload the weapon, in seconds.</summary>
-    public float ReloadTime {get;}
+	/// <summary>The time it takes to reload the weapon, in seconds.</summary>
+	public float ReloadTime {get;}
 
-    /// <summary>The size of the magazine (the number of rounds it can hold).</summary>
-    public int MagazineSize {get;}
+	/// <summary>The size of the magazine (the number of rounds it can hold).</summary>
+	public int MagazineSize {get;}
 
-    /// <summary>The number of rounds available in reserve at purchase.</summary>
-    public int ReserveSize {get;}
+	/// <summary>The number of rounds available in reserve at purchase.</summary>
+	public int ReserveSize {get;}
 
-    /// <summary>Indicates whether the weapon is automatic.</summary>
-    public bool Automatic {get;}
+	/// <summary>Indicates whether the weapon is automatic.</summary>
+	public bool Automatic {get;}
 
-    /// <summary>The stance required to hold the weapon.</summary>
-    public WeaponStance Stance {get;}
-     
+	/// <summary>The stance required to hold the weapon.</summary>
+	public WeaponStance Stance {get;}
+	 
 
-    /// <summary>
-    /// Translates a JSON object into a weapon object.
-    /// </summary>
-    /// <param name="weaponID">The integer ID of the weapon.</param>
-    /// <param name="JSONObj">The JSON object to translate.</param>
-    public Weapon (int weaponID, Godot.Collections.Dictionary<string, string> JSONObj)  {
-        ID = weaponID;
-        Name = JSONObj["name"];
-        Description = JSONObj["description"];
-        BulletDamage = float.Parse(JSONObj["bulletDamage"]);
-        RateOfFire = float.Parse(JSONObj["rateOfFire"]);
-        ReloadTime = float.Parse(JSONObj["reloadTime"]);
-        MagazineSize = int.Parse(JSONObj["magazineSize"]);
-        ReserveSize = int.Parse(JSONObj["reserveSize"]);
-        Automatic = bool.Parse(JSONObj["automatic"]);
-        Stance = Enum.TryParse(JSONObj["stance"], true, out WeaponStance stance) 
-            ? stance : WeaponStance.None;
-    }
+	/// <summary>
+	/// Translates a JSON object into a weapon object.
+	/// </summary>
+	/// <param name="weaponID">The integer ID of the weapon.</param>
+	/// <param name="JSONObj">The JSON object to translate.</param>
+	public Weapon (int weaponID, Godot.Collections.Dictionary<string, string> JSONObj)  {
+		ID = weaponID;
+		Name = JSONObj["name"];
+		Description = JSONObj["description"];
+		BulletDamage = float.Parse(JSONObj["bulletDamage"]);
+		RateOfFire = float.Parse(JSONObj["rateOfFire"]);
+		ReloadTime = float.Parse(JSONObj["reloadTime"]);
+		MagazineSize = (int)float.Parse(JSONObj["magazineSize"]);
+		ReserveSize = (int)float.Parse(JSONObj["reserveSize"]);
+		Automatic = bool.Parse(JSONObj["automatic"]);
+		Stance = Enum.TryParse(JSONObj["stance"], true, out WeaponStance stance) 
+			? stance : WeaponStance.None;
+	}
 
-    public override string ToString() {
-        return $"Weapon(Name={Name}, Description={Description}, BulletDamage={BulletDamage}, RateOfFire={RateOfFire}, ReloadTime={ReloadTime}, MagazineSize={MagazineSize}, ReserveSize={ReserveSize})";
-    }
+	public override string ToString() {
+		return $"Weapon(Name={Name}, Description={Description}, BulletDamage={BulletDamage}, RateOfFire={RateOfFire}, ReloadTime={ReloadTime}, MagazineSize={MagazineSize}, ReserveSize={ReserveSize})";
+	}
 }
